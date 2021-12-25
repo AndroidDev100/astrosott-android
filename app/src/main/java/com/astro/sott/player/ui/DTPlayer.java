@@ -293,6 +293,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     //  private Display display;
     //private Point size;
     private double seekSpeed = 0;
+    private boolean isDoubleTap = false;
 
     private final BroadcastReceiver networkReceiver = new BroadcastReceiver() {
         @Override
@@ -1241,6 +1242,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void playContent() {
+
+        if (isDoubleTap)
+            return;
+
         callHandler();
         if (lockEnable) {
 
@@ -1262,6 +1267,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 getBinding().quality.setVisibility(View.VISIBLE);
                 getBinding().brightnessDialog.setVisibility(View.VISIBLE);
                 getBinding().volumeDialog.setVisibility(View.VISIBLE);
+                Log.d("tytytytyt","Enter2");
                 // getBinding().shareWith.setVisibility(View.VISIBLE);
             } catch (Exception e) {
                 // Log.e("Exception",e.getMessage());
@@ -2066,6 +2072,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 getBinding().volumeDialog.setVisibility(View.GONE);
                 getBinding().brightnessDialog.setVisibility(View.GONE);
             } else {
+                if (isDoubleTap)
+                    return;
+
                 getBinding().rl1.setVisibility(View.VISIBLE);
                 getBinding().volumeDialog.setVisibility(View.VISIBLE);
                 getBinding().brightnessDialog.setVisibility(View.VISIBLE);
@@ -2394,6 +2403,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         getBinding().volumeDialog.setVisibility(View.VISIBLE);
                         getBinding().brightnessDialog.setVisibility(View.VISIBLE);
                         playContent();
+
                     }
                 }
                 if (hasPostRoll) {
@@ -2571,6 +2581,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                 if (isPlayerStart) {
 
+                    if (isDoubleTap || screen_swipe_move)
+                        return;
+
                     if (currentPos > 10000) {
                         getBinding().backward.setVisibility(View.VISIBLE);
                     } else {
@@ -2578,6 +2591,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     }
                     long runningTime = durtion - currentPos;
                     if (runningTime > 10000) {
+                        Log.d("tytytytyt","Enter3");
                         getBinding().forward.setVisibility(View.VISIBLE);
                     } else {
                         getBinding().forward.setVisibility(View.GONE);
@@ -2792,6 +2806,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void callHandler() {
+        Log.d("rtrtrtr","callingTrue");
         timer = true;
         //  getBinding().lockIcon.setVisibility(View.VISIBLE);
         myRunnable = this::ShowAndHideView;
@@ -2801,6 +2816,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void ShowAndHideView() {
+
+
+        if (isDoubleTap)
+            return;
+
         if (getBinding().imagePreview.getVisibility() == View.VISIBLE){
             getBinding().imagePreview.setVisibility(View.GONE);
         }
@@ -2849,36 +2869,62 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                 }
             });
+            Log.d("rtrtrtr","callingTrue1");
             if (getBinding().rl1.getVisibility() == View.VISIBLE) {
                 Log.d("HideView", "True");
-                getBinding().rl1.startAnimation(animationFadeOut);
-                getBinding().rl1.setVisibility(View.GONE);
-                getBinding().volumeDialog.setVisibility(View.GONE);
-                getBinding().brightnessDialog.setVisibility(View.GONE);
-                if (getBinding().videoDialog.getVisibility() == View.VISIBLE || getBinding().audioDialog.getVisibility() == View.VISIBLE) {
-                    getBinding().audioDialog.setVisibility(View.GONE);
-                    getBinding().videoDialog.setVisibility(View.GONE);
-                    getBinding().subtitleAudio.setVisibility(View.GONE);
-                    getBinding().skipIntro.setClickable(true);
-                    getBinding().skipCredits.setClickable(true);
-                    getBinding().skipRecap.setClickable(true);
+                if (!isLivePlayer) {
+                    getBinding().rl1.startAnimation(animationFadeOut);
+                    getBinding().rl1.setVisibility(View.GONE);
+                    getBinding().volumeDialog.setVisibility(View.GONE);
+                    getBinding().brightnessDialog.setVisibility(View.GONE);
+                    if (getBinding().videoDialog.getVisibility() == View.VISIBLE || getBinding().audioDialog.getVisibility() == View.VISIBLE) {
+                        getBinding().audioDialog.setVisibility(View.GONE);
+                        getBinding().videoDialog.setVisibility(View.GONE);
+                        getBinding().subtitleAudio.setVisibility(View.GONE);
+                        getBinding().skipIntro.setClickable(true);
+                        getBinding().skipCredits.setClickable(true);
+                        getBinding().skipRecap.setClickable(true);
+                    }
+                    getBinding().listViewSettings.setVisibility(View.GONE);
+                    timer = true;
+                    hideSoftKeyButton();
+                }else {
+                    getBinding().rl1.setVisibility(View.GONE);
+                    getBinding().name.setVisibility(View.GONE);
+                    getBinding().rlDown.setVisibility(View.GONE);
+                    getBinding().seekBar.setVisibility(View.GONE);
+                    getBinding().liveTxt.setVisibility(View.GONE);
+                    getBinding().playerMediaControls.setVisibility(View.GONE);
+                    getBinding().volumeDialog.setVisibility(View.GONE);
+                    getBinding().brightnessDialog.setVisibility(View.GONE);
+                    getBinding().quality.setVisibility(View.GONE);
                 }
-                getBinding().listViewSettings.setVisibility(View.GONE);
-                timer = true;
-                hideSoftKeyButton();
             } else {
                 Log.d("HideView", "False");
-                getBinding().rl1.setVisibility(View.VISIBLE);
-                getBinding().playerMediaControls.setVisibility(View.VISIBLE);
-                getBinding().playButton.setVisibility(View.VISIBLE);
-                getBinding().volumeDialog.setVisibility(View.VISIBLE);
-                getBinding().brightnessDialog.setVisibility(View.VISIBLE);
-                getBinding().seekBar.setVisibility(View.VISIBLE);
+                if (!isLivePlayer) {
+                    getBinding().rl1.setVisibility(View.VISIBLE);
+                    getBinding().name.setVisibility(View.VISIBLE);
+                    getBinding().playerMediaControls.setVisibility(View.VISIBLE);
+                    getBinding().playButton.setVisibility(View.VISIBLE);
+                    getBinding().volumeDialog.setVisibility(View.VISIBLE);
+                    getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+                    getBinding().seekBar.setVisibility(View.VISIBLE);
 
-                if (isCaption || isAudioTracks) {
-                    getBinding().subtitleAudio.setVisibility(View.VISIBLE);
-                } else {
-                    getBinding().subtitleAudio.setVisibility(View.GONE);
+                    if (isCaption || isAudioTracks) {
+                        getBinding().subtitleAudio.setVisibility(View.VISIBLE);
+                    } else {
+                        getBinding().subtitleAudio.setVisibility(View.GONE);
+                    }
+                }else {
+                    getBinding().rl1.setVisibility(View.VISIBLE);
+                    getBinding().name.setVisibility(View.VISIBLE);
+                    getBinding().rlDown.setVisibility(View.GONE);
+                    getBinding().seekBar.setVisibility(View.GONE);
+                    getBinding().liveTxt.setVisibility(View.VISIBLE);
+                    getBinding().playerMediaControls.setVisibility(View.GONE);
+                    getBinding().volumeDialog.setVisibility(View.VISIBLE);
+                    getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+                    getBinding().quality.setVisibility(View.VISIBLE);
                 }
 
                 if (isSeries) {
@@ -3202,7 +3248,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     // User moves the finger
                     case MotionEvent.ACTION_MOVE:
                         // The finge is now moving
-                        screen_swipe_move = true;
+                        if (!isLivePlayer){
+                            screen_swipe_move = true;
+                        }
+
                         // Controls are currently visible
 
                         // Dissapear controls while finger is moving
@@ -3279,14 +3328,17 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             // Its horizontal movement
                             // Swipes above max distance -> forward
                             if (Math.abs(diffX) > (MIN_DISTANCE + 100)) {
-                                tested_ok = true;
-                                hideScrubberControls();
-                                // Show and hide correspondent controls
-                                String totime = "";
-                                // Calculate time to forward
-                                calculatedTime = (int) ((diffX) * seekSpeed);
-                                getBinding().seekBar.setProgress((int) (runningPlayer.getCurrentPosition() + (calculatedTime)));
-                                onProgressChanged(getBinding().seekBar,(int) (runningPlayer.getCurrentPosition() + (calculatedTime)),true);
+                                if (!isLivePlayer) {
+                                    tested_ok = true;
+                                    // isDoubleTap = false;
+                                    hideScrubberControls();
+                                    // Show and hide correspondent controls
+                                    String totime = "";
+                                    // Calculate time to forward
+                                    calculatedTime = (int) ((diffX) * seekSpeed);
+                                    getBinding().seekBar.setProgress((int) (runningPlayer.getCurrentPosition() + (calculatedTime)));
+                                    onProgressChanged(getBinding().seekBar, (int) (runningPlayer.getCurrentPosition() + (calculatedTime)), true);
+                                }
                             }
                         }
 
@@ -3307,20 +3359,39 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             long duration =  System.currentTimeMillis() - startTime;
                             if(duration <= MAX_DURATION)
                             {
-                                //hideDoubleTapControls();
-                                if (runningPlayer.isPlaying()){
-                                    pausePlayer();
-                                }else {
-                                    if (runningPlayer!=null){
-                                        runningPlayer.play();
-                                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-                                        Log.d("ftftftfftf","Enterrl1");
+                                if (!isLivePlayer) {
+                                    Log.d("ftftftfftf", "Enterrl1");
+                                    screen_swipe_move = false;
+                                    if (runningPlayer.isPlaying()) {
+                                        isDoubleTap = true;
+                                        hideDoubleTapControls();
+                                        pausePlayer();
+                                    } else {
+                                        if (runningPlayer != null) {
+                                            isDoubleTap = true;
+                                            getBinding().playButton.setVisibility(View.VISIBLE);
+                                            runningPlayer.play();
+                                            getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
+
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+
+                                                    showDoubleTapControl();
+
+                                                }
+                                            }, 2000);
+
+
+                                        }
                                     }
+
+                                    //getBinding().playerMediaControls.setVisibility(View.VISIBLE);
+                                    clickCount = 0;
+                                    duration = 0;
                                 }
-                                getBinding().playerMediaControls.setVisibility(View.VISIBLE);
-                                clickCount = 0;
-                                duration = 0;
                             }else{
+                                Log.d("ftftftfftf","Enterrl2");
                                 clickCount = 1;
                                 startTime = System.currentTimeMillis();
                                 if (drag)
@@ -3363,6 +3434,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                                             getBinding().skipCredits.setClickable(true);
                                             getBinding().skipRecap.setClickable(true);
                                         }
+                                        Log.d("ftftftfftf","EnterShowHideView");
                                         ShowAndHideView();
                                     }
 
@@ -3376,12 +3448,26 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
                         if (isFromAudio || isFromBrightness){
-                            callHandler();
+//                            callHandler();
+                           // isDoubleTap = false;
                             isFromBrightness = false;
                             isFromAudio = false;
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    if (isDoubleTap){
+                                        getBinding().brightnessDialog.setVisibility(View.GONE);
+                                        getBinding().audioDialog.setVisibility(View.GONE);
+                                    }else {
+
+                                        showDoubleTapControl();
+                                    }
+                                }
+                            },1200);
+
                         }else {
-                            Log.d("dgdgdgdgddd",screen_swipe_move+"");
-                            Log.d("dgdgdgdgddd",calculatedTime+"");
+
                             if (screen_swipe_move) {
                                 calculatedTime = (int) (runningPlayer.getCurrentPosition() + (calculatedTime));
                                 onStopTrackingTouch(getBinding().seekBar);
@@ -3452,7 +3538,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     // User moves the finger
                     case MotionEvent.ACTION_MOVE:
                         // The finge is now moving
-                        screen_swipe_move = true;
+                        if (!isLivePlayer) {
+                            screen_swipe_move = true;
+                        }
                         // Controls are currently visible
 
                         // Dissapear controls while finger is moving
@@ -3532,13 +3620,15 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             // Its horizontal movement
                             // Swipes above max distance -> forward
                             if (Math.abs(diffX) > (MIN_DISTANCE + 100)) {
-                                tested_ok = true;
-                                hideScrubberControls();
-                                String totime = "";
-                                // Calculate time to forward
-                                calculatedTime = (int) ((diffX) * seekSpeed);
-                                getBinding().seekBar.setProgress((int) (runningPlayer.getCurrentPosition() + (calculatedTime)));
-                                onProgressChanged(getBinding().seekBar,(int) (runningPlayer.getCurrentPosition() + (calculatedTime)),true);
+                                if(!isLivePlayer) {
+                                    tested_ok = true;
+                                    hideScrubberControls();
+                                    String totime = "";
+                                    // Calculate time to forward
+                                    calculatedTime = (int) ((diffX) * seekSpeed);
+                                    getBinding().seekBar.setProgress((int) (runningPlayer.getCurrentPosition() + (calculatedTime)));
+                                    onProgressChanged(getBinding().seekBar, (int) (runningPlayer.getCurrentPosition() + (calculatedTime)), true);
+                                }
                             }
                         }
 
@@ -3560,19 +3650,36 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                             long duration =  System.currentTimeMillis() - startTime;
                             if(duration <= MAX_DURATION)
                             {
+                                //hideDoubleTapControls();
+                                if(!isLivePlayer) {
+                                    screen_swipe_move = false;
+                                    if (runningPlayer.isPlaying()) {
+                                        isDoubleTap = true;
+                                        hideDoubleTapControls();
+                                        pausePlayer();
+                                    } else {
+                                        if (runningPlayer != null) {
+                                            isDoubleTap = true;
+                                            runningPlayer.play();
+                                            getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
 
-                                if (runningPlayer.isPlaying()){
-                                    pausePlayer();
-                                }else {
-                                    if (runningPlayer!=null){
-                                        runningPlayer.play();
-                                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-                                        Log.d("ftftftfftf","Enterrl1");
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+//                                                isDoubleTap = false;
+                                                    showDoubleTapControl();
+                                                    //callHandler();
+                                                }
+                                            }, 2000);
+                                            Log.d("ftftftfftf", "Enterrl1");
+                                        }
                                     }
+
+
+                                    // getBinding().playerMediaControls.setVisibility(View.VISIBLE);
+                                    clickCount = 0;
+                                    duration = 0;
                                 }
-                                getBinding().playerMediaControls.setVisibility(View.VISIBLE);
-                                clickCount = 0;
-                                duration = 0;
                             }else{
                                 clickCount = 1;
                                 startTime = System.currentTimeMillis();
@@ -3631,12 +3738,22 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //                        tested_ok         = false;
 
                         if (isFromAudio || isFromBrightness){
-                            callHandler();
+                           // isDoubleTap = false;
                             isFromBrightness = false;
                             isFromAudio = false;
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (isDoubleTap){
+                                        getBinding().brightnessDialog.setVisibility(View.GONE);
+                                        getBinding().audioDialog.setVisibility(View.GONE);
+                                    }else {
+
+                                        showDoubleTapControl();
+                                    }
+                                }
+                            },1200);
                         }else {
-                            Log.d("dgdgdgdgddd",screen_swipe_move+"");
-                            Log.d("dgdgdgdgddd",calculatedTime+"");
                             if (screen_swipe_move) {
                                 calculatedTime = (int) (runningPlayer.getCurrentPosition() + (calculatedTime));
                                 onStopTrackingTouch(getBinding().seekBar);
@@ -3878,8 +3995,95 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     }
 
+    private void hideDoubleTapControls() {
+        getBinding().rl1.setVisibility(View.VISIBLE);
+        getBinding().name.setVisibility(View.GONE);
+        getBinding().playerMediaControls.setVisibility(View.VISIBLE);
+          getBinding().playButton.setVisibility(View.VISIBLE);
+        getBinding().seekBar.setVisibility(View.GONE);
+        getBinding().currentTime.setVisibility(View.GONE);
+        getBinding().totalDuration.setVisibility(View.GONE);
+        getBinding().fullscreen.setVisibility(View.GONE);
+         getBinding().forward.setVisibility(View.GONE);
+         getBinding().backward.setVisibility(View.GONE);
+        getBinding().pBar.setVisibility(View.GONE);
+        getBinding().playericon.setVisibility(View.GONE);
+        // getBinding().ivQuality.setVisibility(View.GONE);
+        getBinding().ivCancel.setVisibility(View.GONE);
+        getBinding().loading.setVisibility(View.GONE);
+        getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
+        getBinding().slash.setVisibility(View.GONE);
+        getBinding().subtitleAudio.setVisibility(View.GONE);
+        getBinding().quality.setVisibility(View.GONE);
+        getBinding().volumeDialog.setVisibility(View.GONE);
+        getBinding().brightnessDialog.setVisibility(View.GONE);
+        getBinding().nextEpisode.setVisibility(View.GONE);
+    }
+    private void showDoubleTapControl(){
+        if (!isLivePlayer) {
+            getBinding().rl1.setVisibility(View.VISIBLE);
+            getBinding().name.setVisibility(View.VISIBLE);
+            getBinding().playerMediaControls.setVisibility(View.VISIBLE);
+            getBinding().playButton.setVisibility(View.VISIBLE);
+            getBinding().seekBar.setVisibility(View.VISIBLE);
+            getBinding().currentTime.setVisibility(View.VISIBLE);
+            getBinding().totalDuration.setVisibility(View.VISIBLE);
+            getBinding().fullscreen.setVisibility(View.GONE);
+            getBinding().forward.setVisibility(View.VISIBLE);
+            getBinding().backward.setVisibility(View.VISIBLE);
+            getBinding().pBar.setVisibility(View.GONE);
+            getBinding().playericon.setVisibility(View.GONE);
+            // getBinding().ivQuality.setVisibility(View.GONE);
+            getBinding().ivCancel.setVisibility(View.VISIBLE);
+            getBinding().loading.setVisibility(View.GONE);
+            getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
+            getBinding().slash.setVisibility(View.VISIBLE);
+
+            if (isCaption || isAudioTracks) {
+                getBinding().subtitleAudio.setVisibility(View.VISIBLE);
+            } else {
+                getBinding().subtitleAudio.setVisibility(View.GONE);
+            }
+
+            if (isSeries && episodesList != null && episodesList.size() > 0) {
+                getBinding().nextEpisode.setVisibility(View.VISIBLE);
+            } else {
+                getBinding().nextEpisode.setVisibility(View.GONE);
+            }
+
+            getBinding().quality.setVisibility(View.VISIBLE);
+            getBinding().volumeDialog.setVisibility(View.VISIBLE);
+            getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+            isDoubleTap = false;
+            callHandler();
+        }else {
+//            getBinding().volumeDialog.setVisibility(View.VISIBLE);
+//            getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+//            getBinding().rlDown.setVisibility(View.GONE);
+//            getBinding().seekBar.setVisibility(View.GONE);
+//            getBinding().liveTxt.setVisibility(View.VISIBLE);
+//            getBinding().playerMediaControls.setVisibility(View.GONE);
+//            getBinding().quality.setVisibility(View.VISIBLE);
+//            getBinding().name.setVisibility(View.VISIBLE);
+
+            getBinding().rl1.setVisibility(View.VISIBLE);
+            getBinding().name.setVisibility(View.VISIBLE);
+            getBinding().rlDown.setVisibility(View.GONE);
+            getBinding().seekBar.setVisibility(View.GONE);
+            getBinding().liveTxt.setVisibility(View.VISIBLE);
+            getBinding().playerMediaControls.setVisibility(View.GONE);
+            getBinding().volumeDialog.setVisibility(View.VISIBLE);
+            getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+            getBinding().quality.setVisibility(View.VISIBLE);
+            getBinding().ivCancel.setVisibility(View.VISIBLE);
+            callHandler();
+        }
+    }
+
     private void hideBrightnessControl() {
         getBinding().rl1.setVisibility(View.VISIBLE);
+        getBinding().name.setVisibility(View.GONE);
+        getBinding().liveTxt.setVisibility(View.GONE);
         getBinding().playerMediaControls.setVisibility(View.GONE);
       //  getBinding().playButton.setVisibility(View.INVISIBLE);
         getBinding().seekBar.setVisibility(View.GONE);
@@ -3903,6 +4107,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
     private void hideVolumeControl(){
         getBinding().rl1.setVisibility(View.VISIBLE);
+        getBinding().name.setVisibility(View.GONE);
+        getBinding().liveTxt.setVisibility(View.GONE);
         getBinding().playerMediaControls.setVisibility(View.GONE);
       //  getBinding().playButton.setVisibility(View.INVISIBLE);
         getBinding().seekBar.setVisibility(View.GONE);
@@ -3927,6 +4133,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private void hideScrubberControls(){
         getBinding().rl1.setVisibility(View.VISIBLE);
         getBinding().playButton.setVisibility(View.GONE);
+        getBinding().name.setVisibility(View.GONE);
         getBinding().seekBar.setVisibility(View.VISIBLE);
         getBinding().imagePreview.setVisibility(View.VISIBLE);
         getBinding().playerMediaControls.setVisibility(View.GONE);
@@ -4398,6 +4605,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     private void playPauseControl() {
 
+
         viewModel.playPauseControl().observe(this, aBoolean -> {
             if (aBoolean != null && aBoolean) {
                 getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
@@ -4424,6 +4632,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             }
         });
+        if(isDoubleTap){
+            isDoubleTap = false;
+            showDoubleTapControl();
+        }
     }
 
     int positionInPercentage = 0;
@@ -4601,12 +4813,22 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //            getBinding().rl1.setVisibility(View.GONE);
 //            getBinding().backward.setVisibility(View.GONE);
 //            getBinding().forward.setVisibility(View.GONE);
-            getBinding().playerMediaControls.setVisibility(View.VISIBLE);
+
+            getBinding().seekBar.setVisibility(View.VISIBLE);
             getBinding().imagePreview.setVisibility(View.GONE);
             isSkipCreditVisible = false;
             getBinding().pBar.setVisibility(View.VISIBLE);
             viewModel.getPlayerView(seekBar);
-            callHandler();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+
+                    showDoubleTapControl();
+                    //callHandler();
+                }
+            },2800);
+
         }
     }
 
@@ -4641,6 +4863,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             }
 
         }
+        if(isDoubleTap){
+            isDoubleTap = false;
+            showDoubleTapControl();
+        }
+
+
         resumePlayer();
     }
 
@@ -4960,6 +5188,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             getBinding().quality.setVisibility(View.VISIBLE);
             getBinding().volumeDialog.setVisibility(View.VISIBLE);
             getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+            Log.d("tytytytyt","Enter1");
             //  getBinding().ivQuality.setVisibility(View.VISIBLE);
 
         }
