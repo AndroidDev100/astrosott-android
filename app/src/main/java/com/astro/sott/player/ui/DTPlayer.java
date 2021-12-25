@@ -2817,14 +2817,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     private void ShowAndHideView() {
 
-
         if (isDoubleTap)
             return;
 
         if (getBinding().imagePreview.getVisibility() == View.VISIBLE){
             getBinding().imagePreview.setVisibility(View.GONE);
         }
-        Log.d("DragValueIs", drag + "");
+//        Log.d("DragValueIs", drag + "");
 
 
         if (drag)
@@ -2837,6 +2836,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             //   getBinding().lockIcon.setVisibility(View.GONE);
             return;
         }
+
+
 
         if (getBinding().videoDialog.getVisibility() == View.VISIBLE) {
             return;
@@ -5003,6 +5004,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     getBinding().listViewSettings.setVisibility(View.VISIBLE);
                     getBinding().volumeDialog.setVisibility(View.VISIBLE);
                     getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+                    if(isLivePlayer){
+                        getBinding().liveTxt.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         }, 4000);
