@@ -23,6 +23,7 @@ import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.SkuDetails;
 import com.astro.sott.R;
 import com.astro.sott.activities.home.HomeActivity;
+import com.astro.sott.activities.verification.VerificationActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.ActivitySubscriptionDetailBinding;
@@ -461,7 +462,8 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                 UserInfo.getInstance(this).setCpCustomerId(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getCpCustomerID());
                 processPayment(serviceType, productId);
             } else {
-                Toast.makeText(this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(getResources().getString(R.string.something_went_wrong),
+                        SubscriptionDetailActivity.this);
             }
         });
     }
@@ -546,7 +548,8 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                     commonDialog(getResources().getString(R.string.pending_payment), getResources().getString(R.string.pending_payment_desc), getResources().getString(R.string.ok_single_exlamation));
 
                 } else {
-                    Toast.makeText(this, getResources().getString(R.string.payment_failed), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(getResources().getString(R.string.payment_failed),
+                            SubscriptionDetailActivity.this);
                 }
             }
         } catch (Exception ignored) {
@@ -575,11 +578,14 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
             if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
                 if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
                     if (isUpgrade) {
-                        Toast.makeText(this, getResources().getString(R.string.upgrade_success), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(getResources().getString(R.string.upgrade_success),
+                                SubscriptionDetailActivity.this);
                     } else if (isDowngrade) {
-                        Toast.makeText(this, getResources().getString(R.string.downgrade_success), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(getResources().getString(R.string.downgrade_success),
+                                SubscriptionDetailActivity.this);
                     } else {
-                        Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(getResources().getString(R.string.subscribed_success),
+                                SubscriptionDetailActivity.this);
                     }
                     try {
                         CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Success", "Content Details Page");
@@ -613,7 +619,8 @@ public class SubscriptionDetailActivity extends BaseBindingActivity<ActivitySubs
                 } else if (addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.ev1144))||addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.eV2365))||addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.eV2378))) {
                     commonDialog(getResources().getString(R.string.already_purchase), getResources().getString(R.string.already_purchase_desc), getResources().getString(R.string.ok));
                 } else {
-                    Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(addSubscriptionResponseEvergentCommonResponse.getErrorMessage(),
+                            SubscriptionDetailActivity.this);
                     onBackPressed();
                 }
             }

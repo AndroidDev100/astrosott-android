@@ -26,6 +26,7 @@ import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
 import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -150,7 +151,8 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                     LoginManager.getInstance().logOut();
                     getBinding().loginButton.performClick();
                 } else {
-                    Toast.makeText(this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(getResources().getString(R.string.acount_mismatch), EditProfileActivity.this);
+
                 }
             } else {
                 unlinkType = "Facebook";
@@ -165,7 +167,8 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                     Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                     startActivityForResult(signInIntent, 4001);
                 } else {
-                    Toast.makeText(this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(getResources().getString(R.string.acount_mismatch), EditProfileActivity.this);
+
 
                 }
             } else {
@@ -219,7 +222,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                 startActivity(intent);
 
             } else {
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditProfileActivity.this);
             }
         });
     }
@@ -271,7 +274,8 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                         }
                     });
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditProfileActivity.this);
+
                 }
 
             }
@@ -323,12 +327,14 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                     //Toast.makeText(this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(getResources().getString(R.string.email_unavailable), EditProfileActivity.this);
+
             }
             // Signed in successfully, show authenticated UI.
             //  updateUI(account);
         } catch (ApiException e) {
-            Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+            ToastHandler.show(getResources().getString(R.string.email_unavailable), EditProfileActivity.this);
+
         }
     }
 
@@ -357,14 +363,15 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                                                 //  Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.acount_mismatch), Toast.LENGTH_SHORT).show();
                                             }
                                         } else {
-                                            Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+                                        ToastHandler.show(getResources().getString(R.string.email_unavailable),EditProfileActivity.this);
                                         }
 
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
                                 } else {
-                                    Toast.makeText(EditProfileActivity.this, getResources().getString(R.string.email_unavailable), Toast.LENGTH_SHORT).show();
+                                    ToastHandler.show(getResources().getString(R.string.email_unavailable), EditProfileActivity.this);
+
                                     LoginManager.getInstance().logOut();
                                 }
                             }
@@ -400,26 +407,30 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
                     if (isLinking) {
                         UserInfo.getInstance(this).setFbLinked(true);
                         getBinding().linkFb.setText(getResources().getString(R.string.unlink));
-                        Toast.makeText(this, type + " " + getResources().getString(R.string.link_success), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(type + " " + getResources().getString(R.string.link_success),
+                                EditProfileActivity.this);
                     } else {
                         UserInfo.getInstance(this).setFbLinked(false);
                         getBinding().linkFb.setText(getResources().getString(R.string.link));
-                        Toast.makeText(this, type + " " + getResources().getString(R.string.unlink_success), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(type + " " + getResources().getString(R.string.unlink_success),
+                                EditProfileActivity.this);
                     }
                 } else if (type.equalsIgnoreCase("Google")) {
                     if (isLinking) {
-                        Toast.makeText(this, type + " " + getResources().getString(R.string.link_success), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(type + " " + getResources().getString(R.string.link_success),
+                                EditProfileActivity.this);
                         UserInfo.getInstance(this).setGoogleLinked(true);
                         getBinding().linkGoogle.setText(getResources().getString(R.string.unlink));
                     } else {
                         UserInfo.getInstance(this).setGoogleLinked(false);
                         getBinding().linkGoogle.setText(getResources().getString(R.string.link));
-                        Toast.makeText(this, type + " " + getResources().getString(R.string.unlink_success), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(type + " " + getResources().getString(R.string.unlink_success), EditProfileActivity.this);
                     }
                 }
 
             } else {
-                Toast.makeText(this, updateProfileResponse.getErrorMessage() + "", Toast.LENGTH_SHORT).show();
+                ToastHandler.show(updateProfileResponse.getErrorMessage() + "", EditProfileActivity.this);
+
 
             }
         });

@@ -25,6 +25,7 @@ import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.userInfo.UserInfo;
 
 public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswordBinding> implements PasswordChangedDialog.EditDialogListener {
@@ -147,7 +148,6 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
 
     private String email_mobile = "", type = "", num = "+91";
     private StringBuilder stringBuilder = new StringBuilder();
-
     private void createOtp() {
         if (!UserInfo.getInstance(this).getEmail().equalsIgnoreCase("")) {
             type = "email";
@@ -173,7 +173,8 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
                 startActivity(intent);
 
             } else {
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditPasswordActivity.this);
+
             }
         });
     }
@@ -183,9 +184,10 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
         astroLoginViewModel.setPassword(UserInfo.getInstance(this).getAccessToken(), password).observe(this, evergentCommonResponse -> {
             getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
-                Toast.makeText(this, "Password changed", Toast.LENGTH_SHORT).show();
+                ToastHandler.show("Password changed", EditPasswordActivity.this);
+
             } else {
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditPasswordActivity.this);
             }
         });
     }
@@ -198,7 +200,8 @@ public class EditPasswordActivity extends BaseBindingActivity<ActivityEditPasswo
                 cancelDialogFragment.setEditDialogCallBack(EditPasswordActivity.this);
                 cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
             } else {
-                Toast.makeText(this, changePasswordResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(changePasswordResponse.getErrorMessage(), EditPasswordActivity.this);
+
                 new ActivityLauncher(EditPasswordActivity.this).profileScreenRedirection(EditPasswordActivity.this, HomeActivity.class);
             }
         });

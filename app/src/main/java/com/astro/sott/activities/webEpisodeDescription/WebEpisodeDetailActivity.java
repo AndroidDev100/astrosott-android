@@ -302,7 +302,8 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
                                 //checkErrors();
                                 checkOnlyDevice(railData);
                             } else {
-                                Toast.makeText(WebEpisodeDetailActivity.this, getString(R.string.incorrect_parental_pin), Toast.LENGTH_LONG).show();
+                                ToastHandler.show(getString(R.string.incorrect_parental_pin),
+                                        WebEpisodeDetailActivity.this);
                                 assetRuleErrorCode = AppLevelConstants.PARENTAL_BLOCK;
 
                             }
@@ -493,7 +494,7 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
                 }
             });
         } catch (Exception e) {
-           getBinding().btnProgressBar.setVisibility(View.GONE);
+            getBinding().btnProgressBar.setVisibility(View.GONE);
         }
 
        /* new EntitlementCheck().checkAssetType(MovieDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
@@ -531,7 +532,7 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
             PacksDateLayer.getInstance().setPackDetailList(packDetailList);
             this.subscriptionIds = subscriptionIds;
             if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD_TVOD)) {
-                getBinding().playText.setText(getResources().getString(R.string.buy_from) +" "+ lowestPackagePrice);
+                getBinding().playText.setText(getResources().getString(R.string.buy_from) + " " + lowestPackagePrice);
                 getBinding().astroPlayButton.setVisibility(View.VISIBLE);
             } else if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD)) {
                 getBinding().playText.setText(getResources().getString(R.string.become_vip));
@@ -1074,7 +1075,8 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
         viewModel.deleteWatchlist(idfromAssetWatchlist).observe(WebEpisodeDetailActivity.this, aBoolean -> {
             if (aBoolean != null && aBoolean.getStatus()) {
                 isAdded = false;
-                Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist),
+                        WebEpisodeDetailActivity.this);
                 getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
                 getBinding().watchList.setTextColor(getResources().getColor(R.color.grey));
             } else {
@@ -1083,7 +1085,8 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
                 } else {
                     if (aBoolean != null && aBoolean.getErrorCode().equals(AppLevelConstants.ALREADY_UNFOLLOW_ERROR)) {
                         isAdded = false;
-                        Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist),
+                                WebEpisodeDetailActivity.this);
                         getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
                         getBinding().watchList.setTextColor(getResources().getColor(R.color.grey));
                     } else {
@@ -1111,7 +1114,8 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
 
     private void checkAddedCondition(CommonResponse s) {
         if (s.getStatus()) {
-            Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.added_to_watchlist), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist),
+                                WebEpisodeDetailActivity.this);
             idfromAssetWatchlist = s.getAssetID();
             isAdded = true;
             getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_24_px), null, null);
@@ -1123,7 +1127,8 @@ public class WebEpisodeDetailActivity extends BaseBindingActivity<ActivityWebEpi
                     showDialog(s.getMessage());
                     break;
                 case AppLevelConstants.ALREADY_FOLLOW_ERROR:
-                    Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.already_added_in_watchlist), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.already_added_in_watchlist),
+                            WebEpisodeDetailActivity.this);
                     break;
                 default:
                     showDialog(s.getMessage());

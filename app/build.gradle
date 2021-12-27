@@ -1,4 +1,11 @@
 buildscript {
+    gradle.buildFinished { BuildResult buildResult ->
+        // Beep on finish
+        try {
+            String filename = buildResult.getFailure() ? 'Alarm10.wav' : 'Alarm02.wav'
+            ['powershell', '-c', """(New-Object Media.SoundPlayer "C:\\Windows\\Media\\${filename}").PlaySync();"""].execute()
+        } catch (Throwable ignored) {}
+    }
     repositories {
         maven { url 'https://maven.fabric.io/public' }
 
@@ -9,7 +16,6 @@ buildscript {
 }
 def kotlin_version = "1.4.32"
 def lottieVersion = "3.4.0"
-
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'

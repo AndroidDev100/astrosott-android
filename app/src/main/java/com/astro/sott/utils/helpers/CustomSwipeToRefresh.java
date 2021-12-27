@@ -16,7 +16,6 @@ public class CustomSwipeToRefresh extends SwipeRefreshLayout {
 
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
-
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
 

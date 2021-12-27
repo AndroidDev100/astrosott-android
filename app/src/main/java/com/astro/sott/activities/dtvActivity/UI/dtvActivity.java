@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.astro.sott.activities.mbbaccount.ui.MBBAccountActivity;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.R;
 import com.astro.sott.activities.addDTVAccountNumber.UI.addDTVAccountNumberActivity;
@@ -26,6 +27,7 @@ import com.astro.sott.databinding.ActivityDtvBinding;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
+import com.astro.sott.utils.helpers.ToastHandler;
 
 public class dtvActivity extends BaseBindingActivity<ActivityDtvBinding> implements DTVItemClickListner, AlertDialogSingleButtonFragment.AlertDialogListener {
     private DTVAdapter dtvAdapter;
@@ -115,7 +117,8 @@ public class dtvActivity extends BaseBindingActivity<ActivityDtvBinding> impleme
             });
         }else {
             getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-            Toast.makeText(getApplicationContext(), getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
+            ToastHandler.show(getString(R.string.no_internet_connection),
+                    dtvActivity.this);
         }
 
 

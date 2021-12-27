@@ -15,10 +15,12 @@ import android.os.SystemClock;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.astro.sott.activities.dtvActivity.UI.dtvActivity;
 import com.astro.sott.activities.liveChannel.ui.LiveChannel;
 import com.astro.sott.Alarm.MyReceiver;
 import com.astro.sott.activities.liveEvent.reminderDialog.ReminderDialogFragment;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
+import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
@@ -408,7 +410,8 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                             alarmManager.set(AlarmManager.RTC_WAKEUP, reminderDateTimeInMilliseconds, pendingIntent);
                         }
                         try {
-                            Toast.makeText(this, getResources().getString(R.string.reminder_added) + " " + asset.getName(), Toast.LENGTH_SHORT).show();
+                            ToastHandler.show(asset.getName(),
+                                    LiveEventActivity.this);
                         } catch (Exception ignored) {
 
                         }
@@ -416,11 +419,13 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                         getBinding().reminderActive.setVisibility(View.VISIBLE);
                         getBinding().reminder.setVisibility(View.GONE);
                     } else {
-                        Toast.makeText(this, getResources().getString(R.string.reminder_program_about_to_start), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(getResources().getString(R.string.reminder_program_about_to_start),
+                                LiveEventActivity.this);
                     }
 
                 } else {
-                    Toast.makeText(this, getResources().getString(R.string.reminder_cannot_set), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show( getResources().getString(R.string.reminder_cannot_set),
+                            LiveEventActivity.this);
                 }
 
             }
@@ -478,7 +483,8 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             getBinding().reminder.setVisibility(View.VISIBLE);
             getBinding().reminderActive.setVisibility(View.GONE);
             try {
-                Toast.makeText(this, getResources().getString(R.string.reminder_removed) + " " + asset.getName(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(getResources().getString(R.string.reminder_removed) + " " + asset.getName(),
+                        LiveEventActivity.this);
             } catch (Exception ignored) {
 
             }
@@ -589,7 +595,8 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                 //checkErrors();
                                 checkOnlyDevice(railData);
                             } else {
-                                Toast.makeText(LiveEventActivity.this, getString(R.string.incorrect_parental_pin), Toast.LENGTH_LONG).show();
+                                ToastHandler.show(getString(R.string.incorrect_parental_pin),
+                                        LiveEventActivity.this);
                                 assetRuleErrorCode = AppLevelConstants.PARENTAL_BLOCK;
 
                             }
@@ -1335,7 +1342,8 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             new KsPreferenceKey(LiveEventActivity.this).setReminderId(asset.getId().toString(), false);
             getBinding().reminder.setVisibility(View.VISIBLE);
             getBinding().reminderActive.setVisibility(View.GONE);
-            Toast.makeText(this, getResources().getString(R.string.reminder_removed), Toast.LENGTH_SHORT).show();
+            ToastHandler.show(getResources().getString(R.string.reminder_removed),
+                    LiveEventActivity.this);
             cancelAlarm();
         }
     }

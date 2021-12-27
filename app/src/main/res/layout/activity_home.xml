@@ -48,11 +48,12 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.viewpager2.widget.ViewPager2
+            android:layout_marginTop="-3dp"
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="110dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <LinearLayout

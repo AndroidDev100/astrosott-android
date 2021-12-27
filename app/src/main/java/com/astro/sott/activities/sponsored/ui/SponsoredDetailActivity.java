@@ -29,6 +29,7 @@ import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
 import com.astro.sott.activities.signUp.ui.SignUpActivity;
+import com.astro.sott.activities.splash.ui.SplashActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.SponsoredTabData;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
@@ -263,7 +264,8 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
                                 //checkErrors();
                                 checkOnlyDevice(railData);
                             } else {
-                                Toast.makeText(SponsoredDetailActivity.this, getString(R.string.incorrect_parental_pin), Toast.LENGTH_LONG).show();
+                                ToastHandler.show(getString(R.string.incorrect_parental_pin),
+                                        SponsoredDetailActivity.this);
                                 assetRuleErrorCode = AppLevelConstants.PARENTAL_BLOCK;
 
                             }
@@ -624,7 +626,8 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
 
     private void checkAddedCondition(CommonResponse s) {
         if (s.getStatus()) {
-            Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.added_to_watchlist), Toast.LENGTH_SHORT).show();
+            ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.added_to_watchlist),
+                    SponsoredDetailActivity.this);
             idfromAssetWatchlist = s.getAssetID();
             isAdded = true;
             getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_24_px), null, null);
@@ -636,7 +639,8 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
                     showDialog(s.getMessage());
                     break;
                 case AppLevelConstants.ALREADY_FOLLOW_ERROR:
-                    Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.already_added_in_watchlist), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.already_added_in_watchlist),
+                            SponsoredDetailActivity.this);
                     break;
                 default:
                     showDialog(s.getMessage());
@@ -650,7 +654,8 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
         viewModel.deleteWatchlist(idfromAssetWatchlist).observe(SponsoredDetailActivity.this, aBoolean -> {
             if (aBoolean != null && aBoolean.getStatus()) {
                 isAdded = false;
-                Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist),
+                        SponsoredDetailActivity.this);
                 getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
                 getBinding().watchList.setTextColor(getResources().getColor(R.color.grey));
             } else {
@@ -659,7 +664,8 @@ public class SponsoredDetailActivity extends BaseBindingActivity<SponsoredDetail
                 } else {
                     if (aBoolean != null && aBoolean.getErrorCode().equals(AppLevelConstants.ALREADY_UNFOLLOW_ERROR)) {
                         isAdded = false;
-                        Toast.makeText(this, getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.removed_from_watchlist),
+                                SponsoredDetailActivity.this);
                         getBinding().watchList.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.drawable.favorite_unselected), null, null);
                         getBinding().watchList.setTextColor(getResources().getColor(R.color.grey));
                     } else {

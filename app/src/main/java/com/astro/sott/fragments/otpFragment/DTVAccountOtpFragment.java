@@ -24,6 +24,8 @@ import androidx.lifecycle.ViewModelProviders;
 import com.astro.sott.activities.addDTVAccountNumber.UI.addDTVAccountNumberActivity;
 import com.astro.sott.activities.loginActivity.viewModel.LoginViewModel;
 import com.astro.sott.activities.mbbaccount.ui.AddMBBAccountActivity;
+import com.astro.sott.activities.profile.ui.EditProfileActivity;
+import com.astro.sott.activities.splash.ui.SplashActivity;
 import com.astro.sott.baseModel.BaseBindingFragment;
 import com.astro.sott.fragments.Success.UI.Success;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
@@ -34,6 +36,7 @@ import com.astro.sott.R;
 import com.astro.sott.databinding.FragmentOtpBinding;
 import com.astro.sott.fragments.dialog.LoginAlertDialogSingleButtonFragment;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
+import com.astro.sott.utils.helpers.ToastHandler;
 
 import java.lang.ref.WeakReference;
 
@@ -188,7 +191,8 @@ public class DTVAccountOtpFragment extends BaseBindingFragment<FragmentOtpBindin
             if (NetworkConnectivity.isOnline(getActivity()))
                 verifyPin();
             else
-                Toast.makeText(getActivity(), getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
+            ToastHandler.show( getString(R.string.no_internet_connection), requireActivity());
+
         }
     }
 
@@ -236,7 +240,8 @@ public class DTVAccountOtpFragment extends BaseBindingFragment<FragmentOtpBindin
             });
 
         } else {
-            Toast.makeText(getActivity(), getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
+            ToastHandler.show(getString(R.string.no_internet_connection),
+                    requireActivity());
 
         }
     }
@@ -264,7 +269,8 @@ public class DTVAccountOtpFragment extends BaseBindingFragment<FragmentOtpBindin
 
         } else {
             getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-            Toast.makeText(getActivity(), getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
+            ToastHandler.show(getString(R.string.no_internet_connection),
+                    requireActivity());
 
         }
     }
@@ -388,7 +394,9 @@ public class DTVAccountOtpFragment extends BaseBindingFragment<FragmentOtpBindin
                 });
             } else {
                 getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                Toast.makeText(getActivity(), getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
+                ToastHandler.show(getString(R.string.no_internet_connection),
+                        requireActivity()
+                );
             }
         }
     }

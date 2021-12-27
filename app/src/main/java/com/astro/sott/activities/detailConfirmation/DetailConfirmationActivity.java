@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.forgotPassword.ui.ChangePasswordActivity;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
 import com.astro.sott.baseModel.BaseBindingActivity;
@@ -19,6 +20,7 @@ import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServi
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 
@@ -92,7 +94,10 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
                 getContact();
 
             } else {
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(
+                        evergentCommonResponse.getErrorMessage(),
+                        DetailConfirmationActivity.this
+                );
                 getBinding().progressBar.setVisibility(View.GONE);
             }
 
@@ -126,7 +131,10 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
                         }
                     });
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(
+                            evergentCommonResponse.getErrorMessage(),
+                            DetailConfirmationActivity.this
+                    );
                 }
 
             }
@@ -171,7 +179,10 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
         UserInfo.getInstance(this).setActive(true);
         UserInfo.getInstance(this).setSocialLogin(true);
         AppCommonMethods.setCleverTap(this);
-        Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show();
+        ToastHandler.show(
+                        "Registration Successful!",
+                DetailConfirmationActivity.this
+        );
         new ActivityLauncher(DetailConfirmationActivity.this).homeScreen(DetailConfirmationActivity.this, HomeActivity.class);
 
     }
