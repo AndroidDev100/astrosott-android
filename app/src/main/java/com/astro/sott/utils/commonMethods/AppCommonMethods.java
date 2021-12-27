@@ -3166,6 +3166,34 @@ public class AppCommonMethods {
         return "";
     }
 
+    public static String getLiveEventDate(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000L);
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM", Locale.US);
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
+    public static String getLiveEventTime(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000L);
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mmaaa", Locale.US);
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
     public static String getLiveEventEndTime(long timestamp) {
         try {
             Calendar calendar = Calendar.getInstance();

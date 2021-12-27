@@ -5,9 +5,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:filterTouchesWhenObscured="true"
         android:layout_height="match_parent"
         android:background="@color/grape_purple"
-        android:filterTouchesWhenObscured="true"
         android:orientation="vertical">
 
 

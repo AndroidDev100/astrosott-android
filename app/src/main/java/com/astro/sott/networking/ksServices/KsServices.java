@@ -1021,7 +1021,7 @@ public class KsServices {
         String one = "(and epg_channel_id='";
         String two = "' start_date<'0' end_date>'0')";
         String ksql = one + channelId + two;
-        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+ksql+")");
+        searchAssetFilter.setKSql(ksql);
         searchAssetFilter.setTypeIn(MediaTypeConstant.getProgram(activity) + "");
 
 
@@ -1588,39 +1588,49 @@ public class KsServices {
         seasonCallBack = callBack;
         clientSetupKs();
 
-        List<AssetGroupBy> assetGroup = new ArrayList<>();
-        AssetMetaOrTagGroupBy assetGroupBy = new AssetMetaOrTagGroupBy();
-
-        assetGroupBy.setValue("SeasonNumber");
-        assetGroup.add(assetGroupBy);
-
-        DetachedResponseProfile responseProfile = new DetachedResponseProfile();
-        DetachedResponseProfile relatedProfile = new DetachedResponseProfile();
-
-        AggregationCountFilter aggregationCountFilter = new AggregationCountFilter();
-        relatedProfile.setFilter(aggregationCountFilter);
-        relatedProfile.name("Episodes_In_Season");
-        List<DetachedResponseProfile> list = new ArrayList<>();
-        list.add(relatedProfile);
-        responseProfile.setRelatedProfiles(list);
+//        List<AssetGroupBy> assetGroup = new ArrayList<>();
+//        AssetMetaOrTagGroupBy assetGroupBy = new AssetMetaOrTagGroupBy();
+//
+//        assetGroupBy.setValue("SeasonNumber");
+//        assetGroup.add(assetGroupBy);
+//
+//        DetachedResponseProfile responseProfile = new DetachedResponseProfile();
+//        DetachedResponseProfile relatedProfile = new DetachedResponseProfile();
+//
+//        AggregationCountFilter aggregationCountFilter = new AggregationCountFilter();
+//        relatedProfile.setFilter(aggregationCountFilter);
+//        relatedProfile.name("Episodes_In_Season");
+//        List<DetachedResponseProfile> list = new ArrayList<>();
+//        list.add(relatedProfile);
+//        responseProfile.setRelatedProfiles(list);
 
 
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
-        searchAssetFilter.setGroupBy(assetGroup);
-
-        String one = "SeriesId='";
-        String two = "'";
+        DynamicOrderBy dynamicOrderBy = new DynamicOrderBy();
+        dynamicOrderBy.orderBy("META_ASC");
+        dynamicOrderBy.setName("SeasonNumber");
+        searchAssetFilter.setDynamicOrderBy(dynamicOrderBy);
+      //  searchAssetFilter.setOrderBy("META_ASC");
+       // (and SeriesId='PACK0000000000000200')
+        String one = "(and SeriesId='";
+        String two = "')";
         String kSQL = one + seriesID + two;
 
+        //searchAssetFilter.setKSql(kSQL);
+        searchAssetFilter.typeIn(MediaTypeConstant.getSeason(activity) + "");
         searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+kSQL+")");
 
-        if (assetType == MediaTypeConstant.getSeries(activity)) {
-            searchAssetFilter.typeIn(MediaTypeConstant.getEpisode(activity) + "");
-        } else if (assetType == MediaTypeConstant.getEpisode(activity)) {
-            searchAssetFilter.typeIn(MediaTypeConstant.getEpisode(activity) + "");
-        }
+        FilterPager filterPager = new FilterPager();
+        filterPager.setPageSize(20);
+        filterPager.setPageIndex(1);
 
-        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter).setCompletion(new OnCompletion<Response<ListResponse<Asset>>>() {
+//        if (assetType == MediaTypeConstant.getSeries(activity)) {
+//            searchAssetFilter.typeIn(MediaTypeConstant.getSeason(activity) + "");
+//        } else if (assetType == MediaTypeConstant.getEpisode(activity)) {
+//            searchAssetFilter.typeIn(MediaTypeConstant.getSeason(activity) + "");
+//        }
+
+        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter,filterPager).setCompletion(new OnCompletion<Response<ListResponse<Asset>>>() {
             @Override
             public void onComplete(Response<ListResponse<Asset>> result) {
                 if (result.isSuccess()) {
@@ -1658,7 +1668,95 @@ public class KsServices {
                 }
             }
         });
-        builder.setResponseProfile(responseProfile);
+       // builder.setResponseProfile(responseProfile);
+        getRequestQueue().queue(builder.build(client));
+    }
+
+
+    public void callSeasons1(int i, String seriesID, int assetType, SeasonCallBack callBack) {
+        seasonCallBack = callBack;
+        clientSetupKs();
+
+//        List<AssetGroupBy> assetGroup = new ArrayList<>();
+//        AssetMetaOrTagGroupBy assetGroupBy = new AssetMetaOrTagGroupBy();
+//
+//        assetGroupBy.setValue("SeasonNumber");
+//        assetGroup.add(assetGroupBy);
+//
+//        DetachedResponseProfile responseProfile = new DetachedResponseProfile();
+//        DetachedResponseProfile relatedProfile = new DetachedResponseProfile();
+//
+//        AggregationCountFilter aggregationCountFilter = new AggregationCountFilter();
+//        relatedProfile.setFilter(aggregationCountFilter);
+//        relatedProfile.name("Episodes_In_Season");
+//        List<DetachedResponseProfile> list = new ArrayList<>();
+//        list.add(relatedProfile);
+//        responseProfile.setRelatedProfiles(list);
+
+
+        SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
+        DynamicOrderBy dynamicOrderBy = new DynamicOrderBy();
+        dynamicOrderBy.orderBy("META_ASC");
+        dynamicOrderBy.setName("TitleSortName");
+        searchAssetFilter.setDynamicOrderBy(dynamicOrderBy);
+        //  searchAssetFilter.setOrderBy("META_ASC");
+        // (and SeriesId='PACK0000000000000200')
+        String one = "(and SeriesId='";
+        String two = "')";
+        String kSQL = one + seriesID + two;
+        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+kSQL+")");
+       // searchAssetFilter.setKSql(kSQL);
+        searchAssetFilter.typeIn(MediaTypeConstant.getSeason(activity) + "");
+
+        FilterPager filterPager = new FilterPager();
+        filterPager.setPageSize(20);
+        filterPager.setPageIndex(1);
+
+//        if (assetType == MediaTypeConstant.getSeries(activity)) {
+//            searchAssetFilter.typeIn(MediaTypeConstant.getSeason(activity) + "");
+//        } else if (assetType == MediaTypeConstant.getEpisode(activity)) {
+//            searchAssetFilter.typeIn(MediaTypeConstant.getSeason(activity) + "");
+//        }
+
+        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter,filterPager).setCompletion(new OnCompletion<Response<ListResponse<Asset>>>() {
+            @Override
+            public void onComplete(Response<ListResponse<Asset>> result) {
+                if (result.isSuccess()) {
+                    if (result.results != null) {
+                        Log.e("Result", String.valueOf(result.isSuccess()));
+                        if (result.results.getTotalCount() > 0) {
+                            seasonCallBack.result(true, result);
+                        } else {
+                            seasonCallBack.result(false, result);
+                        }
+                    }//
+                } else {
+                    if (result.error != null) {
+
+                        String errorCode = result.error.getCode();
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        callSeasons(i, seriesID, assetType, callBack);
+                                        //getSubCategories(context, subCategoryCallBack);
+                                    } else {
+                                        seasonCallBack.result(false, result);
+                                    }
+                                }
+                            });
+                        else {
+                            seasonCallBack.result(false, result);
+                        }
+                    } else {
+                        seasonCallBack.result(false, result);
+                    }
+
+                }
+            }
+        });
+        // builder.setResponseProfile(responseProfile);
         getRequestQueue().queue(builder.build(client));
     }
 
@@ -1907,7 +2005,7 @@ public class KsServices {
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
 
         EPGListKSQL = KSQL.forEPGRail(externalId, startDate, endDate);
-        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+EPGListKSQL+")");
+        searchAssetFilter.setKSql(EPGListKSQL);
         searchAssetFilter.typeIn("0");
         searchAssetFilter.setOrderBy("START_DATE_ASC");
         FilterPager filterPager = new FilterPager();
@@ -1967,7 +2065,7 @@ public class KsServices {
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
 
         EPGListKSQL = KSQL.forEPGRail(externalId, startDate, endDate);
-        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+EPGListKSQL+")");
+        searchAssetFilter.setKSql(EPGListKSQL);
         searchAssetFilter.typeIn("0");
         searchAssetFilter.setOrderBy("START_DATE_ASC");
         FilterPager filterPager = new FilterPager();
@@ -2029,10 +2127,10 @@ public class KsServices {
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
         if (type == 1) {
             String particularProgKSQL = KSQL.forParticularProgram(externalId, "0", "0");
-            searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+particularProgKSQL+")");
+            searchAssetFilter.setKSql(particularProgKSQL);
         } else {
             EPGListKSQL = KSQL.forEPGListing(externalId, startDate, endDate);
-            searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+EPGListKSQL+")");
+            searchAssetFilter.setKSql(EPGListKSQL);
         }
         searchAssetFilter.typeIn("0");
         searchAssetFilter.setOrderBy("START_DATE_ASC");
@@ -2089,11 +2187,11 @@ public class KsServices {
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
         if (type == 1) {
             String particularProgKSQL = KSQL.forCatchUpPreviousProgram(externalId, startDate);
-            searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+particularProgKSQL+")");
+            searchAssetFilter.setKSql(particularProgKSQL);
             Log.d("ksqlValueIs", particularProgKSQL);
         } else {
             String particularProgKSQL = KSQL.forCatchUpNextProgram(externalId, startDate);
-            searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+particularProgKSQL+")");
+            searchAssetFilter.setKSql(particularProgKSQL);
             Log.d("ksqlValueIs", particularProgKSQL);
         }
 
@@ -2157,7 +2255,7 @@ public class KsServices {
         clientSetupKs();
         SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
         String particularProgKSQL = KSQL.forParticularProgram(externalId, "0", "0");
-        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+particularProgKSQL+")");
+        searchAssetFilter.setKSql(particularProgKSQL);
 
 
         searchAssetFilter.typeIn("0");
@@ -3684,7 +3782,7 @@ public class KsServices {
 
         String deepSearchKSQL = AppCommonMethods.getLiveDeepSearchKsql("", null, 1, context);
         EPGListKSQL = KSQL.forDeepSearchEPGRail(externalId, startDate, endDate, deepSearchKSQL);
-        searchAssetFilter.setKSql(AppLevelConstants.CATALOGUE_VALUE+AppLevelConstants.CATALOGUE_VALUE+EPGListKSQL+")"+")");
+        searchAssetFilter.setKSql(EPGListKSQL);
         searchAssetFilter.typeIn("0");
         try {
             if (!KsPreferenceKey.getInstance(context).getFilterSortBy().equalsIgnoreCase("")) {
@@ -8686,6 +8784,84 @@ public class KsServices {
                 waterMarkCallback.onError(0);
             }
         });
+
+    }
+
+    public void callExternalEpisodes(String externalId, Integer assetType, int counter, List<Asset> seasonData, SimilarMovieCallBack callBack) {
+        clientSetupKs();
+        similarMovieCallBack = callBack;
+        final CommonResponse commonResponse = new CommonResponse();
+
+
+        SearchAssetFilter searchAssetFilter = new SearchAssetFilter();
+        DynamicOrderBy dynamicOrderBy = new DynamicOrderBy();
+        dynamicOrderBy.orderBy("META_ASC");
+        //  searchAssetFilter.setOrderBy("META_ASC");
+        // (and SeriesId='PACK0000000000000200')
+        String one = "(and ParentRefId='";
+        String two = "')";
+        String kSQL = one + externalId + two;
+
+        searchAssetFilter.setKSql(kSQL);
+        searchAssetFilter.typeIn(685+"");
+
+        FilterPager filterPager = new FilterPager();
+        filterPager.setPageSize(20);
+        filterPager.setPageIndex(counter);
+
+//        if (assetType == MediaTypeConstant.getSeries(activity)) {
+//            searchAssetFilter.typeIn(MediaTypeConstant.getSeason(activity) + "");
+//        } else if (assetType == MediaTypeConstant.getEpisode(activity)) {
+//            searchAssetFilter.typeIn(MediaTypeConstant.getSeason(activity) + "");
+//        }
+
+        AssetService.ListAssetBuilder builder = AssetService.list(searchAssetFilter).setCompletion(new OnCompletion<Response<ListResponse<Asset>>>() {
+            @Override
+            public void onComplete(Response<ListResponse<Asset>> result) {
+                if (result.isSuccess()) {
+                    if (result.results != null) {
+                        if (result.results.getObjects() != null) {
+                            if (result.results.getObjects().size() > 0) {
+                                commonResponse.setStatus(true);
+                                commonResponse.setAssetList(result);
+                                similarMovieCallBack.response(true, commonResponse);
+                            } else {
+                                similarMovieCallBack.response(false, commonResponse);
+                            }
+                        } else {
+                            similarMovieCallBack.response(false, commonResponse);
+                        }
+                    } else {
+                        similarMovieCallBack.response(false, commonResponse);
+                    }
+                } else {
+                    if (result.error != null) {
+
+                        String errorCode = result.error.getCode();
+                        if (errorCode.equalsIgnoreCase(AppLevelConstants.KS_EXPIRE) || errorCode.equalsIgnoreCase(AppLevelConstants.HOUSEHOLD_ERROR))
+                            new RefreshKS(activity).refreshKS(new RefreshTokenCallBack() {
+                                @Override
+                                public void response(CommonResponse response) {
+                                    if (response.getStatus()) {
+                                        callExternalEpisodes(externalId,assetType,counter,seasonData,callBack);
+                                        //getSubCategories(context, subCategoryCallBack);
+                                    } else {
+                                        similarMovieCallBack.response(false, commonResponse);
+                                    }
+                                }
+                            });
+                        else {
+                            similarMovieCallBack.response(false, commonResponse);
+                        }
+                    } else {
+                        similarMovieCallBack.response(false, commonResponse);
+                    }
+
+                }
+            }
+        });
+        // builder.setResponseProfile(responseProfile);
+        getRequestQueue().queue(builder.build(client));
 
     }
 }

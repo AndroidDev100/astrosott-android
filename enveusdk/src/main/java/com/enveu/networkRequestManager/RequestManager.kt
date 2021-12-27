@@ -30,7 +30,7 @@ class RequestManager {
 
     fun categoryCall(screenId: String, enveuCallBacks: EnveuCallBacks) {
         val endPoint = NetworkSetup().client?.create<EnveuEndpoints>(EnveuEndpoints::class.java)
-        val call = endPoint?.categoryService(BaseConfiguration.instance.clients?.getDeviceType().toString(), BaseConfiguration.instance.clients?.getPlatform().toString()!!, BaseConfiguration.instance.clients?.getApiKey().toString(), screenId)
+        val call = endPoint?.categoryService(BaseConfiguration.instance.clients?.getDeviceType().toString(), BaseConfiguration.instance.clients?.getPlatform().toString()!!, BaseConfiguration.instance.clients?.getApiKey().toString(), screenId, BaseConfiguration.instance.clients?.getUdid().toString())
         call?.enqueue(object : Callback<EnveuCategory> {
             override fun onResponse(call: Call<EnveuCategory>, response: Response<EnveuCategory>) {
 

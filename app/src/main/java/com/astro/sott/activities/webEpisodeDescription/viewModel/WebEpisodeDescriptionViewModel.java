@@ -62,7 +62,8 @@ public class WebEpisodeDescriptionViewModel extends AndroidViewModel {
                                                       Map<String, Value> map,
                                                       int layoutType,
                                                       String seriesMediaTyp) {
-        return SeasonsLayer.getInstance().loadData(getApplication().getApplicationContext(), assetId, counter, assetType, map, layoutType, seriesMediaTyp);
+        //return SeasonsLayer.getInstance().loadData(getApplication().getApplicationContext(), assetId, counter, assetType, map, layoutType, seriesMediaTyp);
+        return null;
     }
 
     public LiveData<List<AssetCommonBean>> getClipData(int assetId,

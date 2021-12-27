@@ -16,18 +16,19 @@ import com.astro.sott.fragments.episodeFrament.EpisodesFragment;
 import com.astro.sott.fragments.sponsoredFragment.SponsoredTabFragment;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.LiveTvViewPager;
+import com.astro.sott.utils.helpers.NavigationItem;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class SponsoredPagerAdapter  extends FragmentStatePagerAdapter {
+public class SponsoredPagerAdapter extends FragmentStatePagerAdapter {
     List<SponsoredTabData> sponsoredTabDataList;
     private int mCurrentPosition = -1;
 
     public SponsoredPagerAdapter(@NonNull @NotNull FragmentManager fm, List<SponsoredTabData> sponsoredTabData) {
         super(fm);
-        this.sponsoredTabDataList=sponsoredTabData;
+        this.sponsoredTabDataList = sponsoredTabData;
     }
 
     @Override
@@ -51,7 +52,7 @@ public class SponsoredPagerAdapter  extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         SponsoredTabFragment sponsoredTabFragment = new SponsoredTabFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("COLLECTION_ID",sponsoredTabDataList.get(position).getCollectionId());
+        bundle.putString("COLLECTION_ID", sponsoredTabDataList.get(position).getCollectionId());
         sponsoredTabFragment.setArguments(bundle);
         return sponsoredTabFragment;
     }
@@ -65,6 +66,7 @@ public class SponsoredPagerAdapter  extends FragmentStatePagerAdapter {
     @org.jetbrains.annotations.Nullable
     @Override
     public CharSequence getPageTitle(int position) {
+        NavigationItem.getInstance().setTab(sponsoredTabDataList.get(position).getTitle());
         return sponsoredTabDataList.get(position).getTitle();
     }
 }

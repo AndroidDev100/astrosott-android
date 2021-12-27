@@ -222,6 +222,7 @@ public class AssetContent {
         return seasonNumberList;
     }
 
+
     public static String getSeriesId(Map<String, Value> map) {
         String seriesID = "";
         List<MultilingualStringValue> seriesList = new ArrayList<>();
@@ -2053,4 +2054,52 @@ public class AssetContent {
         return entryId;
     }
 
+    public static boolean getSeasonNumberFromList(Map<String, Value> metas) {
+        boolean isSeasonAvailable = false;
+        int seasonNumber = 0;
+
+        DoubleValue doubleValue = null;
+        if (metas != null) {
+            doubleValue = (DoubleValue) metas.get(AppLevelConstants.KEY_SEASON_NUMBER);
+        }
+        if (doubleValue != null) {
+            seasonNumber = doubleValue.getValue().intValue();
+            if (seasonNumber!=0){
+                isSeasonAvailable  = true;
+            }else {
+                isSeasonAvailable = false;
+            }
+        }
+
+        return isSeasonAvailable;
+    }
+
+    public static List<Integer> getAllSeasonNumber(List<Asset> assetListResponse) {
+        List<Integer> seasonNumberList = new ArrayList<>();
+        if (assetListResponse != null) {
+
+                for (int i = 0; i < assetListResponse.size(); i++) {
+                    Map<String, Value> map = assetListResponse.get(i).getMetas();
+
+                    Set keys = map.keySet();
+                    Iterator itr = keys.iterator();
+
+                    String key;
+                    while (itr.hasNext()) {
+                        key = (String) itr.next();
+                        if (key.equalsIgnoreCase(AppLevelConstants.KEY_SEASON_NUMBER)) {
+                            DoubleValue doubleValue = (DoubleValue) map.get(key);
+                            seasonNumberList.add(doubleValue.getValue().intValue());
+                            PrintLogging.printLog("AssetContent", "", "metavaluess--" + key + " - " + doubleValue.getValue());
+                        }
+                    }
+
+                }
+
+
+        }
+        PrintLogging.printLog("AssetContent", "", "seasonNumerLis" + seasonNumberList.size());
+
+        return seasonNumberList;
+    }
 }

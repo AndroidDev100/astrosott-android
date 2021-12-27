@@ -100,7 +100,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
         modelCall();
         setClicks();
         intializeBilling();
-        AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
+      //  AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
         CleverTapManager.getInstance().setLoginOrigin(from);
         FirebaseEventManager.getFirebaseInstance(this).trackScreenName(FirebaseEventManager.LOGIN);
         setGoogleSignIn();
@@ -169,13 +169,13 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
                     @Override
                     public void onCancel() {
-                        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+                        getBinding().progressBar.setVisibility(View.GONE);
                         ToastHandler.show(getResources().getString(R.string.email_unavailable), AstrLoginActivity.this);
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
-                        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+                        getBinding().progressBar.setVisibility(View.GONE);
                         ToastHandler.show(getResources().getString(R.string.email_unavailable), AstrLoginActivity.this);
                     }
                 });
@@ -208,7 +208,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+        getBinding().progressBar.setVisibility(View.GONE);
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == 4001) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -232,7 +232,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
             // Signed in successfully, show authenticated UI.
             //  updateUI(account);
         } catch (ApiException e) {
-            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+            getBinding().progressBar.setVisibility(View.GONE);
             ToastHandler.show(getResources().getString(R.string.email_unavailable), AstrLoginActivity.this);
         }
     }
@@ -389,7 +389,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
 
     private void login(String password) {
-        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
+        getBinding().progressBar.setVisibility(View.VISIBLE);
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
 
         astroLoginViewModel.loginUser(type, email_mobile, password, tabletSize).observe(this, evergentCommonResponse -> {
@@ -407,7 +407,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
                 }
                 astroLoginViewModel.addToken(UserInfo.getInstance(this).getExternalSessionToken());
             } else {
-                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+                getBinding().progressBar.setVisibility(View.GONE);
                 if (type.equalsIgnoreCase("Facebook") || type.equalsIgnoreCase("Google")) {
                     if (evergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2327")) {
                         searchAccountv2(password);
@@ -432,7 +432,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
     private void getContact() {
         astroLoginViewModel.getContact(UserInfo.getInstance(this).getAccessToken()).observe(this, evergentCommonResponse -> {
-            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+            getBinding().progressBar.setVisibility(View.GONE);
 
             if (evergentCommonResponse.isStatus() && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage() != null && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage() != null && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().size() > 0) {
                 UserInfo.getInstance(this).setFirstName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getFirstName());
@@ -572,9 +572,9 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
 
     private void searchAccountv2(String password) {
-        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
+        getBinding().progressBar.setVisibility(View.VISIBLE);
         astroLoginViewModel.searchAccountV2("email", email_mobile).observe(this, evergentCommonResponse -> {
-            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+            getBinding().progressBar.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 Intent intent = new Intent(this, IsThatYouActivity.class);
                 intent.putExtra(AppLevelConstants.TYPE_KEY, type);
@@ -593,7 +593,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
     }
 
     private void createUser(String password) {
-        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
+        getBinding().progressBar.setVisibility(View.VISIBLE);
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
         astroLoginViewModel.createUser(type, email_mobile, password, name, tabletSize).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
@@ -607,7 +607,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
             } else {
                 ToastHandler.show(evergentCommonResponse.getErrorMessage(), AstrLoginActivity.this);
-                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+                getBinding().progressBar.setVisibility(View.GONE);
             }
 
         });
@@ -698,7 +698,7 @@ public class AstrLoginActivity extends BaseBindingActivity<ActivityAstrLoginBind
 
     private void createOtp() {
         astroLoginViewModel.createOtp(type, email_mobile).observe(this, evergentCommonResponse -> {
-            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+            getBinding().progressBar.setVisibility(View.GONE);
 
             if (evergentCommonResponse.isStatus()) {
                 Intent intent = new Intent(this, IsThatYouActivity.class);

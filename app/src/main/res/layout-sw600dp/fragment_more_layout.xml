@@ -152,48 +152,53 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true" />
 
-                <TextView
-                    android:id="@+id/tv_VIP_user"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:ellipsize="end"
-                    android:ems="10"
-                    android:maxLines="1"
-                    android:text=""
-                    android:fontFamily="@font/roboto_medium"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_16sp" />
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_subscribe_now"
-                    android:layout_width="@dimen/_200sdp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_VIP_user"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/roboto_regular"
-                    android:maxLines="2"
-                    android:padding="@dimen/_1sdp"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/tv_VIP_user"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:ems="11"
+                        android:fontFamily="@font/roboto_medium"
+                        android:maxLines="2"
+                        android:text=""
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_16sp" />
 
-                <TextView
-                    android:id="@+id/productCategory"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_subscribe_now"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/roboto_regular"
-                    android:maxLines="2"
-                    android:ellipsize="end"
-                    android:maxEms="10"
-                    android:padding="@dimen/_1sdp"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:visibility="gone" />
+                    <TextView
+                        android:id="@+id/partnerBillingText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_VIP_user"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/roboto_regular"
+                        android:maxLines="1"
+                        android:textAllCaps="false"
+                        android:textColor="@color/yellow_orange"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/tv_subscribe_now"
+                        android:layout_width="@dimen/_200sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/partnerBillingText"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:maxLines="2"
+                        android:padding="@dimen/_1sdp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/tv_renew_date"
@@ -242,7 +247,45 @@
                     android:textColor="@color/light_blue_text_color"
                     android:textSize="14sp"
                     />
+                <Button
+                    android:id="@+id/change_plan"
+                    android:layout_width="110dp"
+                    android:layout_height="@dimen/_29sdp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="center"
+                    android:background="@drawable/white_outline_button"
+                    android:fontFamily="@font/roboto_regular"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="4dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="4dp"
+                    android:text="@string/change_plan"
+                    android:textAllCaps="false"
+                    android:textColor="@color/light_blue_text_color"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
 
+                <Button
+                    android:id="@+id/cancel_plan"
+                    android:layout_width="110dp"
+                    android:layout_height="@dimen/_29sdp"
+                    android:layout_below="@id/change_plan"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/live_event_button"
+                    android:fontFamily="@font/roboto_regular"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="4dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="4dp"
+                    android:text="@string/cancel"
+                    android:textAllCaps="false"
+                    android:textColor="@color/cancel_text_color"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
