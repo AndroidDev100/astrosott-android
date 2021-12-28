@@ -54,6 +54,7 @@
     <color name="schedule_description">#6b6b6b</color>
     <color name="schedule_live_background">#d8232a</color>
     <color name="black">#000000</color>
+    <color name="toast_text_color">#0F001E</color>
     <color name="schedule_title">#474747</color>
     <color name="time_color">#e7195a</color>
     <color name="schedule_livenow">#224ba3</color>
