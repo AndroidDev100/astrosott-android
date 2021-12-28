@@ -26,6 +26,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
+import com.astro.sott.activities.isThatYou.IsThatYouActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
@@ -67,6 +68,7 @@ import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.StringBuilderHolder;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.helpers.shimmer.Constants;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
@@ -870,7 +872,8 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                                 // checkErrors();
                                 checkOnlyDevice(railData);
                             } else {
-                                Toast.makeText(LiveChannel.this, getString(R.string.incorrect_parental_pin), Toast.LENGTH_LONG).show();
+                                ToastHandler.show(getString(R.string.incorrect_parental_pin),
+                                        LiveChannel.this);
                                 assetRuleErrorCode = AppLevelConstants.PARENTAL_BLOCK;
                             }
                         });

@@ -46,6 +46,7 @@ import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.utils.helpers.DialogHelper;
 import com.astro.sott.utils.helpers.PrintLogging;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.ListResponse;
@@ -362,7 +363,9 @@ public class TrailerFragment extends BaseBindingFragment<FragmentTrailerBinding>
                                 // checkErrors(asset);
                                 checkOnlyDevice(asset);
                             } else {
-                                Toast.makeText(getActivity(), getString(R.string.incorrect_parental_pin), Toast.LENGTH_LONG).show();
+                                ToastHandler.show(requireActivity().getString(R.string.incorrect_parental_pin),
+                                        requireActivity()
+                                );
                             }
                         });
                     }

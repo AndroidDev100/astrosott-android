@@ -40,6 +40,7 @@ import com.astro.sott.utils.billing.TransactionDetails;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.NavigationItem;
 import com.astro.sott.utils.helpers.PrintLogging;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.android.material.appbar.AppBarLayout;
@@ -166,10 +167,8 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().mainLayout.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
         getBinding().indicator.setVisibility(View.GONE);
+        setMargins(97, 110);
 
-        setMargins(150, 110);
-
-        active = liveTvFragment;
     }
 
     private void setToolBarScroll(int type) {
@@ -191,8 +190,6 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
         }
     }
-
-
     private BottomNavigationView navigation;
 
     @SuppressLint({"RestrictedApi", "WrongConstant"})
@@ -397,6 +394,7 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
 
     private void switchToLiveTvFragment() {
         fragmentManager.beginTransaction().hide(active).show(liveTvFragment).commitAllowingStateLoss();
+        active = liveTvFragment;
         setToolBarScroll(0);
         if (liveTvFragment != null)
             liveTvFragment.refreshData();
@@ -408,10 +406,9 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         getBinding().indicator.setVisibility(View.GONE);
         getBinding().mainLayout.setVisibility(View.VISIBLE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
-        setMargins(150, 110);
-
+        setMargins(97, 110);
         checkSameClick();
-        active = liveTvFragment;
+
     }
 
     private void switchToVideoFragment() {
@@ -543,11 +540,12 @@ public class HomeActivity extends BaseBindingActivity<ActivityHomeBinding> imple
         subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), purchase.getSku(), purchase.getPurchaseToken(), orderId,"").observe(this, addSubscriptionResponseEvergentCommonResponse -> {
             if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
                 if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
-                    Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(getResources().getString(R.string.subscribed_success) + "", HomeActivity.this);
+
                 }
             } else {
-                Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
-
+                ToastHandler.show(addSubscriptionResponseEvergentCommonResponse.getErrorMessage() + "",
+                        HomeActivity.this);
             }
         });
 

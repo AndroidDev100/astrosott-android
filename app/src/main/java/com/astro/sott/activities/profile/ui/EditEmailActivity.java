@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.astro.sott.R;
 import com.astro.sott.activities.confirmPassword.ui.ConfirmPasswordActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
+import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityEditEmailBinding;
@@ -25,6 +26,7 @@ import com.astro.sott.utils.billing.TransactionDetails;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.ApiException;
@@ -212,7 +214,7 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
                 createOtp();
             } else {
                 getBinding().progressLay.progressHeart.setVisibility(View.GONE);
-                Toast.makeText(this, checkCredentialResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.already_added_in_watchlist), EditEmailActivity.this);
             }
         });
     }
@@ -232,8 +234,8 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
                 intent.putExtra(AppLevelConstants.FROM_KEY, AppLevelConstants.CONFIRM_PASSWORD);
                 startActivity(intent);
             } else {
+                ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditEmailActivity.this);
                 getBinding().progressLay.progressHeart.setVisibility(View.GONE);
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -281,7 +283,7 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
 
 
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditEmailActivity.this);
                 }
             });
         } else {
@@ -301,7 +303,7 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
 
 
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditEmailActivity.this);
                 }
             });
         }

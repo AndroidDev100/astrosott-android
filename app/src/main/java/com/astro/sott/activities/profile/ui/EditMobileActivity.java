@@ -7,6 +7,9 @@ import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +18,7 @@ import android.widget.Toast;
 import com.astro.sott.R;
 import com.astro.sott.activities.confirmPassword.ui.ConfirmPasswordActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
+import com.astro.sott.activities.parentalControl.ui.ParentalControl;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityEditEmailBinding;
@@ -24,6 +28,7 @@ import com.astro.sott.utils.billing.TransactionDetails;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -40,7 +45,7 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
     private AstroLoginViewModel astroLoginViewModel;
     private final String MOBILE_REGEX = "^[0-9]*$";
     private String email_mobile = "", type = "";
-
+    private boolean isPasswordVisible;
     private String password, newMobile;
     private final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9@$!%*?&]{8,16}$";
 
@@ -57,6 +62,7 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
         setHeader();
         modelCall();
         setClicks();
+        hidePassword();
     }
 
     private void setHeader() {
@@ -70,8 +76,41 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
 
         }
     }
+    private void togglePasswordVisiblity() {
+        if (isPasswordVisible) {
+            hidePassword();
+        } else {
+            showPassword();
+        }
+    }
+
+    private void hidePassword() {
+        getBinding().eyeIcon.setImageDrawable(getDrawable(R.drawable.ic_outline_visibility_off_light));
+        String pass = getBinding().confirmPassword.getText().toString();
+        getBinding().confirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        getBinding().confirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        getBinding().confirmPassword.setText(pass);
+        getBinding().confirmPassword.setSelection(pass.length());
+        isPasswordVisible=false;
+    }
+
+    private void showPassword() {
+        getBinding().eyeIcon.setImageDrawable(getDrawable(R.drawable.ic_outline_visibility_light));
+        String pass = getBinding().confirmPassword.getText().toString();
+        getBinding().confirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        getBinding().confirmPassword.setInputType(InputType.TYPE_CLASS_TEXT);
+        getBinding().confirmPassword.setText(pass);
+        getBinding().confirmPassword.setSelection(pass.length());
+        isPasswordVisible=true;
+    }
 
     private void setClicks() {
+        getBinding().eyeIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                togglePasswordVisiblity();
+            }
+        });
         getBinding().backButton.setOnClickListener(v -> {
             onBackPressed();
         });
@@ -204,8 +243,8 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
             if (checkCredentialResponse != null && checkCredentialResponse.getResponse() != null && checkCredentialResponse.getResponse().getCheckCredentialsResponseMessage() != null && checkCredentialResponse.getResponse().getCheckCredentialsResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
                 createOtp();
             } else {
+                ToastHandler.show(checkCredentialResponse.getErrorMessage(), EditMobileActivity.this);
                 getBinding().progressLay.progressHeart.setVisibility(View.GONE);
-                Toast.makeText(this, checkCredentialResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -227,7 +266,7 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
                 startActivity(intent);
             } else {
                 getBinding().progressLay.progressHeart.setVisibility(View.GONE);
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditMobileActivity.this);
             }
         });
 
@@ -249,9 +288,8 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
                     intent.putExtra(AppLevelConstants.FROM_KEY, AppLevelConstants.CONFIRM_PASSWORD_WITHOUT_PASSWORD);
                     startActivity(intent);
 
-
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditMobileActivity.this);
                 }
             });
         } else {
@@ -269,7 +307,8 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
 
 
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditMobileActivity.this);
+
                 }
             });
         }

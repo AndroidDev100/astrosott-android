@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.astro.sott.Alarm.MyReceiver;
 import com.astro.sott.activities.liveEvent.LiveEventActivity;
+import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.callBacks.SpecificAssetCallBack;
 import com.astro.sott.fragments.schedule.ui.Schedule;
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
@@ -295,11 +296,13 @@ public class ProgramsAdapter extends RecyclerView.Adapter<ProgramsAdapter.Single
                     if (currentTime(asset)) {
                         callBack.setReminder(notification, asset);
                     } else {
-                        Toast.makeText(context, context.getResources().getString(R.string.reminder_program_about_to_start), Toast.LENGTH_SHORT).show();
+                        ToastHandler.show(context.getResources().getString(R.string.reminder_program_about_to_start),
+                                context);
                     }
 
                 } else {
-                    Toast.makeText(context, context.getResources().getString(R.string.reminder_cannot_set), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(context.getResources().getString(R.string.reminder_cannot_set),
+                            context);
                 }
 
             }

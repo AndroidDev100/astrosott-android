@@ -163,7 +163,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-       if (getActivity() != null) {
+        if (getActivity() != null) {
             ((LiveChannel) getActivity()).setLiveChannelCommunicator((int oldScrollX, int oldScrollY) -> {
                 if (totalProgramListCount != arrayList.size()) {
                     mListener.showScrollViewProgressBarView(true);
@@ -275,9 +275,9 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
         PrintLogging.printLog(this.getClass(), "", "valueOfIis" + i);
         getCurrentTime(i);
         getBinding().programRecyclerview.setVisibility(View.GONE);
-        if (count==0){
-            startTimeStamp="0";
-        }else {
+        if (count == 0) {
+            startTimeStamp = "0";
+        } else {
             startTimeStamp = AppCommonMethods.getNextDateTimeStamp(1, i);
         }
         endTimeStamp = AppCommonMethods.getNextDateTimeStamp(2, i);
@@ -292,7 +292,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     private String getCurrentTime(int i) {
         String output = "";
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy",Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
             Calendar c = Calendar.getInstance();
             c.setTime(new Date()); // Now use today date.
             c.add(Calendar.DATE, i); // Adding 5 days
@@ -413,22 +413,22 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     private void setAdapter() {
 
 //        if (!isScrolling) {
-            new RecyclerAnimator(baseActivity).animate(getBinding().programRecyclerview);
+        new RecyclerAnimator(baseActivity).animate(getBinding().programRecyclerview);
 //            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-            adapter = new ProgramsAdapter(baseActivity, arrayList, position, Schedule.this, Schedule.this);
-            getBinding().programRecyclerview.setAdapter(adapter);
-            if (totalProgramListCount<=adapter.getItemCount()){
-               getBinding().loadMore.setVisibility(View.GONE);
-            }else {
-                getBinding().loadMore.setVisibility(View.VISIBLE);
+        adapter = new ProgramsAdapter(baseActivity, arrayList, position, Schedule.this, Schedule.this);
+        getBinding().programRecyclerview.setAdapter(adapter);
+        if (totalProgramListCount <= adapter.getItemCount()) {
+            getBinding().loadMore.setVisibility(View.GONE);
+        } else {
+            getBinding().loadMore.setVisibility(View.VISIBLE);
 
-            }
-           // manager.scrollToPositionWithOffset(position, 0);
-            mIsLoading = adapter.getItemCount() != totalCOunt;
-            adapter.updateLiveChannelCount(position);
-          mListener.showScrollViewProgressBarView(true);
+        }
+        // manager.scrollToPositionWithOffset(position, 0);
+        mIsLoading = adapter.getItemCount() != totalCOunt;
+        adapter.updateLiveChannelCount(position);
+        mListener.showScrollViewProgressBarView(true);
         /*} else {
-          *//*  if (mListener != null) {
+         *//*  if (mListener != null) {
                 new Handler().postDelayed(() -> mListener.showScrollViewProgressBarView(false), 800);
             }*//*
 
@@ -704,7 +704,8 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
                                 // checkErrors(asset);
                                 checkOnlyDevice(asset);
                             } else {
-                                Toast.makeText(getActivity(), getString(R.string.incorrect_parental_pin), Toast.LENGTH_LONG).show();
+                                ToastHandler.show(getString(R.string.incorrect_parental_pin),
+                                        getActivity());
                             }
                         });
                     }
@@ -979,12 +980,13 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
         return "";
     }
 
-    String reminderDateTime="";
+    String reminderDateTime = "";
+
     @Override
     public void setReminder(ImageView reminderIcon, Asset asset) {
         try {
 
-            reminderDateTime= (getStartDate(asset.getStartDate())) + " - " + (AppCommonMethods.setTime(asset, 0));
+            reminderDateTime = (getStartDate(asset.getStartDate())) + " - " + (AppCommonMethods.setTime(asset, 0));
             splitStartTime(AppCommonMethods.get24HourTime(asset, 1) + "");
             mm = Integer.parseInt(month.trim());
             yr = Integer.parseInt(year.trim());
@@ -1073,14 +1075,15 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
             }
 
             try {
-                Toast.makeText(getActivity(), getResources().getString(R.string.reminder_added)+" "+asset.getName(), Toast.LENGTH_SHORT).show();
-            }catch (Exception ignored){
+                ToastHandler.show(getString(R.string.reminder_added),
+                        getActivity());
+            } catch (Exception ignored) {
 
             }
 
             new KsPreferenceKey(getActivity()).setReminderId(asset.getId().toString(), true);
             reminderIcon.setBackgroundResource(R.drawable.reminder_active_icon);
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
 
@@ -1157,32 +1160,35 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
 
 
     Asset reminderAsset;
+
     private void initReminderPopupFragment(Asset asset) {
-        this.reminderAsset=asset;
+        this.reminderAsset = asset;
        /* FragmentManager fm = getActivity().getSupportFragmentManager();
         ReminderDialogFragment cancelDialogFragment = ReminderDialogFragment.newInstance("Reminder", "");
         cancelDialogFragment.setEditDialogCallBack(Schedule.this);
         cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);*/
         try {
-            if (reminderAsset!=null){
-                new KsPreferenceKey(getActivity()).setReminderId(reminderAsset.getId().toString(),false);
+            if (reminderAsset != null) {
+                new KsPreferenceKey(getActivity()).setReminderId(reminderAsset.getId().toString(), false);
                 reminderImage.setBackgroundResource(R.drawable.ic_notifications_24px);
                 try {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.reminder_removed)+" "+reminderAsset.getName(), Toast.LENGTH_SHORT).show();
-                }catch (Exception ignored){
+                    ToastHandler.show(getResources().getString(R.string.reminder_removed) + " " + reminderAsset.getName(),
+                            getActivity());
+                } catch (Exception ignored) {
 
                 }
                 removeReminder(reminderAsset);
             }
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
     }
 
     ImageView reminderImage;
+
     @Override
-    public void cancelReminder(ImageView reminderIcon,Asset asset) {
-        this.reminderImage=reminderIcon;
+    public void cancelReminder(ImageView reminderIcon, Asset asset) {
+        this.reminderImage = reminderIcon;
         initReminderPopupFragment(asset);
     }
 
@@ -1292,13 +1298,14 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     @Override
     public void onFinishEditDialog() {
         try {
-            if (reminderAsset!=null){
-                new KsPreferenceKey(getActivity()).setReminderId(reminderAsset.getId().toString(),false);
+            if (reminderAsset != null) {
+                new KsPreferenceKey(getActivity()).setReminderId(reminderAsset.getId().toString(), false);
                 reminderImage.setBackgroundResource(R.drawable.ic_notifications_24px);
-                Toast.makeText(getActivity(), getResources().getString(R.string.reminder_removed), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(getResources().getString(R.string.reminder_removed),
+                        getActivity());
                 removeReminder(reminderAsset);
             }
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
 
@@ -1324,7 +1331,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
             alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
             alarmManager.cancel(pendingIntent);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             PrintLogging.printLog("", "notificationcancelRequestId-->>" + e.toString());
         }
 
