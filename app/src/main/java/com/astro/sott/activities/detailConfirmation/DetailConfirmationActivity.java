@@ -100,7 +100,6 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
                         evergentCommonResponse.getErrorMessage(),
                         DetailConfirmationActivity.this
                 );
-                getBinding().progressBar.setVisibility(View.GONE);
             }
 
         });
