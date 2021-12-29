@@ -134,6 +134,7 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
             loadedList = new ArrayList<>();
 
             modelCall();
+            AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
             getVideoRails();
         } catch (Exception e) {
         }
@@ -598,12 +599,13 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
     private void callSeasonEpisodes(List<Integer> seriesNumberList) {
         TabsData.getInstance().setSelectedSeason(seasonCounter);
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
+//        getBinding().progressBar.setVisibility(View.VISIBLE);
         getBinding().loadMoreTxt.setText(getActivity().getResources().getString(R.string.loading));
         viewModel.callSeasonEpisodes(asset, asset.getType(), counter, seriesNumberList, seasonCounter, layoutType, TabsData.getInstance().getSortType()).observe(this, assetCommonBeans -> {
             getBinding().loadMoreTxt.setText("Load More");
-            getBinding().progressBar.setVisibility(View.GONE);
-
+//            getBinding().progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             if (assetCommonBeans.get(0).getStatus()) {
                 getBinding().retryTxt.setVisibility(View.GONE);
                 getBinding().seasonText.setText(assetCommonBeans.get(0).getTitle());
@@ -619,9 +621,9 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
     }
 
     private void callEpisodes() {
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         viewModel.callEpisodes(asset, asset.getType(), counter, seasonCounter, layoutType, TabsData.getInstance().getSortType()).observe(this, assetCommonBeans -> {
-            getBinding().progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             if (listOfAsset != null)
                 listOfAsset.setLength(0);
             if (assetCommonBeans.get(0).getStatus()) {

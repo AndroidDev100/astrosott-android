@@ -55,6 +55,7 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
         FirebaseEventManager.getFirebaseInstance(this).trackScreenName(FirebaseEventManager.EDIT_EMAIL);
         setHeader();
         modelCall();
@@ -207,12 +208,12 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
             type = "Email";
             email_mobile = UserInfo.getInstance(this).getEmail();
         }
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         astroLoginViewModel.checkCredential(password, email_mobile, type).observe(this, checkCredentialResponse -> {
             if (checkCredentialResponse != null && checkCredentialResponse.getResponse() != null && checkCredentialResponse.getResponse().getCheckCredentialsResponseMessage() != null && checkCredentialResponse.getResponse().getCheckCredentialsResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
                 createOtp();
             } else {
-                getBinding().progressBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.already_added_in_watchlist), EditEmailActivity.this);
             }
         });
@@ -222,7 +223,7 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
         type = "Email";
         astroLoginViewModel.createOtp(type, newEmail).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
-                getBinding().progressBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 Intent intent = new Intent(this, EditVerificationActivity.class);
                 intent.putExtra(AppLevelConstants.TYPE_KEY, type);
                 intent.putExtra(AppLevelConstants.SCREEN_FROM, getBinding().title.getText().toString());
@@ -233,9 +234,8 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
                 intent.putExtra(AppLevelConstants.FROM_KEY, AppLevelConstants.CONFIRM_PASSWORD);
                 startActivity(intent);
             } else {
-                getBinding().progressBar.setVisibility(View.GONE);
                 ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditEmailActivity.this);
-
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             }
         });
 

@@ -188,7 +188,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
         initializeRecyclerView();
         createEpgDateChips();
 
@@ -363,17 +363,17 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     }
 
     private void getEPGChannels() {
-        getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         getBinding().noItem.setVisibility(View.GONE);
 
         if (viewModel == null) {
             return;
         }
-        viewModel.getEPGChannelsList(externalId, startTimeStamp, endTimeStamp, 2, counter).observe(this, railCommonData -> {
+        viewModel.getEPGChannelsList(externalId, startTimeStamp, endTimeStamp, 2, counter).observe(getViewLifecycleOwner(), railCommonData -> {
             if (railCommonData != null && railCommonData.size() > 0) {
                 getBinding().noItem.setVisibility(View.GONE);
                 getBinding().programRecyclerview.setVisibility(View.VISIBLE);
-                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 totalProgramListCount = railCommonData.get(0).getTotalCount();
                 setMetaDataValue(railCommonData);
             } else {
@@ -381,7 +381,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
                     getBinding().noItem.setVisibility(View.VISIBLE);
                     getBinding().programRecyclerview.setVisibility(View.GONE);
                 }
-                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
               /*  if (mListener != null) {
                     mListener.showScrollViewProgressBarView(false);
                 }*/
@@ -468,7 +468,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
 
                 if (id == val) {
                     position = i;
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                     setAdapter();
                     return;
                 }
@@ -1285,10 +1285,10 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (getBinding().includeProgressbar.progressBar.getVisibility() == View.VISIBLE) {
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                if (getBinding().progressLay.progressHeart.getVisibility() == View.VISIBLE) {
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 } else {
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
                 }
 
             }

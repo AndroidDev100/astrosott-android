@@ -156,8 +156,6 @@ public class HeroDiversion {
                     PrintLogging.printLog("", "className--" + className);
                     // dont get confused with name as potrait its for grid
                     new ActivityLauncher(activity).portraitListing(activity, ListingActivity.class, data.getContentImageType(), assetCommonBean1, assetCommonBean.getRailDetail().getCategory());
-
-
                 } else {
                     try {
                         Log.e("getRailData", "PDF");

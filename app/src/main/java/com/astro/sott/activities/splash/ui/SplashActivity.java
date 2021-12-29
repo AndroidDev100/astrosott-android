@@ -234,8 +234,6 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
 
     private void parseNotificationData(String response) {
         try {
-
-
             JSONObject object = new JSONObject(response);
             if (object != null) {
                 if (object.has("screenname")) {
@@ -474,9 +472,11 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
         }
 
         if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getApiProxyUrlEvergent() != null) {
-            EvergentBaseClient evergentBaseClient = new EvergentBaseClient(responseDmsModel.getParams().getApiProxyUrlEvergent());
+            EvergentBaseClient evergentBaseClient = new EvergentBaseClient(responseDmsModel.getParams().getApiProxyUrlEvergent(), BuildConfig.VERSION_NAME);
+
             EvergentBaseConfiguration.Companion.getInstance().clientSetup(evergentBaseClient);
         }
+
 
     }
 
@@ -881,6 +881,9 @@ public class SplashActivity extends BaseBindingActivity<ActivitySplashBinding> i
                 return;
             }
         }
+//        Dalvik/2.1.0 (Linux; U; Android 10; M2006C3LI MIUI/V12.0.18.0.QCDINXM)-AMB-[build-version]
+        Log.i("USER-AGENT", System.getProperty("http.agent") + "-AMB-" + BuildConfig.VERSION_NAME);
+
         FirebaseEventManager.getFirebaseInstance(this).trackScreenName("Splash Screen");
 
         Bundle bundle = getIntent().getExtras();

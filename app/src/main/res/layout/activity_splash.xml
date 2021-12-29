@@ -22,7 +22,6 @@
             app:lottie_rawRes="@raw/sookaopeningindentpotrait1"
             app:lottie_speed="1.0" />
 
-
         <FrameLayout
             android:id="@+id/no_connection_layout"
             android:layout_width="match_parent"

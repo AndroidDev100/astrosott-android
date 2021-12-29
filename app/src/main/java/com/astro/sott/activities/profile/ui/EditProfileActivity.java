@@ -69,6 +69,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseEventManager.getFirebaseInstance(this).trackScreenName(FirebaseEventManager.EDIT_PROFILE);
+        AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
         modelCall();
         setClicks();
         setFb();
@@ -213,7 +214,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
         }
 
         astroLoginViewModel.createOtp(type, email_mobile).observe(this, evergentCommonResponse -> {
-            getBinding().progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 Intent intent = new Intent(this, VerificationActivity.class);
                 intent.putExtra(AppLevelConstants.TYPE_KEY, type);
@@ -241,7 +242,7 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
 
     private void getContact() {
         astroLoginViewModel.getContact(UserInfo.getInstance(this).getAccessToken()).observe(this, evergentCommonResponse -> {
-            getBinding().progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
 
             if (evergentCommonResponse.isStatus() && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage() != null && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage() != null && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().size() > 0) {
                 UserInfo.getInstance(this).setFirstName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getFirstName());
@@ -398,10 +399,10 @@ public class EditProfileActivity extends BaseBindingActivity<ActivityEditProfile
     }
 
     private void updateProfile(String name, String type, boolean isLinking) {
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         String acessToken = UserInfo.getInstance(this).getAccessToken();
         astroLoginViewModel.updateProfile(type, name, acessToken, "").observe(this, updateProfileResponse -> {
-            getBinding().progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             if (updateProfileResponse.getResponse() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode() != null && updateProfileResponse.getResponse().getUpdateProfileResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
                 if (type.equalsIgnoreCase("Facebook")) {
                     if (isLinking) {

@@ -144,6 +144,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         parentalLevels = new ArrayList<>();
+        AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
         connectionObserver();
     }
 
@@ -449,13 +450,13 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
             getBookmarking(railData.getObject());
 
             fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
-
+            getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
             new EntitlementCheck().checkAssetPurchaseStatus(MovieDescriptionActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
                 this.errorCode = AppLevelConstants.NO_ERROR;
                 if (apiStatus) {
                     if (purchasedStatus) {
                         runOnUiThread(() -> {
-                            getBinding().btnProgressBar.setVisibility(View.GONE);
+                            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                             if (playbackControlValue) {
                                 getBinding().astroPlayButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                                 if (watchPosition > 0) {
@@ -515,7 +516,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
                 }
             });
         } else {
-            getBinding().btnProgressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
         }
 
        /* new EntitlementCheck().checkAssetType(MovieDescriptionActivity.this, fileId, (status, response, purchaseKey, errorCode1, message) -> {
@@ -549,7 +550,7 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
 
     private void checkBuyTextButtonCondition(String fileId) {
         BuyButtonManager.getInstance().getPackages(this, "", fileId, true, (packDetailList, packageType, lowestPackagePrice, subscriptionIds) -> {
-            getBinding().btnProgressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             PacksDateLayer.getInstance().setPackDetailList(packDetailList);
             this.subscriptionIds = subscriptionIds;
             if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD_TVOD)) {
@@ -1225,10 +1226,10 @@ public class MovieDescriptionActivity extends BaseBindingActivity<MovieScreenBin
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (getBinding().includeProgressbar.progressBar.getVisibility() == View.VISIBLE) {
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                if (getBinding().progressLay.progressHeart.getVisibility() == View.VISIBLE) {
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 } else {
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
                 }
 
             }
