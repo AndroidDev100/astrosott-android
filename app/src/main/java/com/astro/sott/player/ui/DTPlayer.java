@@ -4088,7 +4088,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().playericon.setVisibility(View.GONE);
         // getBinding().ivQuality.setVisibility(View.GONE);
         getBinding().ivCancel.setVisibility(View.GONE);
-        getBinding().loading.setVisibility(View.GONE);
+       // getBinding().loading.setVisibility(View.GONE);
         getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
         getBinding().slash.setVisibility(View.GONE);
         getBinding().subtitleAudio.setVisibility(View.GONE);
@@ -4113,7 +4113,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             getBinding().playericon.setVisibility(View.GONE);
             // getBinding().ivQuality.setVisibility(View.GONE);
             getBinding().ivCancel.setVisibility(View.VISIBLE);
-            getBinding().loading.setVisibility(View.GONE);
+           // getBinding().loading.setVisibility(View.GONE);
             getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
             getBinding().slash.setVisibility(View.VISIBLE);
 
@@ -4174,7 +4174,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().playericon.setVisibility(View.GONE);
         // getBinding().ivQuality.setVisibility(View.GONE);
         getBinding().ivCancel.setVisibility(View.GONE);
-        getBinding().loading.setVisibility(View.GONE);
+     //   getBinding().loading.setVisibility(View.GONE);
         getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
         getBinding().slash.setVisibility(View.GONE);
         getBinding().subtitleAudio.setVisibility(View.GONE);
@@ -4199,7 +4199,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().playericon.setVisibility(View.GONE);
         // getBinding().ivQuality.setVisibility(View.GONE);
         getBinding().ivCancel.setVisibility(View.GONE);
-        getBinding().loading.setVisibility(View.GONE);
+      //  getBinding().loading.setVisibility(View.GONE);
         getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
         getBinding().slash.setVisibility(View.GONE);
         getBinding().subtitleAudio.setVisibility(View.GONE);
@@ -4224,7 +4224,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().playericon.setVisibility(View.GONE);
         // getBinding().ivQuality.setVisibility(View.GONE);
         getBinding().ivCancel.setVisibility(View.GONE);
-        getBinding().loading.setVisibility(View.GONE);
+    //    getBinding().loading.setVisibility(View.GONE);
         getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
         getBinding().slash.setVisibility(View.GONE);
         getBinding().subtitleAudio.setVisibility(View.GONE);
