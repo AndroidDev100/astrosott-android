@@ -691,12 +691,13 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
         if (isPlayableOrNot()) {
             fileId = AppCommonMethods.getFileIdOfAssest(asset);
             if (!fileId.equalsIgnoreCase("")) {
+                getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
                 new EntitlementCheck().checkAssetPurchaseStatus(LiveEventActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
                     this.errorCode = AppLevelConstants.NO_ERROR;
                     if (apiStatus) {
                         if (purchasedStatus) {
                             runOnUiThread(() -> {
-                                getBinding().btnProgressBar.setVisibility(View.GONE);
+                                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                                 if (playbackControlValue) {
                                     getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                                     getBinding().playText.setTextColor(getResources().getColor(R.color.black));
@@ -776,17 +777,18 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                     }
                 });
             } else {
-                getBinding().btnProgressBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             }
         } else {
             fileId = AssetContent.getLiveEventPackageId(railData.getObject().getTags());
             if (!fileId.equalsIgnoreCase("")) {
+                getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
                 new EntitlementCheck().checkLiveEventPurchaseStatus(LiveEventActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
                     this.errorCode = AppLevelConstants.NO_ERROR;
                     if (apiStatus) {
                         if (purchasedStatus) {
                             runOnUiThread(() -> {
-                                getBinding().btnProgressBar.setVisibility(View.GONE);
+                                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                                 if (playbackControlValue) {
                                     getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.live_event_button));
                                     getBinding().playText.setTextColor(getResources().getColor(R.color.heather));
@@ -864,7 +866,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                     }
                 });
             } else {
-                getBinding().btnProgressBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             }
         }
 
@@ -872,7 +874,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
     private void checkBuyTextButtonCondition(String fileId) {
         BuyButtonManager.getInstance().getPackages(this, AppLevelConstants.LIVE_EVENT, fileId, isPlayableOrNot(), (packDetailList, packageType, lowestPackagePrice, subscriptionIds) -> {
-            getBinding().btnProgressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             PacksDateLayer.getInstance().setPackDetailList(packDetailList);
             this.subscriptionIds = subscriptionIds;
             if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD_TVOD)) {

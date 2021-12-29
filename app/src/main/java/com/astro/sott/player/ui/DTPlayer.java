@@ -395,7 +395,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     public void onFinishDialog(boolean status) {
         if (status) {
             getBinding().rl1.setVisibility(View.GONE);
-            getBinding().pBar.setVisibility(View.VISIBLE);
+            getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
             Handler mHandler = new Handler();
             mHandler.postDelayed(new Runnable() {
                 @Override
@@ -433,7 +433,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     private void replayOnConnect() {
         getBinding().rl1.setVisibility(View.VISIBLE);
-        getBinding().pBar.setVisibility(View.GONE);
+        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
         isInternet = true;
         if (runningPlayer != null) {
             if (isLivePlayer) {
@@ -515,6 +515,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private Asset programAsset;
 
     public void getUrl(String urlToplay, final Asset asset, int prog, Boolean isLivePlayer, String programName, List<RailCommonData> railCommonDataList, Asset programAsset) {
+        AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
+
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         hasNextEpisode = false;
         hasEpisodesList = false;
         isPlayerStart = false;
@@ -1151,11 +1154,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().fullscreen.setVisibility(View.GONE);
         getBinding().forward.setVisibility(View.GONE);
         getBinding().backward.setVisibility(View.GONE);
-        getBinding().pBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         getBinding().playericon.setVisibility(View.GONE);
         // getBinding().ivQuality.setVisibility(View.GONE);
         getBinding().ivCancel.setVisibility(View.GONE);
-        getBinding().loading.setVisibility(View.VISIBLE);
+//        getBinding().loading.setVisibility(View.VISIBLE);
         getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
         getBinding().slash.setVisibility(View.GONE);
         getBinding().subtitleAudio.setVisibility(View.GONE);
@@ -1193,7 +1196,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
         getBinding().rl.setVisibility(View.VISIBLE);
         getBinding().playericon.setVisibility(View.GONE);
-        getBinding().pBar.setVisibility(View.GONE);
+        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
 
         if (dvrEnabled) {
             getBinding().goLive.setVisibility(View.VISIBLE);
@@ -1245,9 +1248,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //            getBinding().arrowForward.setVisibility(View.VISIBLE);
 //            getBinding().playCatchup.setVisibility(View.VISIBLE);
 //        }
-
-
-        getBinding().loading.setVisibility(View.GONE);
+        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+//        getBinding().loading.setVisibility(View.GONE);
         isPurchased = 1;
         getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
         //   getBinding().lockIcon.setVisibility(View.VISIBLE);
@@ -1299,7 +1301,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     mHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            getBinding().pBar.setVisibility(View.GONE);
+                            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                             checkErrors(railCommonData.getObject());
                         }
                     }, 3000);
@@ -1670,11 +1672,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     break;
                 case LOADING:
                     Log.d("StateChange ", "LOADING");
-
+                    getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
                     //  log.d("StateChange Loading");
                     break;
                 case READY:
-                    getBinding().pBar.setVisibility(View.GONE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
 
                     Log.d("StateChange ", "Ready");
                     //  mPlayerControlsView.setProgressBarVisibility(false);
@@ -1682,7 +1684,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 case BUFFERING:
                     Log.d("StateChange ", "Buffering");
                     if (!isAdsRunning) {
-                        getBinding().pBar.setVisibility(View.VISIBLE);
+                        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
                         try {
                             ConvivaManager.convivaPlayerBufferReportRequest();
                         } catch (Exception ex) {
@@ -1808,8 +1810,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         adRunning = true;
         //  getBinding().lockIcon.setVisibility(View.GONE);
         getBinding().rl1.setVisibility(View.GONE);
-        getBinding().loading.setVisibility(View.GONE);
-        getBinding().pBar.setVisibility(View.GONE);
+//        getBinding().loading.setVisibility(View.GONE);
+        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
 
     }
 
@@ -2336,7 +2338,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             allAdsCompleted = false;
             isPlayerEnded = false;
             if (isSeries && hasNextEpisode) {
-                getBinding().pBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 setBingView(player);
             }
         } else if (exitPlayer && !isSeries) {
@@ -2459,7 +2461,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     booleanLiveData.removeObservers(baseActivity);
                     if (booleanLiveData.hasObservers()) return;
                     if (aBoolean != null && aBoolean) {
-                        getBinding().pBar.setVisibility(View.GONE);
+                        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                         haveAudioOrNot();
                         haveSubtitleorNot();
 //                        getBinding().urlimage.setVisibility(View.GONE);
@@ -2550,7 +2552,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().nextEpisode.setVisibility(View.GONE);
         isBingeView = true;
         isSkipCreditVisible = false;
-        getBinding().pBar.setVisibility(View.GONE);
+        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
         //  getBinding().lockIcon.setVisibility(View.GONE);
         getBinding().rlUp.setVisibility(View.INVISIBLE);
         getBinding().rlDown.setVisibility(View.INVISIBLE);
@@ -2619,7 +2621,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().fullscreen.setVisibility(View.GONE);
         getBinding().forward.setVisibility(View.GONE);
         getBinding().backward.setVisibility(View.GONE);
-        getBinding().pBar.setVisibility(View.GONE);
+        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
         getBinding().playericon.setVisibility(View.GONE);
         getBinding().slash.setVisibility(View.GONE);
         getBinding().subtitleAudio.setVisibility(View.GONE);
@@ -2688,7 +2690,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().fullscreen.setVisibility(View.GONE);
         getBinding().forward.setVisibility(View.GONE);
         getBinding().backward.setVisibility(View.GONE);
-        getBinding().pBar.setVisibility(View.GONE);
+        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
         getBinding().playericon.setVisibility(View.GONE);
         getBinding().slash.setVisibility(View.GONE);
         getBinding().subtitleAudio.setVisibility(View.GONE);
@@ -2999,7 +3001,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
         getBinding().forward.setOnClickListener(view -> {
-            getBinding().pBar.setVisibility(View.VISIBLE);
+            getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
             if (objectAnimator != null) {
                 objectAnimator.cancel();
                 objectAnimator = null;
@@ -3015,7 +3017,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 booleanLiveData.removeObservers(baseActivity);
                 if (booleanLiveData.hasObservers()) return;
                 if (aBoolean != null && aBoolean) {
-                    getBinding().pBar.setVisibility(View.GONE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 }
                 try {
                     getBinding().seekBar.setProgress(((int) runningPlayer.getCurrentPosition()));
@@ -3029,7 +3031,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
         getBinding().goLive.setOnClickListener(view -> {
-            getBinding().pBar.setVisibility(View.VISIBLE);
+            getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
             final LiveData<Boolean> booleanLiveData = viewModel.seekToDuration();
             if (booleanLiveData == null || baseActivity == null) {
                 return;
@@ -3039,7 +3041,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 booleanLiveData.removeObservers(baseActivity);
                 if (booleanLiveData.hasObservers()) return;
                 if (aBoolean != null && aBoolean) {
-                    getBinding().pBar.setVisibility(View.GONE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 }
                 try {
                     getBinding().seekBar.setProgress(((int) runningPlayer.getCurrentPosition()));
@@ -3064,7 +3066,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             }
             getBinding().progressBar.setProgress(0);
             isSkipCreditVisible = false;
-            getBinding().pBar.setVisibility(View.VISIBLE);
+            getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
 
             final LiveData<Boolean> booleanLiveData = viewModel.seekPlayerBackward();
             if (booleanLiveData == null || baseActivity == null) {
@@ -3074,7 +3076,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 booleanLiveData.removeObservers(baseActivity);
                 if (booleanLiveData.hasObservers()) return;
                 if (aBoolean != null && aBoolean) {
-                    getBinding().pBar.setVisibility(View.GONE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 }
                 try {
                     getBinding().seekBar.setProgress(((int) runningPlayer.getCurrentPosition()));
@@ -3828,7 +3830,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 booleanLiveData.removeObservers(baseActivity);
                 if (booleanLiveData.hasObservers()) return;
                 if (aBoolean != null && aBoolean) {
-                    getBinding().pBar.setVisibility(View.GONE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 }
             });
 
@@ -3857,7 +3859,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         } else {
             getBinding().imagePreview.setVisibility(View.GONE);
             isSkipCreditVisible = false;
-            getBinding().pBar.setVisibility(View.VISIBLE);
+            getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
             viewModel.getPlayerView(seekBar);
             callHandler();
         }
@@ -4000,8 +4002,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private void hidePlayerWigetOnResume() {
         getBinding().rl1.setVisibility(View.GONE);
         getBinding().listViewSettings.setVisibility(View.GONE);
-        getBinding().pBar.setVisibility(View.VISIBLE);
-        getBinding().loading.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
+//        getBinding().loading.setVisibility(View.VISIBLE);
         //   getBinding().lockIcon.setVisibility(View.GONE);
 
         Log.e("hidePlayerWigetOnResume", "hidePlayerWigetOnResume");
@@ -4010,9 +4012,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                getBinding().pBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 //  getBinding().lockIcon.setVisibility(View.VISIBLE);
-                getBinding().loading.setVisibility(View.GONE);
+//                getBinding().loading.setVisibility(View.GONE);
 
                 if (lockEnable) {
                     getBinding().rl1.setVisibility(View.GONE);
@@ -4170,7 +4172,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         if (assetType == MediaTypeConstant.getLinear(baseActivity)) {
 
             getBinding().playericon.setVisibility(View.GONE);
-            getBinding().pBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             getBinding().rl1.setVisibility(View.VISIBLE);
             getBinding().playButton.setVisibility(View.VISIBLE);
             getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
@@ -4188,7 +4190,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         } else {
             getBinding().playericon.setVisibility(View.GONE);
-            getBinding().pBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             getBinding().rl1.setVisibility(View.VISIBLE);
             getBinding().playButton.setVisibility(View.VISIBLE);
             getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
@@ -4496,18 +4498,17 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     }
 
                     if (index == -1) {
-
                         trackItemList.get(position).setSelected(true);
                         trackName = trackItemList.get(position).getTrackName();
                         getBinding().videoDialog.setVisibility(View.GONE);
                         hideSoftKeyButton();
-                        getBinding().pBar.setVisibility(View.VISIBLE);
+                        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
                         isDialogShowing = false;
                         final LiveData<Boolean> booleanLiveData = viewModel.changeTrack(trackItemList.get(position).getTrackName());
                         booleanLiveData.removeObservers(getActivity());
                         booleanLiveData.observe(getActivity(), aBoolean -> {
                             if (aBoolean != null && aBoolean) {
-                                new Handler().postDelayed(() -> getBinding().pBar.setVisibility(View.GONE), 1000);
+                                new Handler().postDelayed(() -> getBinding().progressLay.progressHeart.setVisibility(View.GONE), 1000);
                             }
                         });
                     } else {
@@ -4521,13 +4522,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                             getBinding().videoDialog.setVisibility(View.GONE);
                             hideSoftKeyButton();
-                            getBinding().pBar.setVisibility(View.VISIBLE);
+                            getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
                             isDialogShowing = false;
                             final LiveData<Boolean> booleanLiveData = viewModel.changeTrack(trackItemList.get(position).getTrackName());
                             booleanLiveData.removeObservers(getActivity());
                             booleanLiveData.observe(getActivity(), aBoolean -> {
                                 if (aBoolean != null && aBoolean) {
-                                    new Handler().postDelayed(() -> getBinding().pBar.setVisibility(View.GONE), 1000);
+                                    new Handler().postDelayed(() -> getBinding().progressLay.progressHeart.setVisibility(View.GONE), 1000);
                                 }
                             });
                         }

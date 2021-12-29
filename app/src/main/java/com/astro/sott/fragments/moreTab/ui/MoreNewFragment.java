@@ -12,8 +12,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.astro.sott.BuildConfig;
 import com.astro.sott.R;
@@ -117,9 +120,14 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         super.onActivityCreated(savedInstanceState);
         oldLang = new KsPreferenceKey(getActivity()).getAppLangName();
         navBar = getActivity().findViewById(R.id.navigation);
-        modelCall();
         //  checkForLoginLogout();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         UIinitialization();
+        modelCall();
     }
 
     @Override
@@ -137,7 +145,8 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     }
 
     private void UIinitialization() {
-        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+        AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
+        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
         getBinding().toolbar.setVisibility(View.VISIBLE);
         getBinding().tvVersion.setText("Version " + BuildConfig.VERSION_NAME);
         setClicks();
@@ -184,54 +193,54 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         getBinding().circularImageViewMore.setOnClickListener(v -> {
            /* Intent intent = new Intent(getActivity(), EditEmailActivity.class);
             startActivity(intent);*/
-        });
-        getBinding().edit.setOnClickListener(v -> {
-            new ActivityLauncher(getActivity()).profileActivity(getActivity());
-        });
+            });
+            getBinding().edit.setOnClickListener(v -> {
+                new ActivityLauncher(getActivity()).profileActivity(getActivity());
+            });
 
-        getBinding().loginSignupMore.setOnClickListener(view -> {
-            FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = false;
-            FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, "Sign Up/ Sign In", FirebaseEventManager.BTN_CLICK);
-            new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
+            getBinding().loginSignupMore.setOnClickListener(view -> {
+                FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = false;
+                FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, "Sign Up/ Sign In", FirebaseEventManager.BTN_CLICK);
+                new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
 
-        });
-        getBinding().rlManagePayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), IsThisYouActivity.class);
-                startActivity(intent);
-            }
-        });
-        getBinding().subscribe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, getBinding().subscribe.getText().toString(), FirebaseEventManager.BTN_CLICK);
-                if (UserInfo.getInstance(getActivity()).isActive()) {
-                    navBar.setVisibility(View.GONE);
-                    new ActivityLauncher(getActivity()).profileSubscription("Profile");
-                } else {
-                    FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = true;
-                    new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
+            });
+            getBinding().rlManagePayment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), IsThisYouActivity.class);
+                    startActivity(intent);
                 }
-            }
-        });
-        getBinding().rlLinkedAccounts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navBar.setVisibility(View.GONE);
-                ChangeEmailConfirmation someFragment = new ChangeEmailConfirmation();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_frame, someFragment); // give your fragment container id in first parameter
-                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-                transaction.commit();
-            }
-        });
-        getBinding().rlTransactionHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navBar.setVisibility(View.GONE);
-                if (UserInfo.getInstance(getActivity()).isActive()) {
-                    startActivity(new Intent(getActivity(), TransactionHistory.class));
+            });
+            getBinding().subscribe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, getBinding().subscribe.getText().toString(), FirebaseEventManager.BTN_CLICK);
+                    if (UserInfo.getInstance(getActivity()).isActive()) {
+                        navBar.setVisibility(View.GONE);
+                        new ActivityLauncher(getActivity()).profileSubscription("Profile");
+                    } else {
+                        FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = true;
+                        new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
+                    }
+                }
+            });
+            getBinding().rlLinkedAccounts.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    navBar.setVisibility(View.GONE);
+                    ChangeEmailConfirmation someFragment = new ChangeEmailConfirmation();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.content_frame, someFragment); // give your fragment container id in first parameter
+                    transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                    transaction.commit();
+                }
+            });
+            getBinding().rlTransactionHistory.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    navBar.setVisibility(View.GONE);
+                    if (UserInfo.getInstance(getActivity()).isActive()) {
+                        startActivity(new Intent(getActivity(), TransactionHistory.class));
 
                 } else {
                     FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = false;
@@ -255,21 +264,21 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 FirebaseEventManager.getFirebaseInstance(getActivity()).subscribeClicked = false;
                 new ActivityLauncher(getActivity()).signupActivity(getActivity(), SignUpActivity.class, "Profile");
 
-            }
+                }
 
 
-        });
-        getBinding().rlHelp.setOnClickListener(v -> {
-            FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, FirebaseEventManager.HELP, FirebaseEventManager.BTN_CLICK);
-            Intent intent = new Intent(getActivity(), WebViewActivity.class);
-            intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.HELP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        });
+            });
+            getBinding().rlHelp.setOnClickListener(v -> {
+                FirebaseEventManager.getFirebaseInstance(getActivity()).itemListEvent(FirebaseEventManager.PROFILE, FirebaseEventManager.HELP, FirebaseEventManager.BTN_CLICK);
+                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.HELP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            });
 
-        getBinding().rlTerms.setOnClickListener(v -> {
-            new ActivityLauncher(getActivity()).termAndCondition(getActivity());
-        });
+            getBinding().rlTerms.setOnClickListener(v -> {
+                new ActivityLauncher(getActivity()).termAndCondition(getActivity());
+            });
 
         getBinding().rlPrivacy.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), WebViewActivity.class);
@@ -295,6 +304,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         alertDialog.setAlertDialogCallBack(this);
         alertDialog.show(Objects.requireNonNull(fm), "fragment_alert");
     }
+
 
     private void removeSubscription() {
         subscriptionViewModel.removeSubscription(UserInfo.getInstance(getActivity()).getAccessToken(), lastActiveItem.getServiceID()).observe(this, evergentCommonResponse -> {
@@ -349,8 +359,6 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
             getBinding().loginSignupMore.setVisibility(View.VISIBLE);
             getBinding().rlLogout.setVisibility(View.GONE);
             getBinding().edit.setVisibility(View.GONE);
-
-
         }
     }
 
@@ -380,9 +388,9 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
     private void getActiveSubscription() {
         displayName = "";
-        getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         subscriptionViewModel.getActiveSubscription(UserInfo.getInstance(getActivity()).getAccessToken(), "profile").observe(this, evergentCommonResponse -> {
-            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 if (evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage() != null && evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage().size() > 0) {
                     removeFreemium(evergentCommonResponse.getResponse().getGetActiveSubscriptionsResponseMessage().getAccountServiceMessage());
@@ -441,6 +449,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                         UserInfo.getInstance(getActivity()).setVip(true);
                         UserInfo.getInstance(getActivity()).setMaxis(lastActiveItem.getPaymentMethod().equalsIgnoreCase(AppLevelConstants.MAXIS_BILLING));
                         getBinding().tvVIPUser.setText(lastActiveItem.getDisplayName());
+                        getBinding().subscribe.setVisibility(View.GONE);
                         if (!lastActiveItem.isRenewal()) {
                             getBinding().tvSubscribeNow.setVisibility(View.GONE);
                         } else {
@@ -475,8 +484,6 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
 
             }
         }
-
-
     }
 
     private void checkForDowngrade(List<AccountServiceMessageItem> accountServiceMessageItemList) {
@@ -517,9 +524,10 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
         cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
     }
 
+
     private void getLastSubscription() {
         subscriptionViewModel.getLastSubscription(UserInfo.getInstance(getActivity()).getAccessToken()).observe(this, evergentCommonResponse -> {
-            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             if (evergentCommonResponse.isStatus()) {
                 if (evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage() != null && evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage() != null) {
                     if (evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getStatus().equalsIgnoreCase("EXPIRED")) {
@@ -536,7 +544,10 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                             } else {
                                 getBinding().partnerBillingText.setText(evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getPaymentMethod() + ": " + evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getCurrencyCode() + evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getRetailPrice() + "/month");
                             }
+                            getBinding().changePlan.setVisibility(View.GONE);
+                            getBinding().cancelPlan.setVisibility(View.GONE);
                         }
+
                         if (evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getValidityTill() != null) {
                             getBinding().tvSubscribeNow.setText("Ended on " + AppCommonMethods.getRenewDate(evergentCommonResponse.getResponse().getGetLastSubscriptionResponseMessage().getAccountServiceMessage().getValidityTill()));
                         }
@@ -607,7 +618,6 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
                 getBinding().tvVersion.setText("Version" + BuildConfig.VERSION_NAME);
             }
 
-
         }
     }
 
@@ -616,7 +626,7 @@ public class MoreNewFragment extends BaseBindingFragment<FragmentMoreLayoutBindi
     public void onFinishDialog() {
         logoutApi();
         AppCommonMethods.removeUserPrerences(getActivity());
-        ToastHandler.show(getActivity().getResources().getString(R.string.logout_success), getActivity());
+        Toast.makeText(getActivity(), "Logout Successful!", Toast.LENGTH_SHORT).show();
         setUiForLogout();
 
         LoginManager.getInstance().logOut();

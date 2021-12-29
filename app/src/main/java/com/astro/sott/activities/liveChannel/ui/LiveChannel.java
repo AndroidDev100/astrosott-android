@@ -504,13 +504,13 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
         if (railData != null && railData.getObject() != null) {
             fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
-
+            getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
             new EntitlementCheck().checkAssetPurchaseStatus(LiveChannel.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
                 this.errorCode = AppLevelConstants.NO_ERROR;
                 if (apiStatus) {
                     if (purchasedStatus) {
                         runOnUiThread(() -> {
-                            getBinding().btnProgressBar.setVisibility(View.GONE);
+                            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                             if (playbackControlValue) {
                                 getBinding().vipButtonLive.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                                 getBinding().playText.setText(getResources().getString(R.string.watch_now));
@@ -584,7 +584,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                 }
             });
         } else {
-            getBinding().btnProgressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
         }
 
     }
@@ -592,7 +592,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     private void checkBuyTextButtonCondition(String fileId) {
         BuyButtonManager.getInstance().getPackages(this, "", fileId, true, (packDetailList, packageType, lowestPackagePrice, subscriptionIds) -> {
             PacksDateLayer.getInstance().setPackDetailList(packDetailList);
-            getBinding().btnProgressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             this.subscriptionIds = subscriptionIds;
             if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD_TVOD)) {
                 getBinding().playText.setText(getResources().getString(R.string.buy_from) + " " + lowestPackagePrice);

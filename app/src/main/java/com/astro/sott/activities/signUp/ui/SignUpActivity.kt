@@ -76,6 +76,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
 
         super.onCreate(savedInstanceState)
         activitySinUpBinding = DataBindingUtil.setContentView(this, R.layout.activity_sin_up)
+        AppCommonMethods.setProgressBar(activitySinUpBinding?.progressLay?.progressHeart)
         modelCall()
         if (intent.getStringExtra(AppLevelConstants.FROM_KEY) != null)
             from = intent.getStringExtra(AppLevelConstants.FROM_KEY)!!
@@ -101,7 +102,6 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
     }
-
     private fun setWatcher() {
         activitySinUpBinding?.mobileEmailEdt?.addTextChangedListener(
             CustomTextWatcher(
@@ -164,11 +164,11 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
         if (requestCode == 4001) {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
-            activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
+            activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.VISIBLE
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
         } else {
-            activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
+            activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.VISIBLE
             callbackManager!!.onActivityResult(requestCode, resultCode, data)
         }
     }
@@ -194,7 +194,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
             // Signed in successfully, show authenticated UI.
             //  updateUI(account);
         } catch (e: ApiException) {
-            activitySinUpBinding?.progressBar?.visibility = View.GONE
+            activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.GONE
             ToastHandler.show(
                 resources.getString(R.string.email_unavailable) + "",
                 this@SignUpActivity
@@ -451,17 +451,18 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
 
 
                 override fun onCancel() {
-                    activitySinUpBinding?.progressBar?.visibility = View.GONE
                     ToastHandler.show(
                         getString(R.string.no_internet_connection),
                         this@SignUpActivity
                     )
+                    activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.GONE
+                }
 
                 }
 
                 // activitySinUpBinding?.loginButton?.loginBehavior = LoginBehavior.WEB_ONLY
                 override fun onError(exception: FacebookException) {
-                    activitySinUpBinding?.progressBar?.visibility = View.GONE
+                    activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.GONE
                     ToastHandler.show(
                         resources.getString(R.string.email_unavailable) + "",
                         this@SignUpActivity
@@ -502,7 +503,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
     }
 
     private fun login(type: String, emailMobile: String, password: String) {
-        activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
+        activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.VISIBLE
         val tabletSize = resources.getBoolean(R.bool.isTablet)
 
         astroLoginViewModel!!.loginUser(type, emailMobile, password, tabletSize).observe(
@@ -531,7 +532,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                     }
                     astroLoginViewModel!!.addToken(UserInfo.getInstance(this).externalSessionToken)
                 } else {
-                    activitySinUpBinding?.progressBar?.visibility = View.GONE
+                    activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.GONE
                     if (type.equals("Facebook", ignoreCase = true) || type.equals(
                             "Google",
                             ignoreCase = true
@@ -577,7 +578,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
             .observe(
                 this@SignUpActivity,
                 Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
-                    activitySinUpBinding?.progressBar?.visibility = View.GONE
+                    activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.GONE
                     if (evergentCommonResponse.isStatus && evergentCommonResponse.getContactResponse.getContactResponseMessage != null && evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage != null && evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!!.size > 0) {
                         UserInfo.getInstance(this).firstName =
                             evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.firstName
@@ -722,12 +723,12 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
     }
 
     private fun searchAccountv2(type: String, emailMobile: String, password: String) {
-        activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
+        activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.VISIBLE
 
         astroLoginViewModel!!.searchAccountV2(type, emailMobile)
             .observe(this, Observer { evergentCommonResponse ->
                 if (evergentCommonResponse.isStatus) {
-                    activitySinUpBinding?.progressBar?.visibility = View.GONE
+                    activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.GONE
                     val fm: FragmentManager = supportFragmentManager
                     val cancelDialogFragment = AlreadyUserFragment.newInstance("player", "")
                     cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT)
@@ -735,7 +736,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                     if (evergentCommonResponse.errorCode.equals("eV2327", true)) {
                         createOtp(type, emailMobile, password)
                     } else {
-                        activitySinUpBinding?.progressBar?.visibility = View.GONE
+                        activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.GONE
                         ToastHandler.show(
                             evergentCommonResponse.errorMessage,
                             this@SignUpActivity
@@ -748,7 +749,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
     private fun createOtp(type: String, emailMobile: String, password: String) {
         astroLoginViewModel!!.createOtp(type, emailMobile)
             .observe(this, Observer { evergentCommonResponse ->
-                activitySinUpBinding?.progressBar?.visibility = View.GONE
+                activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.GONE
 
                 if (evergentCommonResponse.isStatus) {
                     // Toast.makeText(this, "Verification code had be sent to $emailMobile", Toast.LENGTH_SHORT).show()
@@ -768,10 +769,10 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
     }
 
     private fun socialSearchAccountv2(password: String, type: String, emailMobile: String) {
-        activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
+        activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.VISIBLE
         astroLoginViewModel!!.searchAccountV2("email", emailMobile)
             .observe(this, Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
-                activitySinUpBinding?.progressBar?.visibility = View.GONE
+                activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.GONE
                 if (evergentCommonResponse.isStatus) {
                     val intent = Intent(this, IsThatYouActivity::class.java)
                     intent.putExtra(AppLevelConstants.TYPE_KEY, type)
@@ -791,7 +792,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
     }
 
     private fun createUser(password: String, email_mobile: String, type: String) {
-        activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
+        activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.VISIBLE
         val tabletSize = resources.getBoolean(R.bool.isTablet)
         astroLoginViewModel!!.createUser(type, email_mobile, password, name, tabletSize)
             .observe(this,
@@ -812,7 +813,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                         ToastHandler.show(evergentCommonResponse.errorMessage,
                             this@SignUpActivity
                         )
-                        activitySinUpBinding?.progressBar?.visibility = View.GONE
+                        activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.GONE
                     }
                 })
     }

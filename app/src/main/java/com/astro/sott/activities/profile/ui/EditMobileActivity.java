@@ -58,6 +58,7 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
         setHeader();
         modelCall();
         setClicks();
@@ -237,14 +238,13 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
             type = "Email";
             email_mobile = UserInfo.getInstance(this).getEmail();
         }
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         astroLoginViewModel.checkCredential(password, email_mobile, type).observe(this, checkCredentialResponse -> {
             if (checkCredentialResponse != null && checkCredentialResponse.getResponse() != null && checkCredentialResponse.getResponse().getCheckCredentialsResponseMessage() != null && checkCredentialResponse.getResponse().getCheckCredentialsResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
                 createOtp();
             } else {
-                getBinding().progressBar.setVisibility(View.GONE);
                 ToastHandler.show(checkCredentialResponse.getErrorMessage(), EditMobileActivity.this);
-
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             }
         });
     }
@@ -254,7 +254,7 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
         type = "mobile";
         astroLoginViewModel.createOtp(type, newMobile).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
-                getBinding().progressBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 Intent intent = new Intent(this, EditVerificationActivity.class);
                 intent.putExtra(AppLevelConstants.TYPE_KEY, type);
                 intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, newMobile);
@@ -265,9 +265,8 @@ public class EditMobileActivity extends BaseBindingActivity<ActivityEditMobileBi
                 intent.putExtra(AppLevelConstants.FROM_KEY, AppLevelConstants.CONFIRM_PASSWORD);
                 startActivity(intent);
             } else {
-                getBinding().progressBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditMobileActivity.this);
-
             }
         });
 

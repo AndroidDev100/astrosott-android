@@ -86,14 +86,14 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         subscriptionViewModel = ViewModelProviders.of(this).get(SubscriptionViewModel::class.java)
-        if (arguments!!.getSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY) != null)
+        if (requireArguments().getSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY) != null)
             subscriptionIds =
-                arguments!!.getSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY) as Array<String>
+                requireArguments().getSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY) as Array<String>
         binding.toolbar.search_icon.setOnClickListener {
-            ActivityLauncher(activity!!).searchActivity(activity!!, ActivitySearch::class.java)
+            ActivityLauncher(requireActivity()).searchActivity(requireActivity(), ActivitySearch::class.java)
         }
-        if (arguments!!.getString("from", "") != null)
-            from = arguments!!.getString("from", "")
+        if (requireArguments().getString("from", "") != null)
+            from = requireArguments().getString("from", "")
 
         setClicks()
         getActiveSubscription()
@@ -101,7 +101,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
 
     private fun setClicks() {
         binding.terms.setOnClickListener {
-            val intent = Intent(activity!!, WebViewActivity::class.java)
+            val intent = Intent(requireActivity(), WebViewActivity::class.java)
             intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.TNC)
             startActivity(intent)
         }
@@ -114,6 +114,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
 
     private fun getActiveSubscription() {
         activePlan = AccountServiceMessageItem()
+        binding.progressLay?.progressHeart?.visibility=View.VISIBLE
         subscriptionViewModel = ViewModelProviders.of(this).get(SubscriptionViewModel::class.java)
         subscriptionViewModel.getActiveSubscription(UserInfo.getInstance(activity).accessToken, "")
             .observe(
@@ -194,7 +195,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
         subscriptionViewModel.product.observe(
             this,
             androidx.lifecycle.Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
-                binding.includeProgressbar.progressBar.visibility = View.GONE
+                binding.progressLay?.progressHeart?.visibility = View.GONE
                 if (evergentCommonResponse.isStatus) {
                     if (evergentCommonResponse.getProductResponse != null && evergentCommonResponse.getProductResponse.getProductsResponseMessage != null && evergentCommonResponse.getProductResponse.getProductsResponseMessage!!.productsResponseMessage != null && evergentCommonResponse.getProductResponse.getProductsResponseMessage!!.productsResponseMessage!!.size > 0) {
                         productListItem =
@@ -249,7 +250,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
             if (from.equals("Content Detail Page", true)) {
                 if (PacksDateLayer.getInstance().packDetailList != null) {
                     packDetailList = PacksDateLayer.getInstance().packDetailList;
-                    binding.includeProgressbar.progressBar.visibility = View.GONE
+                    binding.progressLay?.progressHeart?.visibility = View.GONE
                     loadDataFromModel(PacksDateLayer.getInstance().packDetailList)
                 } else {
                     getProductsForLogout()
@@ -288,7 +289,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
                                         ignoreCase = true
                                     ) && responseMessageItem?.appChannels!![0]!!.appID != null
                                 ) {
-                                    Log.w("avname", activity!!.javaClass.getName() + "")
+                                    Log.w("avname", requireActivity().javaClass.getName() + "")
                                     if (activity is ProfileSubscriptionActivity) {
                                         skuDetails =
                                             (activity as ProfileSubscriptionActivity?)!!.getSubscriptionDetail(
@@ -337,7 +338,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
                                         ignoreCase = true
                                     ) && responseMessageItem?.appChannels!![0]!!.appID != null
                                 ) {
-                                    Log.w("avname", activity!!.javaClass.getName() + "")
+                                    Log.w("avname", requireActivity().javaClass.getName() + "")
                                     if (activity is HomeActivity) {
                                         skuDetails =
                                             (activity as HomeActivity?)!!.getSubscriptionDetail(
@@ -402,7 +403,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
             )
         )
         binding.packagesRecyclerView?.adapter = SubscriptionRecyclerViewAdapter(
-            activity!!,
+            requireActivity(),
             (packagesList as java.util.ArrayList<PackDetail>),
             productList,
             this
@@ -411,16 +412,16 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
 
     private fun setViewPager(packagesList: List<PackDetail>) {
         binding.viewPager?.adapter =
-            SubscriptionPagerAdapter(activity!!, packagesList, activePlan!!, this)
+            SubscriptionPagerAdapter(requireActivity(), packagesList, activePlan!!, this)
         binding.viewPager?.setPadding(
-            SliderPotrait.dp2px(activity!!, 32f),
+            SliderPotrait.dp2px(requireActivity(), 32f),
             0,
-            SliderPotrait.dp2px(activity!!, 32f),
+            SliderPotrait.dp2px(requireActivity(), 32f),
             0
         );
         binding.viewPager?.clipChildren = false
         binding.viewPager?.clipToPadding = false
-        binding.viewPager?.pageMargin = SliderPotrait.dp2px(activity!!, 16f);
+        binding.viewPager?.pageMargin = SliderPotrait.dp2px(requireActivity(), 16f);
         val rainbow = resources.getIntArray(R.array.packages_colors)
         binding.viewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
@@ -453,6 +454,8 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AppCommonMethods.setProgressBar(binding?.progressLay?.progressHeart)
+        binding?.toolbar?.search_icon?.visibility=View.GONE
     }
 
     // tab titles
@@ -509,8 +512,8 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
                 )
             }
         } else {
-            ActivityLauncher(activity!!).signupActivity(
-                activity!!,
+            ActivityLauncher(requireActivity()).signupActivity(
+                requireActivity(),
                 SignUpActivity::class.java,
                 CleverTapManager.SUBSCRIPTION_PAGE
             )
