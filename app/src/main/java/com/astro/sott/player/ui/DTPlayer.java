@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,6 +38,7 @@ import android.provider.Settings;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -166,6 +168,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.StringTokenizer;
+import java.util.concurrent.TimeUnit;
 
 import static android.content.Context.POWER_SERVICE;
 import static android.content.Context.TELEPHONY_SERVICE;
@@ -252,13 +255,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private String scrubberUrl = "";
     ObjectAnimator objectAnimator;
     private boolean isPlayerSurfaceClicked = false;
-    private boolean intLeft, intRight;
-    private int sWidth, sHeight;
-    private long diffX, diffY;
+    // private boolean intLeft, intRight;
+    //private int sWidth, sHeight;
+    //  private long diffX, diffY;
     private Display display;
     private Point size;
     private float downX, downY;
-    int currBrightness;
+    int currBrightness,volume_level;
     int clickCount = 0;
     long startTime1;
     long duration;
@@ -270,6 +273,29 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     private boolean isTouchCaptured = false;
     static final int min_distance = 100;
     private int counter_for_non_numerical = 1;
+    private int progressValue;
+
+    private Boolean tested_ok = false;
+    private int sWidth, sHeight;
+    private long diffX, diffY;
+    private int calculatedTime;
+    private String seekDur;
+    private float baseX, baseY;
+    private Boolean screen_swipe_move = false;
+    private boolean isFromBrightness = false;
+    private boolean isFromAudio = false;
+    private static final int MIN_DISTANCE = 150;
+    private ContentResolver cResolver;
+    private Window window;
+    private int brightness, mediavolume, device_height, device_width;
+    private ImageView volIcon, brightnessIcon, vol_image, brightness_image;
+    private TextView vol_perc_center_text, brigtness_perc_center_text,txt_seek_secs,txt_seek_currTime;
+    private boolean immersiveMode, intLeft, intRight, intTop, intBottom, finLeft, finRight, finTop, finBottom;
+    //  private Display display;
+    //private Point size;
+    private double seekSpeed = 0;
+    private boolean isDoubleTap = false;
+
     private final BroadcastReceiver networkReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -516,6 +542,18 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         }
 
         getScreenSize();
+
+        display = getActivity().getWindowManager().getDefaultDisplay();
+        size    = new Point();
+        display.getSize(size);
+        sWidth  = size.x;
+        sHeight = size.y;
+
+        // Get device size: Gets display metrics that describe the size and density of this display.
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        device_height = displaymetrics.heightPixels;
+        device_width  = displaymetrics.widthPixels;
 
     }
 
@@ -1285,6 +1323,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void playContent() {
+
+        if (isDoubleTap)
+            return;
+
         callHandler();
         if (lockEnable) {
 
@@ -2109,6 +2151,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                 getBinding().volumeDialog.setVisibility(View.GONE);
                 getBinding().brightnessDialog.setVisibility(View.GONE);
             } else {
+                if (isDoubleTap)
+                    return;
+
                 getBinding().rl1.setVisibility(View.VISIBLE);
                 getBinding().volumeDialog.setVisibility(View.VISIBLE);
                 getBinding().brightnessDialog.setVisibility(View.VISIBLE);
@@ -2437,6 +2482,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         getBinding().volumeDialog.setVisibility(View.VISIBLE);
                         getBinding().brightnessDialog.setVisibility(View.VISIBLE);
                         playContent();
+
                     }
                 }
                 if (hasPostRoll) {
@@ -2614,6 +2660,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                 if (isPlayerStart) {
 
+                    if (isDoubleTap || screen_swipe_move)
+                        return;
+
                     if (currentPos > 10000) {
                         getBinding().backward.setVisibility(View.VISIBLE);
                     } else {
@@ -2621,6 +2670,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     }
                     long runningTime = durtion - currentPos;
                     if (runningTime > 10000) {
+                        Log.d("tytytytyt","Enter3");
                         getBinding().forward.setVisibility(View.VISIBLE);
                     } else {
                         getBinding().forward.setVisibility(View.GONE);
@@ -2844,10 +2894,13 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
     }
 
     private void ShowAndHideView() {
+
+        if (isDoubleTap)
+            return;
+
         if (getBinding().imagePreview.getVisibility() == View.VISIBLE){
             getBinding().imagePreview.setVisibility(View.GONE);
         }
-        Log.d("DragValueIs", drag + "");
 
 
         if (drag)
@@ -2860,6 +2913,8 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             //   getBinding().lockIcon.setVisibility(View.GONE);
             return;
         }
+
+
 
         if (getBinding().videoDialog.getVisibility() == View.VISIBLE) {
             return;
@@ -2892,27 +2947,64 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
                 }
             });
+            Log.d("rtrtrtr","callingTrue1");
             if (getBinding().rl1.getVisibility() == View.VISIBLE) {
                 Log.d("HideView", "True");
-                getBinding().rl1.startAnimation(animationFadeOut);
-                getBinding().rl1.setVisibility(View.GONE);
-                getBinding().volumeDialog.setVisibility(View.GONE);
-                getBinding().brightnessDialog.setVisibility(View.GONE);
-                if (getBinding().videoDialog.getVisibility() == View.VISIBLE || getBinding().audioDialog.getVisibility() == View.VISIBLE) {
-                    getBinding().audioDialog.setVisibility(View.GONE);
-                    getBinding().videoDialog.setVisibility(View.GONE);
-                    getBinding().skipIntro.setClickable(true);
-                    getBinding().skipCredits.setClickable(true);
-                    getBinding().skipRecap.setClickable(true);
+                if (!isLivePlayer) {
+                    getBinding().rl1.startAnimation(animationFadeOut);
+                    getBinding().rl1.setVisibility(View.GONE);
+                    getBinding().volumeDialog.setVisibility(View.GONE);
+                    getBinding().brightnessDialog.setVisibility(View.GONE);
+                    if (getBinding().videoDialog.getVisibility() == View.VISIBLE || getBinding().audioDialog.getVisibility() == View.VISIBLE) {
+                        getBinding().audioDialog.setVisibility(View.GONE);
+                        getBinding().videoDialog.setVisibility(View.GONE);
+                        getBinding().subtitleAudio.setVisibility(View.GONE);
+                        getBinding().skipIntro.setClickable(true);
+                        getBinding().skipCredits.setClickable(true);
+                        getBinding().skipRecap.setClickable(true);
+                    }
+                    getBinding().listViewSettings.setVisibility(View.GONE);
+                    timer = true;
+                    hideSoftKeyButton();
+                }else {
+                    getBinding().rl1.setVisibility(View.GONE);
+                    getBinding().name.setVisibility(View.GONE);
+                    getBinding().rlDown.setVisibility(View.GONE);
+                    getBinding().seekBar.setVisibility(View.GONE);
+                    getBinding().liveTxt.setVisibility(View.GONE);
+                    getBinding().playerMediaControls.setVisibility(View.GONE);
+                    getBinding().volumeDialog.setVisibility(View.GONE);
+                    getBinding().brightnessDialog.setVisibility(View.GONE);
+                    getBinding().quality.setVisibility(View.GONE);
                 }
-                getBinding().listViewSettings.setVisibility(View.GONE);
-                timer = true;
-                hideSoftKeyButton();
             } else {
                 Log.d("HideView", "False");
-                getBinding().rl1.setVisibility(View.VISIBLE);
-                getBinding().volumeDialog.setVisibility(View.VISIBLE);
-                getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+                if (!isLivePlayer) {
+                    getBinding().rl1.setVisibility(View.VISIBLE);
+                    getBinding().name.setVisibility(View.VISIBLE);
+                    getBinding().playerMediaControls.setVisibility(View.VISIBLE);
+                    getBinding().playButton.setVisibility(View.VISIBLE);
+                    getBinding().volumeDialog.setVisibility(View.VISIBLE);
+                    getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+                    getBinding().seekBar.setVisibility(View.VISIBLE);
+
+                    if (isCaption || isAudioTracks) {
+                        getBinding().subtitleAudio.setVisibility(View.VISIBLE);
+                    } else {
+                        getBinding().subtitleAudio.setVisibility(View.GONE);
+                    }
+                }else {
+                    getBinding().rl1.setVisibility(View.VISIBLE);
+                    getBinding().name.setVisibility(View.VISIBLE);
+                    getBinding().rlDown.setVisibility(View.GONE);
+                    getBinding().seekBar.setVisibility(View.GONE);
+                    getBinding().liveTxt.setVisibility(View.VISIBLE);
+                    getBinding().playerMediaControls.setVisibility(View.GONE);
+                    getBinding().volumeDialog.setVisibility(View.VISIBLE);
+                    getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+                    getBinding().quality.setVisibility(View.VISIBLE);
+                }
+
                 if (isSeries) {
                     if (getBinding().forward.getVisibility() == View.VISIBLE || getBinding().backward.getVisibility() == View.VISIBLE) {
                         getBinding().playButton.setVisibility(View.VISIBLE);
@@ -2925,6 +3017,11 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                         getBinding().listViewSettings.setVisibility(View.GONE);
                         getBinding().slash.setVisibility(View.VISIBLE);
                         getBinding().quality.setVisibility(View.VISIBLE);
+                        if (isSeries && episodesList != null && episodesList.size() > 0) {
+                            getBinding().nextEpisode.setVisibility(View.VISIBLE);
+                        } else {
+                            getBinding().nextEpisode.setVisibility(View.GONE);
+                        }
 
                     }
                 }
@@ -2946,7 +3043,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         getBinding().brightnessSeek.seekBar1.setProgress(50);
         getBinding().brightnessSeek.seekBar1.setMax(100);
         //getBinding().brightnessSeek.seekBar1.setKeyProgressIncrement(1);
-         currBrightness = Settings.System.getInt(getActivity().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS,0);
+        currBrightness = Settings.System.getInt(getActivity().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS,0);
 
 
         getBinding().brightnessSeek.seekBar1.setOnSeekBarChangeListener(this);
@@ -2956,9 +3053,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
         getBinding().volumeSeek.seekBar2.setOnSeekBarChangeListener(this);
         audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
+        volume_level= audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 
-        getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
-        getBinding().volumeSeek.seekBar2.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+//        getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
+//        getBinding().volumeSeek.seekBar2.setMax(100);
 
 
 //        getBinding().rl.setOnClickListener(view -> {
@@ -3033,29 +3131,366 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             }
         });
 
-        getBinding().rl.setOnClickListener(new DoubleClick(new DoubleClickListener() {
+//        getBinding().rl.setOnClickListener(new DoubleClick(new DoubleClickListener() {
+//            @Override
+//            public void onSingleClick(View view) {
+//
+//
+//                if (drag)
+//                    drag = false;
+//
+//                if (isPlayerStart) {
+//                    if (getBinding().skipCredits.getVisibility() == View.VISIBLE) {
+//                        getBinding().skipCredits.setVisibility(View.GONE);
+//                        getBinding().progressBar.setVisibility(View.GONE);
+//                        if (objectAnimator != null) {
+//                            objectAnimator.cancel();
+//                            objectAnimator = null;
+//                        }
+//                        isPlayerSurfaceClicked = true;
+//                        getBinding().progressBar.setProgress(0);
+//                    }
+//                    if (handler1 != null) {
+//                        handler1.removeCallbacksAndMessages(null);
+//                    }
+//
+//                    if (lockEnable) {
+////                        if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
+////                            getBinding().lockIcon.setVisibility(View.GONE);
+////                        } else {
+////                            getBinding().lockIcon.setVisibility(View.VISIBLE);
+////                            if (adRunning || isBingeView)
+////                                getBinding().lockIcon.setVisibility(View.GONE);
+////                        }
+//                    } else {
+//                        if (timer) {
+//                            if (timeHandler != null)
+//                                timeHandler.removeCallbacks(myRunnable);
+//                        }
+//                        if (getBinding().videoDialog.getVisibility() == View.VISIBLE) {
+//                            getBinding().videoDialog.setVisibility(View.GONE);
+//                        }
+//                        if (getBinding().audioDialog.getVisibility() == View.VISIBLE) {
+//                            getBinding().audioDialog.setVisibility(View.GONE);
+//                            getBinding().skipIntro.setClickable(true);
+//                            getBinding().skipCredits.setClickable(true);
+//                            getBinding().skipRecap.setClickable(true);
+//                        }
+//                        ShowAndHideView();
+//                    }
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onDoubleClick(View view) {
+//                if (runningPlayer.isPlaying()){
+//                    pausePlayer();
+//                }else {
+//                    if (runningPlayer!=null){
+//                        runningPlayer.play();
+//                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
+//                    }
+//                }
+////                if (lockEnable) {
+//////                    if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
+//////                        getBinding().lockIcon.setVisibility(View.GONE);
+//////                    } else {
+//////                        getBinding().lockIcon.setVisibility(View.VISIBLE);
+//////                    }
+////                } else {
+////                    viewModel.changeVideoRatio();
+////                }
+//                //playPauseControl();
+//
+//            }
+//        }));
+//        getBinding().rl1.setOnClickListener(new DoubleClick(new DoubleClickListener() {
+//            @Override
+//            public void onSingleClick(View view) {
+//
+//                getBinding().rl1.setEnabled(false);
+//                getBinding().rl.setEnabled(false);
+//
+//                if (isPlayerStart) {
+//                    if (getBinding().skipCredits.getVisibility() == View.VISIBLE) {
+//                        getBinding().skipCredits.setVisibility(View.GONE);
+//                        getBinding().progressBar.setVisibility(View.GONE);
+//                        if (objectAnimator != null) {
+//                            objectAnimator.cancel();
+//                            objectAnimator = null;
+//                        }
+//                        getBinding().progressBar.setProgress(0);
+//                        isPlayerSurfaceClicked = true;
+//                    }
+//                    if (handler1 != null) {
+//                        handler1.removeCallbacksAndMessages(null);
+//                    }
+//                    if (lockEnable) {
+////                            if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
+////                                getBinding().lockIcon.setVisibility(View.GONE);
+////                            } else {
+////                                getBinding().lockIcon.setVisibility(View.VISIBLE);
+////                                if (adRunning || isBingeView)
+////                                    getBinding().lockIcon.setVisibility(View.GONE);
+////                            }
+//
+//                    } else {
+//                        if (timer) {
+//
+//                            if (timeHandler != null)
+//                                timeHandler.removeCallbacks(myRunnable);
+//                        }
+//                        if (getBinding().videoDialog.getVisibility() == View.VISIBLE) {
+//                            getBinding().videoDialog.setVisibility(View.GONE);
+//                        }
+//                        if (getBinding().audioDialog.getVisibility() == View.VISIBLE) {
+//                            getBinding().audioDialog.setVisibility(View.GONE);
+//                            getBinding().skipIntro.setClickable(true);
+//                            getBinding().skipCredits.setClickable(true);
+//                            getBinding().skipRecap.setClickable(true);
+//                        }
+//                        ShowAndHideView();
+//                    }
+//
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onDoubleClick(View view) {
+//                if (runningPlayer.isPlaying()){
+//                    pausePlayer();
+//                }else {
+//                    if (runningPlayer!=null){
+//                        runningPlayer.play();
+//                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
+//                        Log.d("ftftftfftf","Enterrl1");
+//                    }
+//                }
+//                // viewModel.changeVideoRatio();
+//                //playPauseControl();
+//            }
+//
+//
+//
+//
+//        }));
+
+
+        getBinding().rl1.setOnTouchListener(new View.OnTouchListener(){
             @Override
-            public void onSingleClick(View view) {
-
-                if (drag)
-                    drag = false;
-
-                if (isPlayerStart) {
-                    if (getBinding().skipCredits.getVisibility() == View.VISIBLE) {
-                        getBinding().skipCredits.setVisibility(View.GONE);
-                        getBinding().progressBar.setVisibility(View.GONE);
-                        if (objectAnimator != null) {
-                            objectAnimator.cancel();
-                            objectAnimator = null;
+            public boolean onTouch (View v, MotionEvent event) {
+                switch (event.getAction()){
+                    // User touches the screen
+                    case MotionEvent.ACTION_DOWN:
+                        tested_ok = false;
+                        // We pressed on the left
+                        if (event.getX() < (sWidth / 2)) {
+                            intLeft = true;
+                            intRight = false;
+                            // We pressed on the right
+                        } else if (event.getX() > (sWidth / 2)) {
+                            intLeft = false;
+                            intRight = true;
                         }
-                        isPlayerSurfaceClicked = true;
-                        getBinding().progressBar.setProgress(0);
-                    }
-                    if (handler1 != null) {
-                        handler1.removeCallbacksAndMessages(null);
-                    }
+                        int upperLimit = (sHeight / 4) + 100;
+                        int lowerLimit = ((sHeight / 4) * 3) - 150;
+                        // We pressed on the top
+                        if (event.getY() < upperLimit) {
+                            intBottom = false;
+                            intTop = true;
+                            // We pressed in the bottom
+                        } else if (event.getY() > lowerLimit) {
+                            intBottom = true;
+                            intTop = false;
+                        } else {
+                            intBottom = false;
+                            intTop = false;
+                        }
+                        seekSpeed = (TimeUnit.MILLISECONDS.toSeconds(runningPlayer.getDuration()) * 0.2);
+                        diffX = 0;
+                        calculatedTime = 0;
+                        seekDur = String.format("%02d:%02d",
+                                TimeUnit.MILLISECONDS.toMinutes(diffX) -
+                                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(diffX)),
+                                TimeUnit.MILLISECONDS.toSeconds(diffX) -
+                                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(diffX)));
 
-                    if (lockEnable) {
+                        //TOUCH STARTED
+                        baseX = event.getX();
+                        baseY = event.getY();
+                        return true;
+                       // break;
+                    // User moves the finger
+                    case MotionEvent.ACTION_MOVE:
+                        // The finge is now moving
+                        if (!isLivePlayer){
+                            screen_swipe_move = true;
+                        }
+
+                        // Controls are currently visible
+
+                        // Dissapear controls while finger is moving
+                        // root.setVisibility(View.GONE);
+                        diffX = (long) (Math.ceil(event.getX() - baseX));
+                        diffY = (long) Math.ceil(event.getY() - baseY);
+                        // Speed in which brightness can increase or deacrease
+                        double brightnessSpeed = 0.05;
+                        if (Math.abs(diffY) > MIN_DISTANCE) {
+                            tested_ok = true;
+                        }
+                        // Its vertical movement
+                        if (Math.abs(diffY) > Math.abs(diffX)) {
+                            // Tap in left increases/decreases brightness
+                            if (intLeft) {
+                                hideBrightnessControl();
+//                                getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+//                                getBinding().volumeDialog.setVisibility(View.GONE);
+//                                getBinding().rl1.setVisibility(View.GONE);
+                                boolean settingsCanWrite = Settings.System.canWrite(getActivity());
+                                if(!settingsCanWrite) {
+                                    // If do not have write settings permission then open the Can modify system settings panel.
+                                    Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+                                    startActivity(intent);
+                                }else {
+                                    //timeHandler.removeCallbacks(myRunnable);
+                                     isFromBrightness = true;
+
+                                    cResolver = getActivity().getContentResolver();
+                                    window    = getActivity().getWindow();
+                                    // Get the current brightness
+                                    try {
+                                        Settings.System.putInt(cResolver, Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+                                        brightness = Settings.System.getInt(cResolver, Settings.System.SCREEN_BRIGHTNESS);
+                                    } catch (Settings.SettingNotFoundException e) {
+                                        e.printStackTrace();
+                                    }
+                                    // Define new brightness
+                                    int new_brightness = (int) (brightness - (diffY * brightnessSpeed));
+                                    // Keep brightness in bounds
+                                    if (new_brightness > 250) {
+                                        new_brightness = 250;
+                                    } else if (new_brightness < 1) {
+                                        new_brightness = 1;
+                                    }
+                                    // Calculate brightness inside the bar container
+                                    double brightPerc = Math.ceil((((double) new_brightness / (double) 250) * (double) 100));
+                                    //brightnessBarContainer.setVisibility(View.VISIBLE);
+                                    // brightness_center_text.setVisibility(View.VISIBLE);
+                                    getBinding().brightnessSeek.seekBar1.setProgress((int) brightPerc);
+                                    Settings.System.putInt(cResolver, Settings.System.SCREEN_BRIGHTNESS, (new_brightness));
+                                    WindowManager.LayoutParams layoutpars = window.getAttributes();
+                                    layoutpars.screenBrightness = brightness / (float) 255;
+                                    window.setAttributes(layoutpars);
+                                }
+
+
+
+                            } else if (intRight) {
+//                                getBinding().brightnessDialog.setVisibility(View.GONE);
+//                                getBinding().volumeDialog.setVisibility(View.VISIBLE);
+//                                getBinding().rl1.setVisibility(View.GONE);
+                                isFromAudio = true;
+                               // timeHandler.removeCallbacks(myRunnable);
+                                hideVolumeControl();
+                                if (diffY > 0) {
+                                    getBinding().volumeSeek.seekBar2.setProgress((getBinding().volumeSeek.seekBar2.getProgress() - 1 < 0) ? 0 : getBinding().volumeSeek.seekBar2.getProgress() - 1);
+                                } else {
+                                    getBinding().volumeSeek.seekBar2.setProgress((getBinding().volumeSeek.seekBar2.getProgress() + 1 > getBinding().volumeSeek.seekBar2.getMax()) ? getBinding().volumeSeek.seekBar2.getMax() : getBinding().volumeSeek.seekBar2.getProgress() + 1);
+                                }
+
+                            }
+                        } else if (Math.abs(diffX) > Math.abs(diffY)) {
+                            // Its horizontal movement
+                            // Swipes above max distance -> forward
+                            if (Math.abs(diffX) > (MIN_DISTANCE + 100)) {
+                                if (!isLivePlayer) {
+                                    tested_ok = true;
+                                    // isDoubleTap = false;
+                                    hideScrubberControls();
+                                    // Show and hide correspondent controls
+                                    String totime = "";
+                                    // Calculate time to forward
+                                    calculatedTime = (int) ((diffX) * seekSpeed);
+                                    getBinding().seekBar.setProgress((int) (runningPlayer.getCurrentPosition() + (calculatedTime)));
+                                    onProgressChanged(getBinding().seekBar, (int) (runningPlayer.getCurrentPosition() + (calculatedTime)), true);
+                                }
+                            }
+                        }
+
+                        break;
+                    case MotionEvent.ACTION_CANCEL:
+                        // Releases the finger
+                    case MotionEvent.ACTION_UP:
+                        // User removed finger from phone
+
+                        clickCount++;
+
+                        if (clickCount==1){
+                            startTime = System.currentTimeMillis();
+                        }
+
+                        else if(clickCount == 2)
+                        {
+                            long duration =  System.currentTimeMillis() - startTime;
+                            if(duration <= MAX_DURATION)
+                            {
+                                if (!isLivePlayer) {
+                                    Log.d("ftftftfftf", "Enterrl1");
+                                    screen_swipe_move = false;
+                                    if (runningPlayer.isPlaying()) {
+                                        isDoubleTap = true;
+                                        hideDoubleTapControls();
+                                        pausePlayer();
+                                    } else {
+                                        if (runningPlayer != null) {
+                                            isDoubleTap = true;
+                                            getBinding().playButton.setVisibility(View.VISIBLE);
+                                            runningPlayer.play();
+                                            getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
+
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+
+                                                    showDoubleTapControl();
+
+                                                }
+                                            }, 2000);
+
+
+                                        }
+                                    }
+
+                                    //getBinding().playerMediaControls.setVisibility(View.VISIBLE);
+                                    clickCount = 0;
+                                    duration = 0;
+                                }
+                            }else{
+                                Log.d("ftftftfftf","Enterrl2");
+                                clickCount = 1;
+                                startTime = System.currentTimeMillis();
+                                if (drag)
+                                    drag = false;
+
+                                if (isPlayerStart) {
+                                    if (getBinding().skipCredits.getVisibility() == View.VISIBLE) {
+                                        getBinding().skipCredits.setVisibility(View.GONE);
+                                        getBinding().progressBar.setVisibility(View.GONE);
+                                        if (objectAnimator != null) {
+                                            objectAnimator.cancel();
+                                            objectAnimator = null;
+                                        }
+                                        isPlayerSurfaceClicked = true;
+                                        getBinding().progressBar.setProgress(0);
+                                    }
+                                    if (handler1 != null) {
+                                        handler1.removeCallbacksAndMessages(null);
+                                    }
+
+                                    if (lockEnable) {
 //                        if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
 //                            getBinding().lockIcon.setVisibility(View.GONE);
 //                        } else {
@@ -3063,818 +3498,359 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 //                            if (adRunning || isBingeView)
 //                                getBinding().lockIcon.setVisibility(View.GONE);
 //                        }
-                    } else {
-                        if (timer) {
-                            if (timeHandler != null)
-                                timeHandler.removeCallbacks(myRunnable);
-                        }
-                        if (getBinding().videoDialog.getVisibility() == View.VISIBLE) {
-                            getBinding().videoDialog.setVisibility(View.GONE);
-                        }
-                        if (getBinding().audioDialog.getVisibility() == View.VISIBLE) {
-                            getBinding().audioDialog.setVisibility(View.GONE);
-                            getBinding().skipIntro.setClickable(true);
-                            getBinding().skipCredits.setClickable(true);
-                            getBinding().skipRecap.setClickable(true);
-                        }
-                        ShowAndHideView();
-                    }
+                                    } else {
+                                        if (timer) {
+                                            if (timeHandler != null)
+                                                timeHandler.removeCallbacks(myRunnable);
+                                        }
+                                        if (getBinding().videoDialog.getVisibility() == View.VISIBLE) {
+                                            getBinding().videoDialog.setVisibility(View.GONE);
+                                        }
+                                        if (getBinding().audioDialog.getVisibility() == View.VISIBLE) {
+                                            getBinding().audioDialog.setVisibility(View.GONE);
+                                            getBinding().skipIntro.setClickable(true);
+                                            getBinding().skipCredits.setClickable(true);
+                                            getBinding().skipRecap.setClickable(true);
+                                        }
+                                        Log.d("ftftftfftf","EnterShowHideView");
+                                        ShowAndHideView();
+                                    }
 
+                                }
+                            }
+                        }
+
+
+
+
+
+
+                        if (isFromAudio || isFromBrightness){
+//                            callHandler();
+                           // isDoubleTap = false;
+                            isFromBrightness = false;
+                            isFromAudio = false;
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    if (isDoubleTap){
+                                        getBinding().brightnessDialog.setVisibility(View.GONE);
+                                        getBinding().audioDialog.setVisibility(View.GONE);
+                                    }else {
+
+                                        showDoubleTapControl();
+                                    }
+                                }
+                            },1200);
+
+                        }else {
+
+                            if (screen_swipe_move) {
+                                calculatedTime = (int) (runningPlayer.getCurrentPosition() + (calculatedTime));
+                                onStopTrackingTouch(getBinding().seekBar);
+                            }
+
+                            screen_swipe_move = false;
+                            tested_ok         = false;
+
+                        }
+
+//                        calculatedTime = (int) (runningPlayer.getCurrentPosition() + (calculatedTime));
+//                        onStopTrackingTouch(getBinding().seekBar);
+                        // runningPlayer.seekTo(calculatedTime);
+                        //showControls();
+                        break;
                 }
-
+                return false;
             }
 
+
+
+        });
+
+        getBinding().rl.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onDoubleClick(View view) {
-                if (runningPlayer.isPlaying()){
-                    pausePlayer();
-                }else {
-                    if (runningPlayer!=null){
-                        runningPlayer.play();
-                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-                        Log.d("ftftftfftf","Enterrl");
-                    }
-                }
-//                if (lockEnable) {
-////                    if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
-////                        getBinding().lockIcon.setVisibility(View.GONE);
-////                    } else {
-////                        getBinding().lockIcon.setVisibility(View.VISIBLE);
-////                    }
-//                } else {
-//                    viewModel.changeVideoRatio();
-//                }
-                //playPauseControl();
-
-            }
-        }));
-        getBinding().rl1.setOnClickListener(new DoubleClick(new DoubleClickListener() {
-            @Override
-            public void onSingleClick(View view) {
-
-                if (isPlayerStart) {
-                    if (getBinding().skipCredits.getVisibility() == View.VISIBLE) {
-                        getBinding().skipCredits.setVisibility(View.GONE);
-                        getBinding().progressBar.setVisibility(View.GONE);
-                        if (objectAnimator != null) {
-                            objectAnimator.cancel();
-                            objectAnimator = null;
-                        }
-                        getBinding().progressBar.setProgress(0);
-                        isPlayerSurfaceClicked = true;
-                    }
-                    if (handler1 != null) {
-                        handler1.removeCallbacksAndMessages(null);
-                    }
-                    if (lockEnable) {
-//                            if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
-//                                getBinding().lockIcon.setVisibility(View.GONE);
-//                            } else {
-//                                getBinding().lockIcon.setVisibility(View.VISIBLE);
-//                                if (adRunning || isBingeView)
-//                                    getBinding().lockIcon.setVisibility(View.GONE);
-//                            }
-
-                    } else {
-                        if (timer) {
-
-                            if (timeHandler != null)
-                                timeHandler.removeCallbacks(myRunnable);
-                        }
-                        if (getBinding().videoDialog.getVisibility() == View.VISIBLE) {
-                            getBinding().videoDialog.setVisibility(View.GONE);
-                        }
-                        if (getBinding().audioDialog.getVisibility() == View.VISIBLE) {
-                            getBinding().audioDialog.setVisibility(View.GONE);
-                            getBinding().skipIntro.setClickable(true);
-                            getBinding().skipCredits.setClickable(true);
-                            getBinding().skipRecap.setClickable(true);
-                        }
-                        ShowAndHideView();
-                    }
-
-                }
-
-            }
-
-            @Override
-            public void onDoubleClick(View view) {
-                if (runningPlayer.isPlaying()){
-                    pausePlayer();
-                }else {
-                    if (runningPlayer!=null){
-                        runningPlayer.play();
-                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-                        Log.d("ftftftfftf","Enterrl1");
-                    }
-                }
-               // viewModel.changeVideoRatio();
-                //playPauseControl();
-            }
-        }));
-
-
-        getBinding().rl1.setOnTouchListener(new View.OnTouchListener(){
-            @Override
-            public boolean onTouch (View v, MotionEvent event) {
-                switch (event.getAction()) {
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()){
+                    // User touches the screen
                     case MotionEvent.ACTION_DOWN:
-
-                        //touch is start
-                        downX = event.getX();
-                        downY = event.getY();
+                        tested_ok = false;
+                        // We pressed on the left
                         if (event.getX() < (sWidth / 2)) {
-
-                            //here check touch is screen left or right side
                             intLeft = true;
                             intRight = false;
-
+                            // We pressed on the right
                         } else if (event.getX() > (sWidth / 2)) {
-
-                            //here check touch is screen left or right side
                             intLeft = false;
                             intRight = true;
                         }
-                        break;
+                        int upperLimit = (sHeight / 4) + 100;
+                        int lowerLimit = ((sHeight / 4) * 3) - 150;
+                        // We pressed on the top
+                        if (event.getY() < upperLimit) {
+                            intBottom = false;
+                            intTop = true;
+                            // We pressed in the bottom
+                        } else if (event.getY() > lowerLimit) {
+                            intBottom = true;
+                            intTop = false;
+                        } else {
+                            intBottom = false;
+                            intTop = false;
+                        }
+                        seekSpeed = (TimeUnit.MILLISECONDS.toSeconds(runningPlayer.getDuration()) * 0.2);
+                        diffX = 0;
+                        calculatedTime = 0;
+                        seekDur = String.format("%02d:%02d",
+                                TimeUnit.MILLISECONDS.toMinutes(diffX) -
+                                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(diffX)),
+                                TimeUnit.MILLISECONDS.toSeconds(diffX) -
+                                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(diffX)));
 
+                        //TOUCH STARTED
+                        baseX = event.getX();
+                        baseY = event.getY();
+                        return true;
+                       // break;
+                    // User moves the finger
+                    case MotionEvent.ACTION_MOVE:
+                        // The finge is now moving
+                        if (!isLivePlayer) {
+                            screen_swipe_move = true;
+                        }
+                        // Controls are currently visible
+
+                        // Dissapear controls while finger is moving
+                        // root.setVisibility(View.GONE);
+                        diffX = (long) (Math.ceil(event.getX() - baseX));
+                        diffY = (long) Math.ceil(event.getY() - baseY);
+                        // Speed in which brightness can increase or deacrease
+                        double brightnessSpeed = 0.05;
+                        if (Math.abs(diffY) > MIN_DISTANCE) {
+                            tested_ok = true;
+                        }
+                        // Its vertical movement
+                        if (Math.abs(diffY) > Math.abs(diffX)) {
+                            // Tap in left increases/decreases brightness
+                            if (intLeft) {
+//                                timeHandler.removeCallbacks(myRunnable);
+                                hideBrightnessControl();
+//                                getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+//                                getBinding().volumeDialog.setVisibility(View.GONE);
+//                                getBinding().rl1.setVisibility(View.GONE);
+                                boolean settingsCanWrite = Settings.System.canWrite(getActivity());
+                                if(!settingsCanWrite) {
+                                    // If do not have write settings permission then open the Can modify system settings panel.
+                                    Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+                                    startActivity(intent);
+                                }else {
+                                    isFromBrightness = true;
+                                    cResolver = getActivity().getContentResolver();
+                                    window    = getActivity().getWindow();
+                                    // Get the current brightness
+                                    try {
+                                        Settings.System.putInt(cResolver, Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+                                        brightness = Settings.System.getInt(cResolver, Settings.System.SCREEN_BRIGHTNESS);
+                                    } catch (Settings.SettingNotFoundException e) {
+                                        e.printStackTrace();
+                                    }
+                                    // Define new brightness
+                                    int new_brightness = (int) (brightness - (diffY * brightnessSpeed));
+                                    // Keep brightness in bounds
+                                    if (new_brightness > 250) {
+                                        new_brightness = 250;
+                                    } else if (new_brightness < 1) {
+                                        new_brightness = 1;
+                                    }
+                                    // Calculate brightness inside the bar container
+                                    double brightPerc = Math.ceil((((double) new_brightness / (double) 250) * (double) 100));
+                                    //brightnessBarContainer.setVisibility(View.VISIBLE);
+                                    // brightness_center_text.setVisibility(View.VISIBLE);
+                                    getBinding().brightnessSeek.seekBar1.setProgress((int) brightPerc);
+                                    Settings.System.putInt(cResolver, Settings.System.SCREEN_BRIGHTNESS, (new_brightness));
+                                    WindowManager.LayoutParams layoutpars = window.getAttributes();
+                                    layoutpars.screenBrightness = brightness / (float) 255;
+                                    window.setAttributes(layoutpars);
+
+                                    // If has permission then show an alert dialog with message.
+
+                                }
+
+
+
+                            } else if (intRight) {
+//                                getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+//                                getBinding().volumeDialog.setVisibility(View.GONE);
+//                                getBinding().rl1.setVisibility(View.GONE);
+                                hideVolumeControl();
+//                                timeHandler.removeCallbacks(myRunnable);
+                                isFromAudio = true;
+                                if (diffY > 0) {
+                                    getBinding().volumeSeek.seekBar2.setProgress((getBinding().volumeSeek.seekBar2.getProgress() - 1 < 0) ? 0 : getBinding().volumeSeek.seekBar2.getProgress() - 1);
+                                } else {
+                                    getBinding().volumeSeek.seekBar2.setProgress((getBinding().volumeSeek.seekBar2.getProgress() + 1 > getBinding().volumeSeek.seekBar2.getMax()) ? getBinding().volumeSeek.seekBar2.getMax() : getBinding().volumeSeek.seekBar2.getProgress() + 1);
+                                }
+
+
+                            }
+                        } else if (Math.abs(diffX) > Math.abs(diffY)) {
+                            // Its horizontal movement
+                            // Swipes above max distance -> forward
+                            if (Math.abs(diffX) > (MIN_DISTANCE + 100)) {
+                                if(!isLivePlayer) {
+                                    tested_ok = true;
+                                    hideScrubberControls();
+                                    String totime = "";
+                                    // Calculate time to forward
+                                    calculatedTime = (int) ((diffX) * seekSpeed);
+                                    getBinding().seekBar.setProgress((int) (runningPlayer.getCurrentPosition() + (calculatedTime)));
+                                    onProgressChanged(getBinding().seekBar, (int) (runningPlayer.getCurrentPosition() + (calculatedTime)), true);
+                                }
+                            }
+                        }
+
+                        break;
+                    case MotionEvent.ACTION_CANCEL:
+                        // Releases the finger
                     case MotionEvent.ACTION_UP:
-                        isTouchCaptured = false;
+
+
+
                         clickCount++;
 
                         if (clickCount==1){
-                            startTime1 = System.currentTimeMillis();
+                            startTime = System.currentTimeMillis();
                         }
 
                         else if(clickCount == 2)
                         {
-                             duration =  System.currentTimeMillis() - startTime1;
+                            long duration =  System.currentTimeMillis() - startTime;
                             if(duration <= MAX_DURATION)
                             {
-//                                if (runningPlayer.isPlaying()){
-//                                    pausePlayer();
-//                                }else {
-//                                    if (runningPlayer!=null){
-//                                        runningPlayer.play();
-//                                        getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-//                                    }
-//                                }
-                                clickCount = 0;
-                                duration = 0;
+                                //hideDoubleTapControls();
+                                if(!isLivePlayer) {
+                                    screen_swipe_move = false;
+                                    if (runningPlayer.isPlaying()) {
+                                        isDoubleTap = true;
+                                        hideDoubleTapControls();
+                                        pausePlayer();
+                                    } else {
+                                        if (runningPlayer != null) {
+                                            isDoubleTap = true;
+                                            runningPlayer.play();
+                                            getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
+
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+//                                                isDoubleTap = false;
+                                                    showDoubleTapControl();
+                                                    //callHandler();
+                                                }
+                                            }, 2000);
+                                            Log.d("ftftftfftf", "Enterrl1");
+                                        }
+                                    }
+
+
+                                    // getBinding().playerMediaControls.setVisibility(View.VISIBLE);
+                                    clickCount = 0;
+                                    duration = 0;
+                                }
                             }else{
                                 clickCount = 1;
-                                startTime1 = System.currentTimeMillis();
-                            }
-                            break;
-                        }
+                                startTime = System.currentTimeMillis();
+                                if (drag)
+                                    drag = false;
 
-                    case MotionEvent.ACTION_MOVE:
-
-                        //finger move to screen
-                        float x2 = event.getX();
-                        float y2 = event.getY();
-
-                        diffX = (long) (Math.ceil(event.getX() - downX));
-                        diffY = (long) (Math.ceil(event.getY() - downY));
-
-                        if (Math.abs(diffY) > Math.abs(diffX)) {
-                            if (intLeft) {
-                                //if left its for brightness
-
-                                if (downY < y2) {
-                                    if (currBrightness >0) {
-                                        currBrightness = currBrightness - 2;
-                                        Log.d("fgfgfgfgfg", currBrightness + "");
-                                        WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
-                                        layout.screenBrightness = currBrightness / 100F;
-                                        getActivity().getWindow().setAttributes(layout);
-                                        getBinding().brightnessSeek.seekBar1.setProgress(currBrightness);
-                                    }
-                                    //down swipe brightness decrease
-                                } else if (downY > y2) {
-                                    if (currBrightness <100){
-                                        currBrightness = currBrightness + 2;
-                                        Log.d("fgfgfgfgfg", currBrightness + "");
-                                        WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
-                                        layout.screenBrightness = currBrightness / 100F;
-                                        getActivity().getWindow().setAttributes(layout);
-                                        getBinding().brightnessSeek.seekBar1.setProgress(currBrightness);
-                                    }
-                                    //up  swipe brightness increase
-                                }
-
-                            } else if (intRight) {
-
-                                //if right its for audio
-                                if (downY < y2) {
-
-                                    //down swipe volume decrease
-                                    audioManager.adjustVolume(AudioManager.ADJUST_LOWER,AudioManager.FLAG_PLAY_SOUND);
-                                    getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
-
-                                } else if (downY > y2) {
-
-                                    //up  swipe volume increase
-                                    mAudioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
-                                    getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
-                                }
-                            }
-
-
-//                            downX = event.getX();
-//                            downY = event.getY();
-
-
-                        }
-
-                        if (!isTouchCaptured) {
-                            upX1 = event.getX();
-                            upY1 = event.getY();
-                            isTouchCaptured = true;
-                        } else {
-                            upX2 = event.getX();
-                            upY2 = event.getY();
-
-                            float deltaX = upX1 - upX2;
-                            float deltaY = upY1 - upY2;
-                            //HORIZONTAL SCROLL
-                            if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                                if (Math.abs(deltaX) > min_distance) {
-                                    // left or right
-                                    if (deltaX < 0) {
-                                        Log.d("dgdgdgd","Right");
-                                        runningPlayer.seekTo(runningPlayer.getCurrentPosition() + 2000);
-                                        getBinding().seekBar.setProgress((int) runningPlayer.getCurrentPosition());
-
-                                        if (isLivePlayer) {
-                                        } else {
-                                            positionInPercentage = Math.round((getBinding().seekBar.getProgress() * 100 / runningPlayer.getDuration()));
-                                            Log.d("Positionperc",positionInPercentage+"");
-
-                                            float leftMargin = getBinding().seekBar.getWidth() * positionInPercentage / 100;
-
-
-//
-                                            if (leftMargin < (getBinding().seekBar.getWidth() + (4 * getBinding().currentTime.getPaddingLeft() - 90) - getBinding().currentTime.getWidth())) {
-                                                //previewImage.translationX = leftMargin
-                                                getBinding().imagePreview.setTranslationX(leftMargin);
-                                            }
-//
-//
-                                            try {
-
-
-                                                if (previewImagesHashMap != null) {
-                                                    Bitmap bitmap = previewImagesHashMap.get(String.valueOf(positionInPercentage));
-                                                    if (bitmap != null) {
-                                                        getBinding().imagePreview.setVisibility(View.VISIBLE);
-                                                        getBinding().imagePreview.setImageBitmap(bitmap);
-                                                        getBinding().imagePreview.bringToFront();
-                                                    }
-                                                } else {
-                                                    getBinding().imagePreview.setVisibility(View.VISIBLE);
-                                                    getBinding().imagePreview.bringToFront();
-                                                }
-
-                                            } catch (Exception e) {
-
-                                            }
+                                if (isPlayerStart) {
+                                    if (getBinding().skipCredits.getVisibility() == View.VISIBLE) {
+                                        getBinding().skipCredits.setVisibility(View.GONE);
+                                        getBinding().progressBar.setVisibility(View.GONE);
+                                        if (objectAnimator != null) {
+                                            objectAnimator.cancel();
+                                            objectAnimator = null;
                                         }
-
-                                        viewModel.sendSeekBarProgress(getBinding().seekBar.getProgress()).observe(getActivity(), s -> getBinding().currentTime.setText(s));
-
-                                        return true;
+                                        isPlayerSurfaceClicked = true;
+                                        getBinding().progressBar.setProgress(0);
                                     }
-                                    if (deltaX > 0) {
-                                        Log.d("dgdgdgd","Left");
-                                        runningPlayer.seekTo(runningPlayer.getCurrentPosition() - 2000);
-                                        getBinding().seekBar.setProgress((int) runningPlayer.getCurrentPosition());
+                                    if (handler1 != null) {
+                                        handler1.removeCallbacksAndMessages(null);
+                                    }
 
-                                        if (isLivePlayer) {
-                                        } else {
-                                            positionInPercentage = Math.round((getBinding().seekBar.getProgress() * 100 / runningPlayer.getDuration()));
-                                            Log.d("Positionperc",positionInPercentage+"");
-
-                                            float leftMargin = getBinding().seekBar.getWidth() * positionInPercentage / 100;
-
-
-//
-                                            if (leftMargin < (getBinding().seekBar.getWidth() + (4 * getBinding().currentTime.getPaddingLeft() - 90) - getBinding().currentTime.getWidth())) {
-                                                //previewImage.translationX = leftMargin
-                                                getBinding().imagePreview.setTranslationX(leftMargin);
-                                            }
-//
-//
-                                            try {
-
-
-                                                if (previewImagesHashMap != null) {
-                                                    Bitmap bitmap = previewImagesHashMap.get(String.valueOf(positionInPercentage));
-                                                    if (bitmap != null) {
-                                                        getBinding().imagePreview.setVisibility(View.VISIBLE);
-                                                        getBinding().imagePreview.setImageBitmap(bitmap);
-                                                        getBinding().imagePreview.bringToFront();
-                                                    }
-                                                } else {
-                                                    getBinding().imagePreview.setVisibility(View.VISIBLE);
-                                                    getBinding().imagePreview.bringToFront();
-                                                }
-
-                                            } catch (Exception e) {
-
-                                            }
+                                    if (lockEnable) {
+//                        if (getBinding().lockIcon.getVisibility() == View.VISIBLE) {
+//                            getBinding().lockIcon.setVisibility(View.GONE);
+//                        } else {
+//                            getBinding().lockIcon.setVisibility(View.VISIBLE);
+//                            if (adRunning || isBingeView)
+//                                getBinding().lockIcon.setVisibility(View.GONE);
+//                        }
+                                    } else {
+                                        if (timer) {
+                                            if (timeHandler != null)
+                                                timeHandler.removeCallbacks(myRunnable);
                                         }
-
-                                        viewModel.sendSeekBarProgress(getBinding().seekBar.getProgress()).observe(getActivity(), s -> getBinding().currentTime.setText(s));
-                                        return true;
+                                        if (getBinding().videoDialog.getVisibility() == View.VISIBLE) {
+                                            getBinding().videoDialog.setVisibility(View.GONE);
+                                        }
+                                        if (getBinding().audioDialog.getVisibility() == View.VISIBLE) {
+                                            getBinding().audioDialog.setVisibility(View.GONE);
+                                            getBinding().skipIntro.setClickable(true);
+                                            getBinding().skipCredits.setClickable(true);
+                                            getBinding().skipRecap.setClickable(true);
+                                        }
+                                        ShowAndHideView();
                                     }
-                                } else {
-                                    //not long enough swipe...
-                                    getBinding().imagePreview.setVisibility(View.GONE);
-                                    return false;
+
                                 }
                             }
+
                         }
-                }
-                return false;
 
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        initialX = event.getX();
-//                        initialY = event.getY();
-//                        return true;
-//
-//                    case MotionEvent.ACTION_UP:
-//                        old = 0.0f;
-//                        return true;
-//
-//                    case MotionEvent.ACTION_MOVE:
-//                       // clearAndReset();
-//                        if (timer && timeHandler != null) {
-//                            timeHandler.removeCallbacks(myRunnable);
-//                        }
-//                        currentX = event.getX();
-//                        currentY = event.getY();
-//
-//                        if (initialX > currentX) {
-//                            Log.e("TOUCH", "Left");
-//                            float New = (initialX - currentX) * 100 / 1000;
-//                            condition = (int) (condition2 - ((New <= old) ? 0 : (New - old)));
-//                            condition2 = (condition <= 0) ? 0 : condition;
-//                            Log.d("dfgdgfdd", "" + condition);
-//                            Log.d("dfgdgfdd",condition2+"");
-//                            old = (initialX - currentX) * 100 / 1000;
-//                            Log.d("dfgdgfdd",old+"");
-//                        }
-//
-//                        if (initialX < currentX) {
-//                            Log.e("TOUCH", "RIGHT");
-//                            float New = (currentX - initialX) * 100 / 1000;
-//                            condition = (int) (condition2 + ((New <= old) ? 0 : (New - old)));
-//                            condition2 = (condition >= 100) ? 100 : condition;
-//                            Log.e("INT", "" + condition);
-//                            Log.d("dfgdgfdd", "" + condition);
-//                            Log.d("dfgdgfdd",condition2+"");
-//                            old = (currentX - initialX) * 100 / 1000;
-//                            Log.d("dfgdgfdd",old+"");
-//                            audioManager.adjustVolume(AudioManager.ADJUST_LOWER,AudioManager.FLAG_PLAY_SOUND);
-//                            getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
-//                        }
-//
-//                }
-//                return true;
-            }
-        });
-        getBinding().rl.setOnTouchListener(new View.OnTouchListener(){
-            @Override
-            public boolean onTouch (View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        startTime1 = System.currentTimeMillis();
-                        clickCount++;
-                        //touch is start
-                        downX = event.getX();
-                        downY = event.getY();
-                        if (event.getX() < (sWidth / 2)) {
 
-                            //here check touch is screen left or right side
-                            intLeft = true;
-                            intRight = false;
 
-                        } else if (event.getX() > (sWidth / 2)) {
+                        // User removed finger from phone
+//                        screen_swipe_move = false;
+//                        tested_ok         = false;
 
-                            //here check touch is screen left or right side
-                            intLeft = false;
-                            intRight = true;
+                        if (isFromAudio || isFromBrightness){
+                           // isDoubleTap = false;
+                            isFromBrightness = false;
+                            isFromAudio = false;
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (isDoubleTap){
+                                        getBinding().brightnessDialog.setVisibility(View.GONE);
+                                        getBinding().audioDialog.setVisibility(View.GONE);
+                                    }else {
+
+                                        showDoubleTapControl();
+                                    }
+                                }
+                            },1200);
+                        }else {
+                            if (screen_swipe_move) {
+                                calculatedTime = (int) (runningPlayer.getCurrentPosition() + (calculatedTime));
+                                onStopTrackingTouch(getBinding().seekBar);
+                            }
+
+                            screen_swipe_move = false;
+                            tested_ok         = false;
+
                         }
+
+
+                        // runningPlayer.seekTo(calculatedTime);
+                        //showControls();
                         break;
-
-                    case MotionEvent.ACTION_UP:
-                        isTouchCaptured = false;
-
-//                        if (runningPlayer.isPlaying()){
-//                            pausePlayer();
-//                        }else {
-//                            if (runningPlayer!=null){
-//                                runningPlayer.play();
-//                                getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
-//                            }
-//                        }
-
-                        long time = System.currentTimeMillis() - startTime1;
-                        duration=  duration + time;
-                        if(clickCount == 2)
-                        {
-                            if(duration<= MAX_DURATION)
-                            {
-//                                Toast.makeText(getActivity(), "double tap",Toast.LENGTH_LONG).show();
-                            }
-                            clickCount = 0;
-                            duration = 0;
-                            break;
-                        }
-
-
-                    case MotionEvent.ACTION_MOVE:
-
-                        //finger move to screen
-                        float x2 = event.getX();
-                        float y2 = event.getY();
-
-                        diffX = (long) (Math.ceil(event.getX() - downX));
-                        diffY = (long) (Math.ceil(event.getY() - downY));
-
-                        if (Math.abs(diffY) > Math.abs(diffX)) {
-                            if (intLeft) {
-                                //if left its for brightness
-
-                                if (downY < y2) {
-                                    if (currBrightness >0) {
-                                        getBinding().brightnessDialog.setVisibility(View.VISIBLE);
-                                        currBrightness = currBrightness - 2;
-                                        Log.d("fgfgfgfgfg", currBrightness + "");
-                                        WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
-                                        layout.screenBrightness = currBrightness / 100F;
-                                        getActivity().getWindow().setAttributes(layout);
-                                        getBinding().brightnessSeek.seekBar1.setProgress(currBrightness);
-                                    }
-                                    //down swipe brightness decrease
-                                } else if (downY > y2) {
-                                    if (currBrightness <100){
-                                        getBinding().brightnessDialog.setVisibility(View.VISIBLE);
-                                        currBrightness = currBrightness + 2;
-                                        Log.d("fgfgfgfgfg", currBrightness + "");
-                                        WindowManager.LayoutParams layout = getActivity().getWindow().getAttributes();
-                                        layout.screenBrightness = currBrightness / 100F;
-                                        getActivity().getWindow().setAttributes(layout);
-                                        getBinding().brightnessSeek.seekBar1.setProgress(currBrightness);
-                                    }
-                                    //up  swipe brightness increase
-                                }
-
-                            } else if (intRight) {
-
-                                //if right its for audio
-                                if (downY < y2) {
-
-                                    //down swipe volume decrease
-                                    getBinding().volumeDialog.setVisibility(View.VISIBLE);
-                                    audioManager.adjustVolume(AudioManager.ADJUST_LOWER,AudioManager.FLAG_PLAY_SOUND);
-                                    getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
-
-                                } else if (downY > y2) {
-
-                                    //up  swipe volume increase
-                                    getBinding().volumeDialog.setVisibility(View.VISIBLE);
-                                    mAudioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
-                                    getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
-                                }
-                            }
-                        }
-
-                        if (!isTouchCaptured) {
-                            upX1 = event.getX();
-                            upY1 = event.getY();
-                            isTouchCaptured = true;
-                        } else {
-                            upX2 = event.getX();
-                            upY2 = event.getY();
-
-                            float deltaX = upX1 - upX2;
-                            float deltaY = upY1 - upY2;
-                            //HORIZONTAL SCROLL
-                            if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                                if (Math.abs(deltaX) > min_distance) {
-                                    getBinding().rl1.setVisibility(View.VISIBLE);
-                                    getBinding().volumeDialog.setVisibility(View.VISIBLE);
-                                    getBinding().brightnessDialog.setVisibility(View.VISIBLE);
-                                    // left or right
-                                    if (deltaX < 0) {
-
-                                        Log.d("dgdgdgd","Right");
-                                        runningPlayer.seekTo(runningPlayer.getCurrentPosition() + 2000);
-                                        getBinding().seekBar.setProgress((int) runningPlayer.getCurrentPosition());
-
-                                        if (isLivePlayer) {
-                                        } else {
-                                            positionInPercentage = Math.round((getBinding().seekBar.getProgress() * 100 / runningPlayer.getDuration()));
-                                            Log.d("Positionperc",positionInPercentage+"");
-
-                                            float leftMargin = getBinding().seekBar.getWidth() * positionInPercentage / 100;
-
-
-//
-                                            if (leftMargin < (getBinding().seekBar.getWidth() + (4 * getBinding().currentTime.getPaddingLeft() - 90) - getBinding().currentTime.getWidth())) {
-                                                //previewImage.translationX = leftMargin
-                                                getBinding().imagePreview.setTranslationX(leftMargin);
-                                            }
-//
-//
-                                            try {
-
-
-                                                if (previewImagesHashMap != null) {
-                                                    Bitmap bitmap = previewImagesHashMap.get(String.valueOf(positionInPercentage));
-                                                    if (bitmap != null) {
-                                                        getBinding().imagePreview.setVisibility(View.VISIBLE);
-                                                        getBinding().imagePreview.setImageBitmap(bitmap);
-                                                        getBinding().imagePreview.bringToFront();
-                                                    }
-                                                } else {
-                                                    getBinding().imagePreview.setVisibility(View.VISIBLE);
-                                                    getBinding().imagePreview.bringToFront();
-                                                }
-
-                                            } catch (Exception e) {
-
-                                            }
-                                        }
-
-                                        viewModel.sendSeekBarProgress(getBinding().seekBar.getProgress()).observe(getActivity(), s -> getBinding().currentTime.setText(s));
-
-                                        return true;
-                                    }
-                                    if (deltaX > 0) {
-                                        Log.d("dgdgdgd","Left");
-                                        runningPlayer.seekTo(runningPlayer.getCurrentPosition() - 2000);
-                                        getBinding().seekBar.setProgress((int) runningPlayer.getCurrentPosition());
-
-                                        if (isLivePlayer) {
-                                        } else {
-                                            positionInPercentage = Math.round((getBinding().seekBar.getProgress() * 100 / runningPlayer.getDuration()));
-                                            Log.d("Positionperc",positionInPercentage+"");
-
-                                            float leftMargin = getBinding().seekBar.getWidth() * positionInPercentage / 100;
-
-
-//
-                                            if (leftMargin < (getBinding().seekBar.getWidth() + (4 * getBinding().currentTime.getPaddingLeft() - 90) - getBinding().currentTime.getWidth())) {
-                                                //previewImage.translationX = leftMargin
-                                                getBinding().imagePreview.setTranslationX(leftMargin);
-                                            }
-//
-//
-                                            try {
-
-
-                                                if (previewImagesHashMap != null) {
-                                                    Bitmap bitmap = previewImagesHashMap.get(String.valueOf(positionInPercentage));
-                                                    if (bitmap != null) {
-                                                        getBinding().imagePreview.setVisibility(View.VISIBLE);
-                                                        getBinding().imagePreview.setImageBitmap(bitmap);
-                                                        getBinding().imagePreview.bringToFront();
-                                                    }
-                                                } else {
-                                                    getBinding().imagePreview.setVisibility(View.VISIBLE);
-                                                    getBinding().imagePreview.bringToFront();
-                                                }
-
-                                            } catch (Exception e) {
-
-                                            }
-                                        }
-
-                                        viewModel.sendSeekBarProgress(getBinding().seekBar.getProgress()).observe(getActivity(), s -> getBinding().currentTime.setText(s));
-                                        return true;
-                                    }
-                                } else {
-                                    //not long enough swipe...
-                                    getBinding().imagePreview.setVisibility(View.GONE);
-                                    return false;
-                                }
-                            }
-                        }
                 }
                 return false;
-
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        initialX = event.getX();
-//                        initialY = event.getY();
-//                        return true;
-//
-//                    case MotionEvent.ACTION_UP:
-//                        old = 0.0f;
-//                        return true;
-//
-//                    case MotionEvent.ACTION_MOVE:
-//                       // clearAndReset();
-//                        if (timer && timeHandler != null) {
-//                            timeHandler.removeCallbacks(myRunnable);
-//                        }
-//                        currentX = event.getX();
-//                        currentY = event.getY();
-//
-//                        if (initialX > currentX) {
-//                            Log.e("TOUCH", "Left");
-//                            float New = (initialX - currentX) * 100 / 1000;
-//                            condition = (int) (condition2 - ((New <= old) ? 0 : (New - old)));
-//                            condition2 = (condition <= 0) ? 0 : condition;
-//                            Log.d("dfgdgfdd", "" + condition);
-//                            Log.d("dfgdgfdd",condition2+"");
-//                            old = (initialX - currentX) * 100 / 1000;
-//                            Log.d("dfgdgfdd",old+"");
-//                        }
-//
-//                        if (initialX < currentX) {
-//                            Log.e("TOUCH", "RIGHT");
-//                            float New = (currentX - initialX) * 100 / 1000;
-//                            condition = (int) (condition2 + ((New <= old) ? 0 : (New - old)));
-//                            condition2 = (condition >= 100) ? 100 : condition;
-//                            Log.e("INT", "" + condition);
-//                            Log.d("dfgdgfdd", "" + condition);
-//                            Log.d("dfgdgfdd",condition2+"");
-//                            old = (currentX - initialX) * 100 / 1000;
-//                            Log.d("dfgdgfdd",old+"");
-//                            audioManager.adjustVolume(AudioManager.ADJUST_LOWER,AudioManager.FLAG_PLAY_SOUND);
-//                            getBinding().volumeSeek.seekBar2.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
-//                        }
-//
-//                }
-//                return true;
             }
+
         });
-
-
-
-
-
-//        getBinding().rl1.setOnTouchListener(new View.OnTouchListener() {
-//            @SuppressLint("ClickableViewAccessibility")
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                try {
-//                    gestureDetector.onTouchEvent(motionEvent);
-//
-//
-//                } catch (Exception e) {
-//
-//                }
-//                return false;
-//            }
-//        });
-
-//        getBinding().rl1.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//
-//                        //touch is start
-//                        downX = event.getX();
-//                        downY = event.getY();
-//                        if (event.getX() < (sWidth / 2)) {
-//
-//                            //here check touch is screen left or right side
-//                            intLeft = true;
-//                            intRight = false;
-//
-//                        } else if (event.getX() > (sWidth / 2)) {
-//
-//                            //here check touch is screen left or right side
-//                            intLeft = false;
-//                            intRight = true;
-//                        }
-//                        break;
-//
-//                    case MotionEvent.ACTION_UP:
-//
-//                    case MotionEvent.ACTION_MOVE:
-//
-//                        //finger move to screen
-//                        float x2 = event.getX();
-//                        float y2 = event.getY();
-//
-//                        diffX = (long) (Math.ceil(event.getX() - downX));
-//                        diffY = (long) (Math.ceil(event.getY() - downY));
-//
-//                        if (Math.abs(diffY) > Math.abs(diffX)) {
-//                            if (intLeft) {
-//                                //if left its for brightness
-//
-//                                if (downY < y2) {
-//                                    //down swipe brightness decrease
-//                                } else if (downY > y2) {
-//                                    //up  swipe brightness increase
-//                                }
-//
-//                            } else if (intRight) {
-//
-//                                //if right its for audio
-//                                if (downY < y2) {
-//
-//                                    Log.d("dfdfdfdfdf",downY+"");
-//                                    Log.d("dfdfdfdfdf",y2+"");
-//
-//                                    //down swipe volume decrease
-//                                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, y2, 0);
-//
-//                                } else if (downY > y2) {
-//                                    Log.d("dfdfdfdfdf",downY+"");
-//                                    Log.d("dfdfdfdfdf",y2+"");
-//                                    //up  swipe volume increase
-//                                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int) downY, 0);
-//                                }
-//                            }
-//                        }
-//                }
-//                return false;
-//                //return false;
-//            }
-//        });
-//        getBinding().rl.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//
-//                        //touch is start
-//                        downX = event.getX();
-//                        downY = event.getY();
-//                        if (event.getX() < (sWidth / 2)) {
-//
-//                            //here check touch is screen left or right side
-//                            intLeft = true;
-//                            intRight = false;
-//
-//                        } else if (event.getX() > (sWidth / 2)) {
-//
-//                            //here check touch is screen left or right side
-//                            intLeft = false;
-//                            intRight = true;
-//                        }
-//                        break;
-//
-//                    case MotionEvent.ACTION_UP:
-//
-//                    case MotionEvent.ACTION_MOVE:
-//
-//                        //finger move to screen
-//                        float x2 = event.getX();
-//                        float y2 = event.getY();
-//
-//                        diffX = (long) (Math.ceil(event.getX() - downX));
-//                        diffY = (long) (Math.ceil(event.getY() - downY));
-//
-//                        if (Math.abs(diffY) > Math.abs(diffX)) {
-//                            if (intLeft) {
-//                                //if left its for brightness
-//
-//                                if (downY < y2) {
-//                                    //down swipe brightness decrease
-//                                } else if (downY > y2) {
-//                                    //up  swipe brightness increase
-//                                }
-//
-//                            } else if (intRight) {
-//
-//                                //if right its for audio
-//                                if (downY < y2) {
-//
-//                                    Log.d("dfdfdfdfdf",downY+"");
-//                                    Log.d("dfdfdfdfdf",y2+"");
-//
-//                                    //down swipe volume decrease
-//                                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int) downY, 0);
-//
-//                                } else if (downY > y2) {
-//                                    Log.d("dfdfdfdfdf",downY+"");
-//                                    Log.d("dfdfdfdfdf",y2+"");
-//                                    //up  swipe volume increase
-//                                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int) downY, 0);
-//                                }
-//                            }
-//                        }
-//                }
-//                return false;
-//                //return false;
-//            }
-//        });
-
-
-
-
 
         getBinding().forward.setOnClickListener(view -> {
             getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
@@ -4096,6 +4072,168 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
 
     }
+
+    private void hideDoubleTapControls() {
+        getBinding().rl1.setVisibility(View.VISIBLE);
+        getBinding().name.setVisibility(View.GONE);
+        getBinding().playerMediaControls.setVisibility(View.VISIBLE);
+          getBinding().playButton.setVisibility(View.VISIBLE);
+        getBinding().seekBar.setVisibility(View.GONE);
+        getBinding().currentTime.setVisibility(View.GONE);
+        getBinding().totalDuration.setVisibility(View.GONE);
+        getBinding().fullscreen.setVisibility(View.GONE);
+         getBinding().forward.setVisibility(View.GONE);
+         getBinding().backward.setVisibility(View.GONE);
+        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+        getBinding().playericon.setVisibility(View.GONE);
+        // getBinding().ivQuality.setVisibility(View.GONE);
+        getBinding().ivCancel.setVisibility(View.GONE);
+        getBinding().loading.setVisibility(View.GONE);
+        getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
+        getBinding().slash.setVisibility(View.GONE);
+        getBinding().subtitleAudio.setVisibility(View.GONE);
+        getBinding().quality.setVisibility(View.GONE);
+        getBinding().volumeDialog.setVisibility(View.GONE);
+        getBinding().brightnessDialog.setVisibility(View.GONE);
+        getBinding().nextEpisode.setVisibility(View.GONE);
+    }
+    private void showDoubleTapControl(){
+        if (!isLivePlayer) {
+            getBinding().rl1.setVisibility(View.VISIBLE);
+            getBinding().name.setVisibility(View.VISIBLE);
+            getBinding().playerMediaControls.setVisibility(View.VISIBLE);
+            getBinding().playButton.setVisibility(View.VISIBLE);
+            getBinding().seekBar.setVisibility(View.VISIBLE);
+            getBinding().currentTime.setVisibility(View.VISIBLE);
+            getBinding().totalDuration.setVisibility(View.VISIBLE);
+            getBinding().fullscreen.setVisibility(View.GONE);
+            getBinding().forward.setVisibility(View.VISIBLE);
+            getBinding().backward.setVisibility(View.VISIBLE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+            getBinding().playericon.setVisibility(View.GONE);
+            // getBinding().ivQuality.setVisibility(View.GONE);
+            getBinding().ivCancel.setVisibility(View.VISIBLE);
+            getBinding().loading.setVisibility(View.GONE);
+            getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
+            getBinding().slash.setVisibility(View.VISIBLE);
+
+            if (isCaption || isAudioTracks) {
+                getBinding().subtitleAudio.setVisibility(View.VISIBLE);
+            } else {
+                getBinding().subtitleAudio.setVisibility(View.GONE);
+            }
+
+            if (isSeries && episodesList != null && episodesList.size() > 0) {
+                getBinding().nextEpisode.setVisibility(View.VISIBLE);
+            } else {
+                getBinding().nextEpisode.setVisibility(View.GONE);
+            }
+
+            getBinding().quality.setVisibility(View.VISIBLE);
+            getBinding().volumeDialog.setVisibility(View.VISIBLE);
+            getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+            isDoubleTap = false;
+            callHandler();
+        }else {
+//            getBinding().volumeDialog.setVisibility(View.VISIBLE);
+//            getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+//            getBinding().rlDown.setVisibility(View.GONE);
+//            getBinding().seekBar.setVisibility(View.GONE);
+//            getBinding().liveTxt.setVisibility(View.VISIBLE);
+//            getBinding().playerMediaControls.setVisibility(View.GONE);
+//            getBinding().quality.setVisibility(View.VISIBLE);
+//            getBinding().name.setVisibility(View.VISIBLE);
+
+            getBinding().rl1.setVisibility(View.VISIBLE);
+            getBinding().name.setVisibility(View.VISIBLE);
+            getBinding().rlDown.setVisibility(View.GONE);
+            getBinding().seekBar.setVisibility(View.GONE);
+            getBinding().liveTxt.setVisibility(View.VISIBLE);
+            getBinding().playerMediaControls.setVisibility(View.GONE);
+            getBinding().volumeDialog.setVisibility(View.VISIBLE);
+            getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+            getBinding().quality.setVisibility(View.VISIBLE);
+            getBinding().ivCancel.setVisibility(View.VISIBLE);
+            callHandler();
+        }
+    }
+
+    private void hideBrightnessControl() {
+        getBinding().rl1.setVisibility(View.VISIBLE);
+        getBinding().name.setVisibility(View.GONE);
+        getBinding().liveTxt.setVisibility(View.GONE);
+        getBinding().playerMediaControls.setVisibility(View.GONE);
+      //  getBinding().playButton.setVisibility(View.INVISIBLE);
+        getBinding().seekBar.setVisibility(View.GONE);
+        getBinding().currentTime.setVisibility(View.GONE);
+        getBinding().totalDuration.setVisibility(View.GONE);
+        getBinding().fullscreen.setVisibility(View.GONE);
+//        getBinding().forward.setVisibility(View.INVISIBLE);
+//        getBinding().backward.setVisibility(View.INVISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+        getBinding().playericon.setVisibility(View.GONE);
+        // getBinding().ivQuality.setVisibility(View.GONE);
+        getBinding().ivCancel.setVisibility(View.GONE);
+        getBinding().loading.setVisibility(View.GONE);
+        getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
+        getBinding().slash.setVisibility(View.GONE);
+        getBinding().subtitleAudio.setVisibility(View.GONE);
+        getBinding().quality.setVisibility(View.GONE);
+        getBinding().volumeDialog.setVisibility(View.GONE);
+        getBinding().nextEpisode.setVisibility(View.GONE);
+        getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+    }
+    private void hideVolumeControl(){
+        getBinding().rl1.setVisibility(View.VISIBLE);
+        getBinding().name.setVisibility(View.GONE);
+        getBinding().liveTxt.setVisibility(View.GONE);
+        getBinding().playerMediaControls.setVisibility(View.GONE);
+      //  getBinding().playButton.setVisibility(View.INVISIBLE);
+        getBinding().seekBar.setVisibility(View.GONE);
+        getBinding().currentTime.setVisibility(View.GONE);
+        getBinding().totalDuration.setVisibility(View.GONE);
+        getBinding().fullscreen.setVisibility(View.GONE);
+      //  getBinding().forward.setVisibility(View.INVISIBLE);
+      //  getBinding().backward.setVisibility(View.INVISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+        getBinding().playericon.setVisibility(View.GONE);
+        // getBinding().ivQuality.setVisibility(View.GONE);
+        getBinding().ivCancel.setVisibility(View.GONE);
+        getBinding().loading.setVisibility(View.GONE);
+        getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
+        getBinding().slash.setVisibility(View.GONE);
+        getBinding().subtitleAudio.setVisibility(View.GONE);
+        getBinding().quality.setVisibility(View.GONE);
+        getBinding().volumeDialog.setVisibility(View.VISIBLE);
+        getBinding().brightnessDialog.setVisibility(View.GONE);
+        getBinding().nextEpisode.setVisibility(View.GONE);
+    }
+    private void hideScrubberControls(){
+        getBinding().rl1.setVisibility(View.VISIBLE);
+        getBinding().playButton.setVisibility(View.GONE);
+        getBinding().name.setVisibility(View.GONE);
+        getBinding().seekBar.setVisibility(View.VISIBLE);
+        getBinding().imagePreview.setVisibility(View.VISIBLE);
+        getBinding().playerMediaControls.setVisibility(View.GONE);
+        getBinding().currentTime.setVisibility(View.GONE);
+        getBinding().totalDuration.setVisibility(View.GONE);
+        getBinding().fullscreen.setVisibility(View.GONE);
+        getBinding().forward.setVisibility(View.GONE);
+        getBinding().backward.setVisibility(View.GONE);
+        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+        getBinding().playericon.setVisibility(View.GONE);
+        // getBinding().ivQuality.setVisibility(View.GONE);
+        getBinding().ivCancel.setVisibility(View.GONE);
+        getBinding().loading.setVisibility(View.GONE);
+        getBinding().linearAutoPlayLayout.setVisibility(View.GONE);
+        getBinding().slash.setVisibility(View.GONE);
+        getBinding().subtitleAudio.setVisibility(View.GONE);
+        getBinding().quality.setVisibility(View.GONE);
+        getBinding().volumeDialog.setVisibility(View.GONE);
+        getBinding().nextEpisode.setVisibility(View.GONE);
+        getBinding().brightnessDialog.setVisibility(View.GONE);
+    }
+
 
     void clearAndReset() {
         // getBinding().lockIcon.setVisibility(View.GONE);
@@ -4545,6 +4683,7 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
     private void playPauseControl() {
 
+
         viewModel.playPauseControl().observe(this, aBoolean -> {
             if (aBoolean != null && aBoolean) {
                 getBinding().playButton.setImageDrawable(ContextCompat.getDrawable(baseActivity, R.drawable.ic_pause));
@@ -4571,6 +4710,10 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
 
             }
         });
+        if(isDoubleTap){
+            isDoubleTap = false;
+            showDoubleTapControl();
+        }
     }
 
     int positionInPercentage = 0;
@@ -4590,7 +4733,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             if (isLivePlayer) {
             } else {
                 positionInPercentage = Math.round((seekbar.getProgress() * 100 / runningPlayer.getDuration()));
-            Log.d("Positionperc",positionInPercentage+"");
 
                 float leftMargin = seekbar.getWidth() * positionInPercentage / 100;
 
@@ -4744,11 +4886,25 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         } else if (seekBar.getId() == R.id.seekBar2) {
 
         } else {
+//            getBinding().rl1.setVisibility(View.GONE);
+//            getBinding().backward.setVisibility(View.GONE);
+//            getBinding().forward.setVisibility(View.GONE);
+
+            getBinding().seekBar.setVisibility(View.VISIBLE);
             getBinding().imagePreview.setVisibility(View.GONE);
             isSkipCreditVisible = false;
             getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
             viewModel.getPlayerView(seekBar);
-            callHandler();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+
+                    showDoubleTapControl();
+                    //callHandler();
+                }
+            },2800);
+
         }
     }
 
@@ -4783,6 +4939,12 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
             }
 
         }
+        if(isDoubleTap){
+            isDoubleTap = false;
+            showDoubleTapControl();
+        }
+
+
         resumePlayer();
     }
 
@@ -4917,6 +5079,9 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
                     getBinding().listViewSettings.setVisibility(View.VISIBLE);
                     getBinding().volumeDialog.setVisibility(View.VISIBLE);
                     getBinding().brightnessDialog.setVisibility(View.VISIBLE);
+                    if(isLivePlayer){
+                        getBinding().liveTxt.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         }, 4000);
@@ -5730,7 +5895,6 @@ public class DTPlayer extends BaseBindingFragment<FragmentDtplayerBinding> imple
         bitmapRegionDecoder.recycle();
         return previewImagesHashMap;
     }
-
 
 
 }
