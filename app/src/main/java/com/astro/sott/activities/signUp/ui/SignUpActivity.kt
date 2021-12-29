@@ -460,7 +460,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
 
 
 
-            
+
                 // activitySinUpBinding?.loginButton?.loginBehavior = LoginBehavior.WEB_ONLY
                 override fun onError(exception: FacebookException) {
                     activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.GONE

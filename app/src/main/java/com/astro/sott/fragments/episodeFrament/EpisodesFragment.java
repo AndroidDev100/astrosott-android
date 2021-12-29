@@ -287,12 +287,12 @@ public class EpisodesFragment extends BaseBindingFragment<EpisodeFooterFragmentB
 
     private void callSeasonEpisodesWithExternaId(String externalId, String name) {
         TabsData.getInstance().setSelectedSeason(seasonCounter);
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         getBinding().loadMoreTxt.setText(getActivity().getResources().getString(R.string.loading));
 
         viewModel.callSeasonEpisodesWithExternalId(externalId, asset.getType(), counter, seasonCounter, TabsData.getInstance().getSeasonData(), AppConstants.Rail5, AppLevelConstants.KEY_EPISODE_NUMBER, this).observe(this, assetCommonBeans -> {
             getBinding().loadMoreTxt.setText("Load More");
-            getBinding().progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             if (assetCommonBeans.get(0).getStatus()) {
                 getBinding().retryTxt.setVisibility(View.GONE);
                 getBinding().seasonText.setText(name);
