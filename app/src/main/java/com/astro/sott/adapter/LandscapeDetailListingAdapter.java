@@ -65,7 +65,6 @@ public class LandscapeDetailListingAdapter extends RecyclerView.Adapter<Landscap
         RailCommonData singleItem = itemsList.get(i);
         holder.landscapeItemBinding.livenowLay.setVisibility(View.GONE);
         holder.landscapeItemBinding.exclusiveLayout.exclLay.setVisibility(View.GONE);
-        Log.d("hgbhjn","detail");
         try {
 
 

@@ -13,10 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.astro.sott.activities.liveEvent.LiveEventActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
+import com.astro.sott.activities.profile.ui.EditNameActivity;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.R;
-import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.beanModel.login.CommonResponse;
 import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
@@ -24,6 +25,7 @@ import com.astro.sott.databinding.ActivityParentalControlBinding;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.DialogHelper;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 
 public class ParentalControl extends BaseBindingActivity<ActivityParentalControlBinding> implements View.OnClickListener {
@@ -80,7 +82,6 @@ public class ParentalControl extends BaseBindingActivity<ActivityParentalControl
         handleParentalSwitch();
 
         getBinding().tvViewRestriction.setOnClickListener(view -> {
-            new ActivityLauncher(ParentalControl.this).loginActivity(ParentalControl.this, LoginActivity.class, 0,AppLevelConstants.ACTICITY_NAME);
            // new ActivityLauncher(ParentalControl.this).viewRestrictionActivity(ParentalControl.this, ViewingRestrictionActivity.class);
         });
 
@@ -111,7 +112,8 @@ public class ParentalControl extends BaseBindingActivity<ActivityParentalControl
                 if (NetworkConnectivity.isOnline(getApplication())) {
                     changePinFragment();
                 } else {
-                    Toast.makeText(ParentalControl.this, getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
+                    ToastHandler.show(getString(R.string.no_internet_connection),
+                            ParentalControl.this);
                 }
                 break;
         }
@@ -124,7 +126,6 @@ public class ParentalControl extends BaseBindingActivity<ActivityParentalControl
             if(!compoundButton.isPressed()) {
                 return;
             }
-            new ActivityLauncher(ParentalControl.this).loginActivity(ParentalControl.this, LoginActivity.class, 0,AppLevelConstants.PARENTAL_SWITCH);
         });
     }
 
@@ -138,11 +139,13 @@ public class ParentalControl extends BaseBindingActivity<ActivityParentalControl
                             DialogHelper.hideValidatePinDialog();
                             showSetPinDialog();
                         } else {
-                            Toast.makeText(ParentalControl.this, getString(R.string.incorrect_parental_pin), Toast.LENGTH_LONG).show();
+                            ToastHandler.show(getString(R.string.incorrect_parental_pin), ParentalControl.this);
+
                         }
                     });
                 } else {
-                    Toast.makeText(ParentalControl.this, getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
+                    ToastHandler.show(getString(R.string.no_internet_connection), ParentalControl.this);
+
 
                 }
             }
@@ -163,13 +166,16 @@ public class ParentalControl extends BaseBindingActivity<ActivityParentalControl
                     public void onChanged(@Nullable CommonResponse commonResponse) {
                         if (NetworkConnectivity.isOnline(getApplication())) {
                             if (commonResponse.getStatus()) {
-                                Toast.makeText(ParentalControl.this, getString(R.string.parental_pin_updated), Toast.LENGTH_LONG).show();
+                                ToastHandler.show(getString(R.string.parental_pin_updated), ParentalControl.this);
+
                                 DialogHelper.hideValidatePinDialog();
                             } else {
-                                Toast.makeText(ParentalControl.this, getString(R.string.incorrect_parental_pin), Toast.LENGTH_LONG).show();
+                                ToastHandler.show(getString(R.string.incorrect_parental_pin), ParentalControl.this);
+
                             }
                         } else {
-                            Toast.makeText(ParentalControl.this, getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
+                            ToastHandler.show(getString(R.string.no_internet_connection), ParentalControl.this);
+
 
                         }
                     }

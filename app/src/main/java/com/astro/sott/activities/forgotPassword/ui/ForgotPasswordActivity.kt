@@ -16,6 +16,7 @@ import com.astro.sott.callBacks.TextWatcherCallBack
 import com.astro.sott.databinding.ActivityForgotPasswordBinding
 import com.astro.sott.utils.helpers.AppLevelConstants
 import com.astro.sott.utils.helpers.CustomTextWatcher
+import com.astro.sott.utils.helpers.ToastHandler
 
 class ForgotPasswordActivity : AppCompatActivity() {
     private var activityForgotPasswordBinding: ActivityForgotPasswordBinding? = null
@@ -93,8 +94,10 @@ class ForgotPasswordActivity : AppCompatActivity() {
                     // Toast.makeText(this, "Verification code had be sent to $email_mobile", Toast.LENGTH_SHORT).show()
                     redirecToOtpScreen()
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT)
-                        .show()
+                    ToastHandler.show(
+                        evergentCommonResponse.errorMessage,
+                        this@ForgotPasswordActivity
+                    )
                 }
             })
     }

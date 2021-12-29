@@ -112,7 +112,6 @@
                     android:foregroundTint="@color/white"
                     android:hint="@string/new_mobile"
                     android:inputType="number"
-                    android:maxLength="11"
                     android:maxLines="1"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
@@ -173,7 +172,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
                         android:layout_marginEnd="18dp"
-                        android:background="@drawable/ic_outline_visibility_off_light"
                         android:contentDescription="@string/contentDescription" />
                 </LinearLayout>
 
@@ -211,13 +209,11 @@
 
         </LinearLayout>
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <include
             android:layout_centerInParent="true"
-            android:elevation="5dp"
-            android:theme="@style/progressBarBlue"
-            android:visibility="gone" />
+            android:id="@+id/progress_lay"
+            layout="@layout/progress_animation"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
     </RelativeLayout>
 </layout>

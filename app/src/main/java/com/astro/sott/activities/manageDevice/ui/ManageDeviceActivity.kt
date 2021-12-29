@@ -21,6 +21,7 @@ import com.astro.sott.networking.refreshToken.EvergentRefreshToken
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager
 import com.astro.sott.usermanagment.modelClasses.getDevice.AccountDeviceDetailsItem
 import com.astro.sott.utils.commonMethods.AppCommonMethods
+import com.astro.sott.utils.helpers.ToastHandler
 import com.astro.sott.utils.userInfo.UserInfo
 import java.util.*
 import kotlin.collections.ArrayList
@@ -34,6 +35,7 @@ class ManageDeviceActivity : BaseActivity(), DeviceDeleteCallBack,
         super.onCreate(savedInstanceState)
         activityManageDeviceBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_manage_device)
+        AppCommonMethods.setProgressBar(activityManageDeviceBinding?.progressLay?.progressHeart)
         setToolbar()
         FirebaseEventManager.getFirebaseInstance(this)
             .trackScreenName(FirebaseEventManager.MANAGE_DEVICES)
@@ -71,10 +73,10 @@ class ManageDeviceActivity : BaseActivity(), DeviceDeleteCallBack,
     }
 
     private fun getDevices() {
-        activityManageDeviceBinding?.progressBar?.visibility = View.VISIBLE
+        activityManageDeviceBinding?.progressLay?.progressHeart?.visibility = View.VISIBLE
         astroLoginViewModel?.getDevice(UserInfo.getInstance(this).accessToken)
             ?.observe(this, Observer {
-                activityManageDeviceBinding?.progressBar?.visibility = View.GONE
+                activityManageDeviceBinding?.progressLay?.progressHeart?.visibility = View.GONE
                 if (it.isStatus) {
                     if (it.getDevicesResponse.getAccountDevicesResponseMessage != null && it.getDevicesResponse.getAccountDevicesResponseMessage?.accountDeviceDetails != null && it.getDevicesResponse.getAccountDevicesResponseMessage?.accountDeviceDetails?.size!! > 0) {
                         setUiComponent(
@@ -102,7 +104,11 @@ class ManageDeviceActivity : BaseActivity(), DeviceDeleteCallBack,
                             }
                         })
                     } else {
-                        Toast.makeText(this, it.errorMessage, Toast.LENGTH_SHORT).show()
+                        ToastHandler.show(
+                            it.errorMessage + "",
+                            this@ManageDeviceActivity
+                        )
+
                     }
                 }
             })
@@ -110,17 +116,14 @@ class ManageDeviceActivity : BaseActivity(), DeviceDeleteCallBack,
 
 
     private fun removeDevicesAll() {
-        activityManageDeviceBinding?.progressBar?.visibility = View.VISIBLE
+        activityManageDeviceBinding?.progressLay?.progressHeart?.visibility = View.VISIBLE
         astroLoginViewModel?.removeDevice(UserInfo.getInstance(this).accessToken, serialList)
             ?.observe(this, Observer {
-                activityManageDeviceBinding?.progressBar?.visibility = View.GONE
+                activityManageDeviceBinding?.progressLay?.progressHeart?.visibility = View.GONE
                 if (it.isStatus) {
                     if (it.removeDeviceResponse.removeDevicesResponseMessage != null) {
-                        Toast.makeText(
-                            this,
-                            it.removeDeviceResponse.removeDevicesResponseMessage?.message,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        ToastHandler.show(it.removeDeviceResponse.removeDevicesResponseMessage?.message + "",
+                            this@ManageDeviceActivity)
                         getDevices()
                     }
                 } else {
@@ -141,7 +144,10 @@ class ManageDeviceActivity : BaseActivity(), DeviceDeleteCallBack,
                             }
                         })
                     } else {
-                        Toast.makeText(this, it.errorMessage, Toast.LENGTH_SHORT).show()
+                        ToastHandler.show(
+                            it.errorMessage + "",
+                            this@ManageDeviceActivity
+                        )
                     }
                 }
             })
@@ -149,18 +155,17 @@ class ManageDeviceActivity : BaseActivity(), DeviceDeleteCallBack,
 
     private fun removeDevices(serialNo: String?) {
         serialList = ArrayList<String>()
-        activityManageDeviceBinding?.progressBar?.visibility = View.VISIBLE
+        activityManageDeviceBinding?.progressLay?.progressHeart?.visibility = View.VISIBLE
         serialList?.add(serialNo!!)
         astroLoginViewModel?.removeDevice(UserInfo.getInstance(this).accessToken, serialList)
             ?.observe(this, Observer {
-                activityManageDeviceBinding?.progressBar?.visibility = View.GONE
+                activityManageDeviceBinding?.progressLay?.progressHeart?.visibility = View.GONE
                 if (it.isStatus) {
                     if (it.removeDeviceResponse.removeDevicesResponseMessage != null) {
-                        Toast.makeText(
-                            this,
-                            it.removeDeviceResponse.removeDevicesResponseMessage?.message,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        ToastHandler.show(
+                            it.removeDeviceResponse.removeDevicesResponseMessage?.message + "",
+                            this@ManageDeviceActivity
+                        )
                         getDevices()
                     }
                 } else {
@@ -181,7 +186,10 @@ class ManageDeviceActivity : BaseActivity(), DeviceDeleteCallBack,
                             }
                         })
                     } else {
-                        Toast.makeText(this, it.errorMessage, Toast.LENGTH_SHORT).show()
+                        ToastHandler.show(
+                            it.errorMessage + "",
+                            this@ManageDeviceActivity
+                        )
                     }
                 }
             })

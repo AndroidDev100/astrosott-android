@@ -11,13 +11,11 @@
         tools:context=".activities.forgotPassword.ui.ChangePasswordActivity">
 
 
-
-
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginBottom="60dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="130dp"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -28,17 +26,6 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ProgressBar
-                    android:id="@+id/progress_bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:elevation="5dp"
-                    android:theme="@style/progressBarBlue"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/logo"
@@ -143,14 +130,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_marginLeft="18dp"
-                    app:layout_goneMarginTop="30dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginRight="18dp"
                     android:background="@drawable/search_linear_bg"
                     android:orientation="horizontal"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/error_email">
+                    app:layout_constraintTop_toBottomOf="@+id/error_email"
+                    app:layout_goneMarginTop="30dp">
 
                     <EditText
                         android:id="@id/password_edt"
@@ -187,9 +174,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen20dp"
-                    android:text="@string/password_rules_new"
                     android:paddingStart="0dp"
                     android:paddingEnd="20dp"
+                    android:text="@string/password_rules_new"
                     android:textColor="@color/heather"
                     android:visibility="gone"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -249,9 +236,9 @@
                     android:id="@+id/signup"
                     android:layout_width="wrap_content"
                     android:layout_height="45dp"
+                    android:layout_marginStart="3dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="18dp"
-                    android:layout_marginStart="3dp"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="center"
                     android:padding="2dp"
@@ -445,6 +432,17 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <include
+            android:id="@+id/progress_lay"
+            layout="@layout/progress_animation"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/back_icon"
             android:layout_width="wrap_content"
@@ -452,25 +450,29 @@
             android:layout_marginStart="@dimen/dimen16dp"
             android:layout_marginTop="@dimen/dimen16dp"
             android:background="@drawable/ic_back"
-            android:elevation="2dp"
             android:contentDescription="@string/contentDescription"
+            android:elevation="2dp"
             android:paddingStart="0dp"
             android:paddingEnd="7dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
+            android:layout_height="10dp"
             android:background="@drawable/shadow_term"
-            app:layout_constraintBottom_toTopOf="@id/term_policy_lay"
-            android:layout_height="10dp"></LinearLayout>
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/term_policy_lay"></LinearLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/term_policy_lay"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:orientation="vertical"
-            android:elevation="7dp"
+            android:layout_height="wrap_content"
             android:background="@color/dark_purple"
+            android:elevation="7dp"
+            android:orientation="vertical"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
@@ -479,15 +481,15 @@
                 android:id="@+id/descp1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:gravity="center"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
-                android:gravity="center"
                 android:text="@string/term_policy_login"
                 android:textColor="@color/title_color"
-                android:layout_marginBottom="4dp"
+                app:layout_constraintBottom_toTopOf="@id/terms_lay"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/terms_lay">
+                app:layout_constraintRight_toRightOf="parent">
 
             </TextView>
 
@@ -495,11 +497,11 @@
                 android:id="@+id/terms_lay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:gravity="center"
                 android:layout_marginBottom="7dp"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
 
                 <TextView
                     android:id="@+id/our"

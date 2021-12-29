@@ -32,8 +32,9 @@ public class EvergentRefreshToken {
 
             @Override
             public void onSuccess(@NotNull RefreshTokenResponse createUserResponse) {
-                evergentCommonResponse.setStatus(false);
+                evergentCommonResponse.setStatus(true);
                 evergentCommonResponse.setRefreshTokenResponse(createUserResponse);
+                UserInfo.getInstance(context).setRefreshToken(createUserResponse.getRefreshTokenResponseMessage().getRefreshToken());
                 UserInfo.getInstance(context).setAccessToken(createUserResponse.getRefreshTokenResponseMessage().getAccessToken());
                 mutableLiveData.postValue(evergentCommonResponse);
 

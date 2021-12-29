@@ -1,5 +1,6 @@
 package com.astro.sott.fragments.transactionhistory.adapter;
 
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +30,12 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.SingleItemHolder> {
-    private Fragment fragment;
+    private Activity fragment;
     private List<OrderItem> orderItems;
     private boolean checkBoxVisible;
     private PlanSelectedCallback planSelectedCallback;
 
-    public TransactionAdapter(TransactionHistory ctx, List<OrderItem> order, boolean checkBoxVisible) {
+    public TransactionAdapter(Activity ctx, List<OrderItem> order, boolean checkBoxVisible) {
         this.fragment = ctx;
         orderItems = order;
         this.checkBoxVisible = checkBoxVisible;
@@ -57,7 +58,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
                 holder.binding.orderName.setText(orderItems.get(position).getOrderProductInfo().get(0).getDisplayName());
             }
 
-            if (orderItems.get(position).getCurrencyCode() != null && orderItems.get(position).getPaymentsInfo().get(0)!= null) {
+            if (orderItems.get(position).getCurrencyCode() != null && orderItems.get(position).getPaymentsInfo().get(0) != null) {
                 holder.binding.currency.setText(orderItems.get(position).getCurrencyCode() + " " + orderItems.get(position).getPaymentsInfo().get(0).getAmount());
             } else {
                 holder.binding.currency.setText("");
@@ -81,14 +82,14 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             } else {
                 holder.binding.creditNo.setText("");
             }
-            if (orderItems.get(position).getOrderProductInfo() != null && orderItems.get(position).getOrderProductInfo().get(0) != null && orderItems.get(position).getOrderProductInfo().get(0).getStartDate() != null) {
-                holder.binding.date.setText(getDate(orderItems.get(position).getOrderProductInfo().get(0).getStartDate()));
+            if (orderItems.get(position).getPaymentsInfo() != null && orderItems.get(position).getPaymentsInfo().get(0) != null && orderItems.get(position).getPaymentsInfo().get(0).getReceivedDate() != null) {
+                holder.binding.date.setText(getDate(orderItems.get(position).getPaymentsInfo().get(0).getReceivedDate()));
 
             } else {
                 holder.binding.date.setText("");
             }
             if (orderItems.get(position).getPaymentsInfo().get(0).getPostingStatus().equalsIgnoreCase("Posted")) {
-                if (orderItems.get(position).getPaymentsInfo().get(0).getPaymentType().equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET) || orderItems.get(position).getPaymentsInfo().get(0).getPaymentType().equalsIgnoreCase("App Store Billing")) {
+                if (orderItems.get(position).getPaymentsInfo().get(0).getPaymentType().equalsIgnoreCase(AppLevelConstants.GOOGLE_WALLET) || orderItems.get(position).getPaymentsInfo().get(0).getPaymentType().equalsIgnoreCase("App Store Billing") || orderItems.get(position).getPaymentsInfo().get(0).getPaymentType().equalsIgnoreCase(AppLevelConstants.MAXIS_BILLING)) {
                     holder.binding.checkbox.setVisibility(View.GONE);
                 } else {
                     if (checkBoxVisible) {
@@ -121,13 +122,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     public String getDate(long timestamp) {
         try {
-            Calendar calendar = Calendar.getInstance();
-            TimeZone tz = TimeZone.getDefault();
-            calendar.setTimeInMillis(timestamp);
-            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
             SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd/MM/yyyy", Locale.getDefault());
-            Date currenTimeZone = (Date) calendar.getTime();
-            return sdf.format(currenTimeZone);
+            return sdf.format(timestamp);
         } catch (Exception e) {
         }
         return "";

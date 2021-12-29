@@ -1,6 +1,7 @@
 package com.astro.sott.activities.loginActivity.ui;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +61,8 @@ public class AccountBlockedDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.account_blocked, container);
         if (getDialog().getWindow() != null) {
             getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color
+                    .TRANSPARENT));
             // Get field from view
             inputLayoutDialog = view.findViewById(R.id.input_layout_dialog);
             TextView forgot = view.findViewById(R.id.forgot);
@@ -87,7 +90,7 @@ public class AccountBlockedDialog extends DialogFragment {
 
 
     public void onResume() {
-        int width = getResources().getDisplayMetrics().widthPixels - 30;
+        int width = getResources().getDisplayMetrics().widthPixels - 120;
         int height = getResources().getDimensionPixelSize(R.dimen.blocked_fragment_height);
         if (getDialog().getWindow() != null)
             getDialog().getWindow().setLayout(width, height);

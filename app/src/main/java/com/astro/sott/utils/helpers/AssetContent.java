@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
+import com.astro.sott.beanModel.SponsoredTabData;
 import com.astro.sott.modelClasses.dmsResponse.AudioLanguages;
 import com.astro.sott.modelClasses.dmsResponse.ResponseDmsModel;
 import com.astro.sott.activities.subscription.manager.PaymentItemDetail;
@@ -220,6 +221,7 @@ public class AssetContent {
 
         return seasonNumberList;
     }
+
 
     public static String getSeriesId(Map<String, Value> map) {
         String seriesID = "";
@@ -1066,7 +1068,7 @@ public class AssetContent {
     }
 
 
-    public  static String getTileSortName(Map<String, Value> map) {
+    public static String getTileSortName(Map<String, Value> map) {
         MultilingualStringValue titleSortValue = null;
         String s = "";
         if (map != null) {
@@ -1135,6 +1137,36 @@ public class AssetContent {
         }
         connection.postValue(crew + "");
         return connection;
+    }
+
+    public static List<SponsoredTabData> getSponsorTabData(Map<String, MultilingualStringValueArray> map) {
+        List<MultilingualStringValue> crew_value = new ArrayList<>();
+        List<SponsoredTabData> sponsoredTabDataList = new ArrayList<>();
+        MultilingualStringValueArray crew_list = map.get(AppLevelConstants.TAB_NAME);
+        if (crew_list != null)
+//            for (MultilingualStringValue value : crew_list.getObjects()) {
+//                crew_value.add(value);
+//            }
+            crew_value.addAll(crew_list.getObjects());
+        for (int i = 0; i <= crew_value.size() - 1; i++) {
+            SponsoredTabData sponsoredTabData = new SponsoredTabData();
+            String[] titleSeparation = crew_value.get(i).getValue().split("\\^");
+            if (titleSeparation.length > 0 && titleSeparation[0] != null)
+                sponsoredTabData.setTitle(titleSeparation[0]);
+            if (titleSeparation.length > 1 && titleSeparation[1] != null) {
+                String[] channelIdSeparator = titleSeparation[1].split("=");
+                if (channelIdSeparator.length >= 1 && channelIdSeparator[1] != null)
+                    sponsoredTabData.setCollectionId(channelIdSeparator[1]);
+            }
+
+            sponsoredTabDataList.add(sponsoredTabData);
+        }
+
+        if (sponsoredTabDataList.size() > 0) {
+            return sponsoredTabDataList;
+        } else {
+            return null;
+        }
     }
 
     public static String getProducer(Map<String, MultilingualStringValueArray> map) {
@@ -1777,6 +1809,20 @@ public class AssetContent {
 
     }
 
+
+    public static String getEpisodeNumber(Map<String, Value> metas) {
+        MultilingualStringValue startValue, endValue;
+        String episodeNumber = "";
+        startValue = (MultilingualStringValue) metas.get(AppLevelConstants.KEY_EPISODE_NUMBER);
+        if (startValue != null) {
+            episodeNumber = startValue.getValue();
+        } else {
+            return "";
+        }
+        return episodeNumber;
+
+    }
+
     public static String getPlayBackDate(Map<String, Value> metas) {
         StringValue playbackStart;
         String date = "";
@@ -2008,4 +2054,52 @@ public class AssetContent {
         return entryId;
     }
 
+    public static boolean getSeasonNumberFromList(Map<String, Value> metas) {
+        boolean isSeasonAvailable = false;
+        int seasonNumber = 0;
+
+        DoubleValue doubleValue = null;
+        if (metas != null) {
+            doubleValue = (DoubleValue) metas.get(AppLevelConstants.KEY_SEASON_NUMBER);
+        }
+        if (doubleValue != null) {
+            seasonNumber = doubleValue.getValue().intValue();
+            if (seasonNumber!=0){
+                isSeasonAvailable  = true;
+            }else {
+                isSeasonAvailable = false;
+            }
+        }
+
+        return isSeasonAvailable;
+    }
+
+    public static List<Integer> getAllSeasonNumber(List<Asset> assetListResponse) {
+        List<Integer> seasonNumberList = new ArrayList<>();
+        if (assetListResponse != null) {
+
+                for (int i = 0; i < assetListResponse.size(); i++) {
+                    Map<String, Value> map = assetListResponse.get(i).getMetas();
+
+                    Set keys = map.keySet();
+                    Iterator itr = keys.iterator();
+
+                    String key;
+                    while (itr.hasNext()) {
+                        key = (String) itr.next();
+                        if (key.equalsIgnoreCase(AppLevelConstants.KEY_SEASON_NUMBER)) {
+                            DoubleValue doubleValue = (DoubleValue) map.get(key);
+                            seasonNumberList.add(doubleValue.getValue().intValue());
+                            PrintLogging.printLog("AssetContent", "", "metavaluess--" + key + " - " + doubleValue.getValue());
+                        }
+                    }
+
+                }
+
+
+        }
+        PrintLogging.printLog("AssetContent", "", "seasonNumerLis" + seasonNumberList.size());
+
+        return seasonNumberList;
+    }
 }

@@ -98,7 +98,7 @@ public class MaximumLimitDialog extends DialogFragment {
 
 
     public void onResume() {
-        int width = getResources().getDimensionPixelSize(R.dimen.episode_dialog_fragment_width);
+        int width =  getResources().getDisplayMetrics().widthPixels-120;
         int height = getResources().getDimensionPixelSize(R.dimen.epiosode_dialog_fragment_height);
         if (getDialog().getWindow() != null)
             getDialog().getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);

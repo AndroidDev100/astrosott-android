@@ -27,10 +27,25 @@ public class FirebaseEventManager {
     public static final String AUDIO_LANGUAGE = "Audio Language";
     public static final String SIGN_UP = "Sign Up";
     public static final String LOGIN = "Login";
-    public static final String SHARE = "share";
-    public String searchString = "";
-    private String relatedAssetName = "";
+    public static final String ITEM_CHANNEL = "item_channel";
+    public static final String PROGRAM_DATE = "program_date";
+    public static final String PROGRAM_TIME = "program_time";
 
+
+    public static final String SHARE = "share";
+
+    public String searchString = "";
+    public String sponsorDetailName="";
+    private String relatedAssetName = "";
+    public long liveEventProgramDateTime=0;
+
+    public void setSponsorDetailName(String sponsorDetailName) {
+        this.sponsorDetailName = sponsorDetailName;
+    }
+
+    public void setLiveEventProgramDateTime(long liveEventProgramDateTime) {
+        this.liveEventProgramDateTime = liveEventProgramDateTime;
+    }
 
     public static final String TRX_VIP = "trx_vip";
     public static final String MANAGE_SUBSCRIPTION = "Manage Subscription";
@@ -146,6 +161,27 @@ public class FirebaseEventManager {
         }
     }
 
+    public void sponsorViewItem(String itemList, Asset asset, Context context) {
+        try {
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, AssetContent.getGenredataString(asset.getTags()));
+            bundle.putString("item_subgenre", AssetContent.getSubGenredataString(asset.getTags()));
+            bundle.putString("item_language", AssetContent.getLanguageDataStringForCleverTap(asset.getTags(), context));
+            bundle.putString("screen_name",sponsorDetailName);
+            bundle.putString("rail_name", itemList);
+            if (asset.getType()==MediaTypeConstant.getLinear(context)&&AssetContent.isLiveEvent(asset.getMetas())){
+                bundle.putString(ITEM_CHANNEL, asset.getName());
+                bundle.putString(PROGRAM_DATE, AppCommonMethods.getLiveEventDate(liveEventProgramDateTime));
+                bundle.putString(PROGRAM_TIME, AppCommonMethods.getLiveEventTime(liveEventProgramDateTime));
+            }
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, asset.getId() + "");
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, asset.getName());
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
+        } catch (Exception e) {
+
+        }
+    }
+
     public void searchViewItemEvent(String itemList, Asset asset, Context context) {
         try {
             Bundle bundle = new Bundle();
@@ -183,7 +219,7 @@ public class FirebaseEventManager {
             bundle.putString(FirebaseAnalytics.Param.ITEM_LIST, "Rental Subscription");
             bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, packageTitle);
             Long amount = price / 1000000;
-            bundle.putDouble("item_price", amount );
+            bundle.putDouble("item_price", amount);
             bundle.putString("user_id", customerId);
             mFirebaseAnalytics.logEvent(eventName, bundle);
         } catch (Exception e) {

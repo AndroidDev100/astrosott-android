@@ -1,3 +1,4 @@
+
 package com.astro.sott.activities.liveChannel.ui;
 
 import android.content.Context;
@@ -25,6 +26,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
+import com.astro.sott.activities.isThatYou.IsThatYouActivity;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
 import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
@@ -37,6 +39,8 @@ import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.repositories.liveChannel.LinearProgramDataLayer;
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
+import com.astro.sott.utils.PacksDateLayer;
+import com.astro.sott.utils.billing.BuyButtonManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.R;
@@ -64,6 +68,7 @@ import com.astro.sott.utils.helpers.MediaTypeConstant;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.StringBuilderHolder;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.helpers.shimmer.Constants;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
@@ -102,6 +107,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
     private LiveChannelViewModel activityViewModel;
     private long lastClickTime;
     private String image_url = "";
+    private String[] subscriptionIds;
     private boolean xofferWindowValue = false, playbackControlValue = false;
 
     private int errorCode = -1;
@@ -214,7 +220,11 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
             getMovieCasts();
             getMovieCrews();
             setSubtitleLanguage();
-            getBinding().programTitle.setText(programAsset.getName());
+            if (AssetContent.getEpisodeNumber(programAsset.getMetas()).equalsIgnoreCase("")) {
+                getBinding().programTitle.setText(programAsset.getName());
+            } else {
+                getBinding().programTitle.setText(programAsset.getName() + " Ep" + AssetContent.getEpisodeNumber(programAsset.getMetas()));
+            }
 
             getBinding().descriptionText.setText(programAsset.getDescription());
 ////            getBinding().descriptionText.post(() -> {
@@ -423,6 +433,9 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                     fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
                     if (!fileId.equalsIgnoreCase("")) {
                         Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
+                        intent.putExtra("SubscriptionIdBundle", bundle);
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                         startActivity(intent);
                     }
@@ -456,6 +469,9 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                     fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
                     if (!fileId.equalsIgnoreCase("")) {
                         Intent intent = new Intent(this, SubscriptionDetailActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
+                        intent.putExtra("SubscriptionIdBundle", bundle);
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                         startActivity(intent);
                     }
@@ -488,12 +504,13 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
         if (railData != null && railData.getObject() != null) {
             fileId = AppCommonMethods.getFileIdOfAssest(railData.getObject());
-
+            getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
             new EntitlementCheck().checkAssetPurchaseStatus(LiveChannel.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
                 this.errorCode = AppLevelConstants.NO_ERROR;
                 if (apiStatus) {
                     if (purchasedStatus) {
                         runOnUiThread(() -> {
+                            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                             if (playbackControlValue) {
                                 getBinding().vipButtonLive.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                                 getBinding().playText.setText(getResources().getString(R.string.watch_now));
@@ -519,9 +536,9 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                         if (vodType.equalsIgnoreCase(EntitlementCheck.SVOD)) {
                             runOnUiThread(() -> {
                                 getBinding().vipButtonLive.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                                getBinding().playText.setText(getResources().getString(R.string.become_vip));
                                 getBinding().playText.setTextColor(getResources().getColor(R.color.white));
-                                getBinding().vipButtonLive.setVisibility(View.VISIBLE);
+                                checkBuyTextButtonCondition(fileId);
+
 //                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                                 getBinding().starIcon.setVisibility(View.GONE);
                                 if (becomeVipButtonCLicked) {
@@ -530,6 +547,9 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                                         if (!fileId.equalsIgnoreCase("")) {
                                             Intent intent = new Intent(this, SubscriptionDetailActivity.class);
                                             intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                                            Bundle bundle = new Bundle();
+                                            bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
+                                            intent.putExtra("SubscriptionIdBundle", bundle);
                                             startActivity(intent);
                                         }
                                     }
@@ -544,8 +564,7 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                             runOnUiThread(() -> {
 //                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                                 getBinding().vipButtonLive.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                                getBinding().playText.setText(getResources().getString(R.string.rent_movie));
-                                getBinding().vipButtonLive.setVisibility(View.VISIBLE);
+                                checkBuyTextButtonCondition(fileId);
 //                                getBinding().astroPlayButton.setVisibility(View.VISIBLE);
                                 becomeVipButtonCLicked = false;
                                 getBinding().starIcon.setVisibility(View.GONE);
@@ -564,8 +583,29 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
 
                 }
             });
+        } else {
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
         }
 
+    }
+
+    private void checkBuyTextButtonCondition(String fileId) {
+        BuyButtonManager.getInstance().getPackages(this, "", fileId, true, (packDetailList, packageType, lowestPackagePrice, subscriptionIds) -> {
+            PacksDateLayer.getInstance().setPackDetailList(packDetailList);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+            this.subscriptionIds = subscriptionIds;
+            if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD_TVOD)) {
+                getBinding().playText.setText(getResources().getString(R.string.buy_from) + " " + lowestPackagePrice);
+                getBinding().vipButtonLive.setVisibility(View.VISIBLE);
+            } else if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD)) {
+                getBinding().playText.setText(getResources().getString(R.string.become_vip));
+                getBinding().vipButtonLive.setVisibility(View.VISIBLE);
+            } else {
+                getBinding().playText.setText(getResources().getString(R.string.buy));
+                getBinding().vipButtonLive.setVisibility(View.VISIBLE);
+
+            }
+        });
     }
 
     private void getCridDetail() {
@@ -832,7 +872,8 @@ public class LiveChannel extends BaseBindingActivity<ActivityLiveChannelBinding>
                                 // checkErrors();
                                 checkOnlyDevice(railData);
                             } else {
-                                Toast.makeText(LiveChannel.this, getString(R.string.incorrect_parental_pin), Toast.LENGTH_LONG).show();
+                                ToastHandler.show(getString(R.string.incorrect_parental_pin),
+                                        LiveChannel.this);
                                 assetRuleErrorCode = AppLevelConstants.PARENTAL_BLOCK;
                             }
                         });

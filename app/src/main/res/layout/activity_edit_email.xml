@@ -38,7 +38,6 @@
                 android:letterSpacing="0.09"
                 android:text="@string/edit_email"
                 android:textAlignment="center"
-                android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sp" />
 
@@ -214,13 +213,11 @@
 
         </LinearLayout>
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <include
             android:layout_centerInParent="true"
-            android:elevation="5dp"
-            android:theme="@style/progressBarBlue"
-            android:visibility="gone" />
+            android:id="@+id/progress_lay"
+            layout="@layout/progress_animation"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
     </RelativeLayout>
 </layout>

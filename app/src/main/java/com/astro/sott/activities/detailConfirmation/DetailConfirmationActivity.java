@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.astro.sott.R;
+import com.astro.sott.activities.forgotPassword.ui.ChangePasswordActivity;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
 import com.astro.sott.baseModel.BaseBindingActivity;
@@ -19,6 +20,7 @@ import com.astro.sott.usermanagment.modelClasses.activeSubscription.AccountServi
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.utils.userInfo.UserInfo;
 
@@ -79,7 +81,7 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
 
 
     private void createUser(String password) {
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
         astroLoginViewModel.createUser(type, email_mobile, password, name, tabletSize).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
@@ -93,7 +95,11 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
 
             } else {
                 Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
-                getBinding().progressBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+                ToastHandler.show(
+                        evergentCommonResponse.getErrorMessage(),
+                        DetailConfirmationActivity.this
+                );
             }
 
         });
@@ -101,7 +107,7 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
 
     private void getContact() {
         astroLoginViewModel.getContact(UserInfo.getInstance(this).getAccessToken()).observe(this, evergentCommonResponse -> {
-            getBinding().progressBar.setVisibility(View.GONE);
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
 
             if (evergentCommonResponse.isStatus() && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage() != null && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage() != null && evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().size() > 0) {
                 UserInfo.getInstance(this).setFirstName(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getContactMessage().get(0).getFirstName());
@@ -126,7 +132,10 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
                         }
                     });
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(
+                            evergentCommonResponse.getErrorMessage(),
+                            DetailConfirmationActivity.this
+                    );
                 }
 
             }
@@ -171,7 +180,10 @@ public class DetailConfirmationActivity extends BaseBindingActivity<ActivityDeta
         UserInfo.getInstance(this).setActive(true);
         UserInfo.getInstance(this).setSocialLogin(true);
         AppCommonMethods.setCleverTap(this);
-        Toast.makeText(this, "Registration Successful!", Toast.LENGTH_SHORT).show();
+        ToastHandler.show(
+                        "Registration Successful!",
+                DetailConfirmationActivity.this
+        );
         new ActivityLauncher(DetailConfirmationActivity.this).homeScreen(DetailConfirmationActivity.this, HomeActivity.class);
 
     }

@@ -304,7 +304,7 @@ public class PlayerRepository {
             }
 
             if (player != null) {
-                if (new KsPreferenceKey(context).getSubtitleLanguageIndex() > -1 && !new KsPreferenceKey(context).getSubTitleLangKey().equalsIgnoreCase("")) {
+                if (!new KsPreferenceKey(context).getSubTitleLangKey().equalsIgnoreCase("")) {
                     if (tracks != null && tracks.getTextTracks().size() > 0) {
                         //TrackItem[] trackItems = new TrackItem[tracks.getTextTracks().size()];
                         for (int i = 0; i < tracks.getTextTracks().size(); i++) {
@@ -1211,8 +1211,14 @@ public class PlayerRepository {
         //   String imaVastTag = "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpostpod&cmsid=496&vid=short_onecue&correlator=";
         String imaVastTag = "";
         ResponseDmsModel responseDmsModel = AppCommonMethods.callpreference(context);
-        if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getAdTagURL() != null && responseDmsModel.getParams().getAdTagURL().getURL() != null) {
-            imaVastTag = AppCommonMethods.getAdsUrl(responseDmsModel.getParams().getAdTagURL().getURL(), asset, context);
+        if (isLivePlayer) {
+            if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getLinearAdTagURL() != null && responseDmsModel.getParams().getLinearAdTagURL().getURL() != null) {
+                imaVastTag = AppCommonMethods.getLiveAdUrl(responseDmsModel.getParams().getLinearAdTagURL().getURL(), context, asset);
+            }
+        } else {
+            if (responseDmsModel != null && responseDmsModel.getParams() != null && responseDmsModel.getParams().getAdTagURL() != null && responseDmsModel.getParams().getAdTagURL().getURL() != null) {
+                imaVastTag = AppCommonMethods.getAdsUrl(responseDmsModel.getParams().getAdTagURL().getURL(), asset, context);
+            }
         }
         //+responseDmsModel.getParams().getAdTagURL().getURL()
 
@@ -1325,12 +1331,8 @@ public class PlayerRepository {
     private void registerPlugins(Context context, Asset asset) {
         PlayKitManager.registerPlugins(context, KavaAnalyticsPlugin.factory);
         PlayKitManager.registerPlugins(context, PhoenixAnalyticsPlugin.factory);
-        if (asset.getType() == MediaTypeConstant.getLinear(context) || asset.getType() == MediaTypeConstant.getProgram(context)) {
-
-        } else {
-            if (AppCommonMethods.isAdsEnable)
-                PlayKitManager.registerPlugins(context, IMAPlugin.factory);
-        }
+        if (AppCommonMethods.isAdsEnable)
+            PlayKitManager.registerPlugins(context, IMAPlugin.factory);
     }
 
     public LiveData<Boolean> getPlayerStateforPlay() {

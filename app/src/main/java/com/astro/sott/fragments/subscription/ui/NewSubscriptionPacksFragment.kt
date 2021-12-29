@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +25,7 @@ import com.astro.sott.activities.webview.ui.WebViewActivity
 import com.astro.sott.baseModel.BaseBindingFragment
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack
 import com.astro.sott.databinding.FragmentNewSubscriptionPacksBinding
+import com.astro.sott.fragments.dialog.CommonDialogFragment
 import com.astro.sott.fragments.subscription.adapter.SubscriptionPagerAdapter
 import com.astro.sott.fragments.subscription.adapter.SubscriptionRecyclerViewAdapter
 import com.astro.sott.fragments.subscription.vieModel.SubscriptionViewModel
@@ -39,6 +41,7 @@ import com.astro.sott.utils.billing.SKUsListListener
 import com.astro.sott.utils.commonMethods.AppCommonMethods
 import com.astro.sott.utils.helpers.ActivityLauncher
 import com.astro.sott.utils.helpers.AppLevelConstants
+import com.astro.sott.utils.helpers.ToastHandler
 import com.astro.sott.utils.helpers.carousel.SliderPotrait
 import com.astro.sott.utils.userInfo.UserInfo
 import kotlinx.android.synthetic.main.app_toolbar.view.*
@@ -54,7 +57,8 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscriptionPacksBinding>(),
-    View.OnClickListener, SubscriptionPagerAdapter.OnPackageChooseClickListener {
+    View.OnClickListener, SubscriptionPagerAdapter.OnPackageChooseClickListener,
+    CommonDialogFragment.EditDialogListener {
     private var productList = ArrayList<String>()
     private var pendingList = ArrayList<String>()
     private lateinit var cardClickedCallback: CardCLickedCallBack
@@ -82,14 +86,14 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         subscriptionViewModel = ViewModelProviders.of(this).get(SubscriptionViewModel::class.java)
-        if (arguments!!.getSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY) != null)
+        if (requireArguments().getSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY) != null)
             subscriptionIds =
-                arguments!!.getSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY) as Array<String>
+                requireArguments().getSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY) as Array<String>
         binding.toolbar.search_icon.setOnClickListener {
-            ActivityLauncher(activity!!).searchActivity(activity!!, ActivitySearch::class.java)
+            ActivityLauncher(requireActivity()).searchActivity(requireActivity(), ActivitySearch::class.java)
         }
-        if (arguments!!.getString("from", "") != null)
-            from = arguments!!.getString("from", "")
+        if (requireArguments().getString("from", "") != null)
+            from = requireArguments().getString("from", "")
 
         setClicks()
         getActiveSubscription()
@@ -97,7 +101,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
 
     private fun setClicks() {
         binding.terms.setOnClickListener {
-            val intent = Intent(activity!!, WebViewActivity::class.java)
+            val intent = Intent(requireActivity(), WebViewActivity::class.java)
             intent.putExtra(AppLevelConstants.WEBVIEW, AppLevelConstants.TNC)
             startActivity(intent)
         }
@@ -110,6 +114,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
 
     private fun getActiveSubscription() {
         activePlan = AccountServiceMessageItem()
+        binding.progressLay?.progressHeart?.visibility=View.VISIBLE
         subscriptionViewModel = ViewModelProviders.of(this).get(SubscriptionViewModel::class.java)
         subscriptionViewModel.getActiveSubscription(UserInfo.getInstance(activity).accessToken, "")
             .observe(
@@ -149,22 +154,48 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
     }
 
     private var activePlan: AccountServiceMessageItem? = null
+    private var isPendingPlan = false
     private fun getListofActivePacks(accountServiceMessage: List<AccountServiceMessageItem?>?) {
         productList = java.util.ArrayList<String>()
+        isPendingPlan = false
         for (accountServiceMessageItem in accountServiceMessage!!) {
-            if (!accountServiceMessageItem!!.isFreemium!!) {
+            if (!accountServiceMessageItem!!.isFreemium!! && accountServiceMessageItem.status.equals(
+                    "ACTIVE",
+                    true
+                )
+            ) {
                 if (accountServiceMessageItem?.serviceID != null) {
                     activePlan = accountServiceMessageItem
                 }
             }
+
         }
+        for (accountServiceMessageItem in accountServiceMessage!!) {
+            if (!accountServiceMessageItem!!.isFreemium!!) {
+                if (accountServiceMessageItem.status.equals(
+                        "PENDING ACTIVE",
+                        true
+                    ) || accountServiceMessageItem.status.equals(
+                        "PENDING",
+                        true
+                    )
+                ) {
+                    if (accountServiceMessageItem.serviceType.equals("SVOD", ignoreCase = true)) {
+                        isPendingPlan = true
+                    }
+                }
+            }
+
+        }
+
+
     }
 
     private fun getProductsForLogout() {
         subscriptionViewModel.product.observe(
             this,
             androidx.lifecycle.Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
-                binding.includeProgressbar.progressBar.visibility = View.GONE
+                binding.progressLay?.progressHeart?.visibility = View.GONE
                 if (evergentCommonResponse.isStatus) {
                     if (evergentCommonResponse.getProductResponse != null && evergentCommonResponse.getProductResponse.getProductsResponseMessage != null && evergentCommonResponse.getProductResponse.getProductsResponseMessage!!.productsResponseMessage != null && evergentCommonResponse.getProductResponse.getProductsResponseMessage!!.productsResponseMessage!!.size > 0) {
                         productListItem =
@@ -201,11 +232,11 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
                             })
                         }
                     } else {
-                        Toast.makeText(
-                            requireActivity(),
+
+                        ToastHandler.show(
                             evergentCommonResponse.errorMessage,
-                            Toast.LENGTH_SHORT
-                        ).show();
+                            requireActivity()
+                        )
                     }
                 }
             })
@@ -219,7 +250,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
             if (from.equals("Content Detail Page", true)) {
                 if (PacksDateLayer.getInstance().packDetailList != null) {
                     packDetailList = PacksDateLayer.getInstance().packDetailList;
-                    binding.includeProgressbar.progressBar.visibility = View.GONE
+                    binding.progressLay?.progressHeart?.visibility = View.GONE
                     loadDataFromModel(PacksDateLayer.getInstance().packDetailList)
                 } else {
                     getProductsForLogout()
@@ -258,7 +289,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
                                         ignoreCase = true
                                     ) && responseMessageItem?.appChannels!![0]!!.appID != null
                                 ) {
-                                    Log.w("avname", activity!!.javaClass.getName() + "")
+                                    Log.w("avname", requireActivity().javaClass.getName() + "")
                                     if (activity is ProfileSubscriptionActivity) {
                                         skuDetails =
                                             (activity as ProfileSubscriptionActivity?)!!.getSubscriptionDetail(
@@ -307,7 +338,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
                                         ignoreCase = true
                                     ) && responseMessageItem?.appChannels!![0]!!.appID != null
                                 ) {
-                                    Log.w("avname", activity!!.javaClass.getName() + "")
+                                    Log.w("avname", requireActivity().javaClass.getName() + "")
                                     if (activity is HomeActivity) {
                                         skuDetails =
                                             (activity as HomeActivity?)!!.getSubscriptionDetail(
@@ -372,7 +403,7 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
             )
         )
         binding.packagesRecyclerView?.adapter = SubscriptionRecyclerViewAdapter(
-            activity!!,
+            requireActivity(),
             (packagesList as java.util.ArrayList<PackDetail>),
             productList,
             this
@@ -381,16 +412,16 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
 
     private fun setViewPager(packagesList: List<PackDetail>) {
         binding.viewPager?.adapter =
-            SubscriptionPagerAdapter(activity!!, packagesList, activePlan!!, this)
+            SubscriptionPagerAdapter(requireActivity(), packagesList, activePlan!!, this)
         binding.viewPager?.setPadding(
-            SliderPotrait.dp2px(activity!!, 32f),
+            SliderPotrait.dp2px(requireActivity(), 32f),
             0,
-            SliderPotrait.dp2px(activity!!, 32f),
+            SliderPotrait.dp2px(requireActivity(), 32f),
             0
         );
         binding.viewPager?.clipChildren = false
         binding.viewPager?.clipToPadding = false
-        binding.viewPager?.pageMargin = SliderPotrait.dp2px(activity!!, 16f);
+        binding.viewPager?.pageMargin = SliderPotrait.dp2px(requireActivity(), 16f);
         val rainbow = resources.getIntArray(R.array.packages_colors)
         binding.viewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
@@ -423,6 +454,8 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AppCommonMethods.setProgressBar(binding?.progressLay?.progressHeart)
+        binding?.toolbar?.search_icon?.visibility=View.GONE
     }
 
     // tab titles
@@ -456,19 +489,48 @@ class NewSubscriptionPacksFragment : BaseBindingFragment<FragmentNewSubscription
         price: Long?
     ) {
         if (UserInfo.getInstance(context).isActive) {
-            cardClickedCallback.onCardClicked(
-                packDetails.skuDetails?.sku,
-                packDetailList[position].productsResponseMessageItem.serviceType,
-                activePlan,
-                planName,
-                price
-            )
+            if (isPendingPlan) {
+
+                //  PrintLogging.printLog("PurchaseActivity", "Received a pending purchase of SKU: " + purchase.getSku());
+                // handle pending purchases, e.g. confirm with users about the pending
+                // purchases, prompt them to complete it, etc.
+
+
+                commonDialog(
+                    resources.getString(R.string.payment_progress),
+                    resources.getString(R.string.payment_progress_desc),
+                    resources.getString(R.string.ok)
+                )
+
+            } else {
+                cardClickedCallback.onCardClicked(
+                    packDetails.skuDetails?.sku,
+                    packDetailList[position].productsResponseMessageItem.serviceType,
+                    activePlan,
+                    planName,
+                    price
+                )
+            }
         } else {
-            ActivityLauncher(activity!!).signupActivity(
-                activity!!,
+            ActivityLauncher(requireActivity()).signupActivity(
+                requireActivity(),
                 SignUpActivity::class.java,
                 CleverTapManager.SUBSCRIPTION_PAGE
             )
         }
     }
+
+    private fun commonDialog(tiltle: String, description: String, actionBtn: String) {
+        val fm: FragmentManager = activity?.supportFragmentManager!!
+        val commonDialogFragment =
+            CommonDialogFragment.newInstance(tiltle, description, actionBtn)
+        commonDialogFragment.setEditDialogCallBack(this)
+        commonDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT)
+    }
+
+    override fun onActionBtnClicked() {
+
+    }
+
+
 }

@@ -28,9 +28,9 @@
                     android:layout_alignParentStart="true"
                     android:layout_centerInParent="true"
                     android:layout_marginStart="@dimen/_16sdp"
+                    android:contentDescription="@string/contentDescription"
                     android:src="@drawable/ic_back"
-                    android:visibility="gone"
-                    android:contentDescription="@string/contentDescription" />
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/title"
@@ -77,9 +77,9 @@
                     android:background="@drawable/gradient_outline_button"
                     android:fontFamily="@font/roboto_medium"
                     android:padding="12dp"
-                    android:textAllCaps="false"
                     android:text="@string/siginup_more"
                     android:textAlignment="center"
+                    android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
@@ -110,10 +110,10 @@
                         android:id="@+id/tv_email"
                         android:layout_width="240dp"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/roboto_regular"
                         android:maxLines="1"
                         android:textAllCaps="false"
-                        android:ellipsize="end"
                         android:textColor="@color/white"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -125,76 +125,75 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="end"
+                    android:contentDescription="@string/contentDescription"
                     android:src="@drawable/ic_edit_24px"
-                    android:visibility="gone"
-                    android:contentDescription="@string/contentDescription" />
+                    android:visibility="gone" />
 
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:background="@color/heather" />
 
             <RelativeLayout
                 android:id="@+id/r1_more"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_11sdp"
                 android:layout_marginEnd="@dimen/_9sdp"
                 android:layout_marginBottom="@dimen/_6sdp">
 
+
                 <include
-                    android:id="@+id/include_progressbar"
-                    layout="@layout/progress_bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/progress_lay"
+                    layout="@layout/progress_animation"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_centerInParent="true" />
 
-                <TextView
-                    android:id="@+id/tv_VIP_user"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:ellipsize="end"
-                    android:ems="10"
-                    android:fontFamily="@font/roboto_medium"
-                    android:maxLines="1"
-                    android:text=""
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_16sp" />
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_subscribe_now"
-                    android:layout_width="@dimen/_200sdp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_VIP_user"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/roboto_regular"
-                    android:maxLines="2"
-                    android:padding="@dimen/_1sdp"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/tv_VIP_user"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:ems="11"
+                        android:fontFamily="@font/roboto_medium"
+                        android:maxLines="2"
+                        android:text=""
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_16sp" />
 
-                <TextView
-                    android:id="@+id/productCategory"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_subscribe_now"
-                    android:layout_gravity="center"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/roboto_regular"
-                    android:maxEms="10"
-                    android:maxLines="2"
-                    android:padding="@dimen/_1sdp"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:visibility="gone" />
+                    <TextView
+                        android:id="@+id/partnerBillingText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_VIP_user"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/roboto_regular"
+                        android:maxLines="1"
+                        android:textAllCaps="false"
+                        android:textColor="@color/yellow_orange"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/tv_subscribe_now"
+                        android:layout_width="@dimen/_200sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/partnerBillingText"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:maxLines="2"
+                        android:padding="@dimen/_1sdp"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="13sp" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_renew_date"
@@ -202,6 +201,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_VIP_user"
                     android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
                     android:fontFamily="@font/roboto_regular"
                     android:padding="@dimen/_1sdp"
                     android:text="@string/renew_date"
@@ -229,16 +229,57 @@
                     android:layout_height="@dimen/_29sdp"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_gravity="center"
-                    android:background="@drawable/white_outline_button"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/gradient_svod"
                     android:fontFamily="@font/roboto_regular"
-                    android:paddingLeft="8dp"
+                    android:paddingLeft="10dp"
                     android:paddingTop="4dp"
-                    android:paddingRight="8dp"
+                    android:paddingRight="10dp"
                     android:paddingBottom="4dp"
                     android:text="@string/subscribe_more"
                     android:textAllCaps="false"
                     android:textColor="@color/light_blue_text_color"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+
+
+                <Button
+                    android:id="@+id/change_plan"
+                    android:layout_width="110dp"
+                    android:layout_height="@dimen/_29sdp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="center"
+                    android:background="@drawable/white_outline_button"
+                    android:fontFamily="@font/roboto_regular"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="4dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="4dp"
+                    android:text="@string/change_plan"
+                    android:textAllCaps="false"
+                    android:textColor="@color/light_blue_text_color"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/cancel_plan"
+                    android:layout_width="110dp"
+                    android:layout_height="@dimen/_29sdp"
+                    android:layout_below="@id/change_plan"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/live_event_button"
+                    android:fontFamily="@font/roboto_regular"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="4dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="4dp"
+                    android:text="@string/cancel"
+                    android:textAllCaps="false"
+                    android:textColor="@color/cancel_text_color"
                     android:textSize="14sp"
                     android:visibility="gone" />
 
@@ -247,9 +288,9 @@
             <View
                 android:id="@+id/v1"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="3dp"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:background="@color/heather" />
+                android:background="@drawable/gradient_svod" />
 
 
             <RelativeLayout
@@ -257,7 +298,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_12sdp"
                 android:layout_marginBottom="@dimen/_10sdp">
 
@@ -282,8 +323,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_keyboard_arrow_right_24px"
-                    android:contentDescription="@string/contentDescription" />
+                    android:contentDescription="@string/contentDescription"
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -316,8 +357,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_keyboard_arrow_right_24px"
-                    android:contentDescription="@string/contentDescription" />
+                    android:contentDescription="@string/contentDescription"
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -351,8 +392,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_keyboard_arrow_right_24px"
-                    android:contentDescription="@string/contentDescription" />
+                    android:contentDescription="@string/contentDescription"
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -385,8 +426,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_keyboard_arrow_right_24px"
-                    android:contentDescription="@string/contentDescription" />
+                    android:contentDescription="@string/contentDescription"
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -420,8 +461,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_keyboard_arrow_right_24px"
-                    android:contentDescription="@string/contentDescription" />
+                    android:contentDescription="@string/contentDescription"
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -455,8 +496,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_keyboard_arrow_right_24px"
-                    android:contentDescription="@string/contentDescription" />
+                    android:contentDescription="@string/contentDescription"
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -489,8 +530,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_keyboard_arrow_right_24px"
-                    android:contentDescription="@string/contentDescription" />
+                    android:contentDescription="@string/contentDescription"
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -523,8 +564,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_keyboard_arrow_right_24px"
-                    android:contentDescription="@string/contentDescription" />
+                    android:contentDescription="@string/contentDescription"
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -557,8 +598,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_keyboard_arrow_right_24px"
-                    android:contentDescription="@string/contentDescription" />
+                    android:contentDescription="@string/contentDescription"
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -635,8 +676,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_keyboard_arrow_right_24px"
-                    android:contentDescription="@string/contentDescription" />
+                    android:contentDescription="@string/contentDescription"
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -671,8 +712,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_keyboard_arrow_right_24px"
-                    android:contentDescription="@string/contentDescription" />
+                    android:contentDescription="@string/contentDescription"
+                    android:src="@drawable/ic_keyboard_arrow_right_24px" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

@@ -107,6 +107,14 @@ public class UserInfo {
         session.setBoolean("isVIP", vip);
     }
 
+    public boolean isMaxis() {
+        return session.getBoolean("isMaxis", false);
+    }
+
+    public void setMaxis(boolean maxis) {
+        session.setBoolean("isMaxis", maxis);
+    }
+
     public void setEmail(String email) {
         session.setString("AstroEmail", email);
     }

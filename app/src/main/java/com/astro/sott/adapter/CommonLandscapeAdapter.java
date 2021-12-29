@@ -291,14 +291,18 @@ public class CommonLandscapeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         PrintLogging.printLog(CommonLandscapeAdapter.class, "", itemsList.get(0).getType() + "assettypeassest");
         try {
 
-            if (singleItem.getImages().size() > 0) {
+            if (singleItem.getImages() != null && singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
                 // holder.landscapeItemBinding.setImage(assetCommonImages);
                 // Glide.with(mContext).load(assetCommonImages.getImageUrl()).into(holder.landscapeItemBinding.itemImage);
                 ImageHelper.getInstance(landscapeItemBinding.itemImage.getContext()).loadImageToLandscape(landscapeItemBinding.itemImage, assetCommonImages.getImageUrl(), R.drawable.ic_landscape_placeholder);
 
             } else {
-                ImageHelper.getInstance(landscapeItemBinding.itemImage.getContext()).loadImageToPlaceholder(landscapeItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.ic_landscape_placeholder, landscapeItemBinding.itemImage), R.drawable.ic_landscape_placeholder);
+                if (singleItem.getObject().getImages() != null && singleItem.getObject().getImages().size() > 0 && singleItem.getObject().getImages().get(0) != null) {
+                    ImageHelper.getInstance(landscapeItemBinding.itemImage.getContext()).loadImageToLandscape(landscapeItemBinding.itemImage, singleItem.getObject().getImages().get(0).getUrl(), R.drawable.ic_landscape_placeholder);
+                } else {
+                    ImageHelper.getInstance(landscapeItemBinding.itemImage.getContext()).loadImageToPlaceholder(landscapeItemBinding.itemImage, AppCommonMethods.getImageURI(R.drawable.ic_landscape_placeholder, landscapeItemBinding.itemImage), R.drawable.ic_landscape_placeholder);
+                }
 
             }
 

@@ -249,11 +249,15 @@ public class ConvivaManager {
             } else {
                 contentInfo.put(CONNECTION_TYPE, MOBILE);
             }
-            if (!AssetContent.getTileSortName(convivaAsset.getMetas()).equalsIgnoreCase("")) {
-                contentInfo.put(SHOW_TITLE, AssetContent.getTileSortName(convivaAsset.getMetas()));
+            /*  if (!AssetContent.getTileSortName(convivaAsset.getMetas()).equalsIgnoreCase("")) {*/
+            if (convivaAsset.getName() != null) {
+                contentInfo.put(SHOW_TITLE, convivaAsset.getName());
             } else {
                 contentInfo.put(SHOW_TITLE, "NA");
             }
+           /* } else {
+                contentInfo.put(SHOW_TITLE, "NA");
+            }*/
             if (isLivePlayer) {
                 contentInfo.put(KALTURA_ID, (convivaAsset != null) ? railData.getId() : "NA");
                 contentInfo.put(CONTENT_TYPE, LINEAR);
@@ -274,7 +278,7 @@ public class ConvivaManager {
                     } else {
                         contentInfo.put(CHANNEL, "NA");
                     }
-                    contentInfo.put(ASSET_ID, convivaAsset.getId());
+                    contentInfo.put(ASSET_ID, convivaAsset.getExternalId());
                 } catch (Exception e) {
                 }
             } else {
@@ -298,7 +302,7 @@ public class ConvivaManager {
 
 
                 contentInfo.put(CONTENT_TYPE, VOD);
-                contentInfo.put(ASSET_ID, convivaAsset.getId());
+                contentInfo.put(ASSET_ID, convivaAsset.getExternalId());
             }
 
             if (convivaAsset != null && !AssetContent.getProvider(convivaAsset.getTags()).equalsIgnoreCase("")) {

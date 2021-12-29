@@ -28,17 +28,26 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/back_icon">
-
-            <ProgressBar
-                android:id="@+id/progress_bar"
+            <include
+                android:id="@+id/progress_lay"
+                layout="@layout/progress_animation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/progressBarBlue"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"/>
+<!--            <ProgressBar-->
+<!--                android:id="@+id/progress_bar"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:theme="@style/progressBarBlue"-->
+<!--                android:visibility="gone"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintLeft_toLeftOf="parent"-->
+<!--                app:layout_constraintRight_toRightOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
 
             <ImageView
                 android:id="@+id/logo"
@@ -193,7 +202,7 @@
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintLeft_toRightOf="@id/agree"
                 app:layout_constraintTop_toBottomOf="@id/email"
-                app:layout_goneMarginTop="39dp"></TextView>
+                app:layout_goneMarginTop="39dp"/>
             <TextView
                 android:id="@+id/and"
                 android:layout_width="wrap_content"
@@ -207,7 +216,7 @@
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintLeft_toRightOf="@id/terms"
                 app:layout_constraintTop_toBottomOf="@id/email"
-                app:layout_goneMarginTop="39dp"></TextView>
+                app:layout_goneMarginTop="39dp"/>
             <TextView
                 android:id="@+id/privacy"
                 android:layout_width="wrap_content"
@@ -221,7 +230,7 @@
                 android:textSize="@dimen/_14sp"
                 app:layout_constraintLeft_toRightOf="@id/and"
                 app:layout_constraintTop_toBottomOf="@id/email"
-                app:layout_goneMarginTop="39dp"></TextView>
+                app:layout_goneMarginTop="39dp"/>
 
             <TextView
                 android:id="@+id/submit"

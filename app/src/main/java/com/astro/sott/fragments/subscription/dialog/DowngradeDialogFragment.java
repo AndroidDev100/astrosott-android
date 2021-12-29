@@ -1,6 +1,7 @@
 package com.astro.sott.fragments.subscription.dialog;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,6 +62,8 @@ public class DowngradeDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.downgrade_dialog_fragment, container);
         if (getDialog().getWindow() != null) {
             getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color
+                    .TRANSPARENT));
             // Get field from view
             inputLayoutDialog = view.findViewById(R.id.input_layout_dialog);
             from = getArguments().getString(AppLevelConstants.TITLE);
@@ -98,7 +101,7 @@ public class DowngradeDialogFragment extends DialogFragment {
 
 
     public void onResume() {
-        int width = getResources().getDisplayMetrics().widthPixels-30;
+        int width = getResources().getDisplayMetrics().widthPixels-50;
         int height = getResources().getDimensionPixelSize(R.dimen.epiosode_dialog_fragment_height);
         if (getDialog().getWindow() != null)
             getDialog().getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);

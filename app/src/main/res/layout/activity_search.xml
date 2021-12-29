@@ -198,13 +198,13 @@
             </androidx.core.widget.NestedScrollView>
 
         </LinearLayout>
+
         <include
-            android:id="@+id/include_progressbar"
-            layout="@layout/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="gone" />
+            android:id="@+id/progress_lay"
+            layout="@layout/progress_animation"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
 
         <LinearLayout
             android:id="@+id/no_connection_layout"

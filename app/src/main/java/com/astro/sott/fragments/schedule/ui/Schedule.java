@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,9 +33,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.astro.sott.activities.liveChannel.ui.LiveChannel;
+import com.astro.sott.activities.liveEvent.LiveEventActivity;
+import com.astro.sott.activities.liveEvent.reminderDialog.ReminderDialogFragment;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
 import com.astro.sott.callBacks.commonCallBacks.ParentalDialogCallbacks;
+import com.astro.sott.callBacks.reminder.ReminderAddRemoveListener;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
 import com.astro.sott.fragments.nowPlaying.NowPlaying;
 import com.astro.sott.modelClasses.dmsResponse.ParentalLevels;
@@ -67,6 +71,7 @@ import com.astro.sott.utils.helpers.PrintLogging;
 import com.astro.sott.utils.helpers.ProgressHandler;
 import com.astro.sott.utils.helpers.RecyclerAnimator;
 import com.astro.sott.utils.helpers.shimmer.Constants;
+import com.google.gson.Gson;
 import com.kaltura.client.types.Asset;
 import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.MediaAsset;
@@ -83,11 +88,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.StringTokenizer;
+import java.util.TimeZone;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 
-public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> implements EpgNotAvailableCallBack, AlertDialogSingleButtonFragment.AlertDialogListener, SpecificAssetCallBack {
+public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> implements EpgNotAvailableCallBack, AlertDialogSingleButtonFragment.AlertDialogListener, ReminderDialogFragment.EditDialogListener, SpecificAssetCallBack {
     private int i = 0;
     private String startTimeStamp;
     private String endTimeStamp;
@@ -157,7 +163,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-       if (getActivity() != null) {
+        if (getActivity() != null) {
             ((LiveChannel) getActivity()).setLiveChannelCommunicator((int oldScrollX, int oldScrollY) -> {
                 if (totalProgramListCount != arrayList.size()) {
                     mListener.showScrollViewProgressBarView(true);
@@ -175,13 +181,14 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
 
 
         myReceiver = new MyReceiver();
+        alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
         //  progressDialog = new ProgressHandler(getActivity());
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
         initializeRecyclerView();
         createEpgDateChips();
 
@@ -268,9 +275,9 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
         PrintLogging.printLog(this.getClass(), "", "valueOfIis" + i);
         getCurrentTime(i);
         getBinding().programRecyclerview.setVisibility(View.GONE);
-        if (count==0){
-            startTimeStamp="0";
-        }else {
+        if (count == 0) {
+            startTimeStamp = "0";
+        } else {
             startTimeStamp = AppCommonMethods.getNextDateTimeStamp(1, i);
         }
         endTimeStamp = AppCommonMethods.getNextDateTimeStamp(2, i);
@@ -285,7 +292,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     private String getCurrentTime(int i) {
         String output = "";
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy",Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
             Calendar c = Calendar.getInstance();
             c.setTime(new Date()); // Now use today date.
             c.add(Calendar.DATE, i); // Adding 5 days
@@ -356,17 +363,17 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     }
 
     private void getEPGChannels() {
-        getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         getBinding().noItem.setVisibility(View.GONE);
 
         if (viewModel == null) {
             return;
         }
-        viewModel.getEPGChannelsList(externalId, startTimeStamp, endTimeStamp, 2, counter).observe(this, railCommonData -> {
+        viewModel.getEPGChannelsList(externalId, startTimeStamp, endTimeStamp, 2, counter).observe(getViewLifecycleOwner(), railCommonData -> {
             if (railCommonData != null && railCommonData.size() > 0) {
                 getBinding().noItem.setVisibility(View.GONE);
                 getBinding().programRecyclerview.setVisibility(View.VISIBLE);
-                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 totalProgramListCount = railCommonData.get(0).getTotalCount();
                 setMetaDataValue(railCommonData);
             } else {
@@ -374,7 +381,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
                     getBinding().noItem.setVisibility(View.VISIBLE);
                     getBinding().programRecyclerview.setVisibility(View.GONE);
                 }
-                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
               /*  if (mListener != null) {
                     mListener.showScrollViewProgressBarView(false);
                 }*/
@@ -406,22 +413,22 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     private void setAdapter() {
 
 //        if (!isScrolling) {
-            new RecyclerAnimator(baseActivity).animate(getBinding().programRecyclerview);
+        new RecyclerAnimator(baseActivity).animate(getBinding().programRecyclerview);
 //            getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-            adapter = new ProgramsAdapter(baseActivity, arrayList, position, Schedule.this, Schedule.this);
-            getBinding().programRecyclerview.setAdapter(adapter);
-            if (totalProgramListCount<=adapter.getItemCount()){
-               getBinding().loadMore.setVisibility(View.GONE);
-            }else {
-                getBinding().loadMore.setVisibility(View.VISIBLE);
+        adapter = new ProgramsAdapter(baseActivity, arrayList, position, Schedule.this, Schedule.this);
+        getBinding().programRecyclerview.setAdapter(adapter);
+        if (totalProgramListCount <= adapter.getItemCount()) {
+            getBinding().loadMore.setVisibility(View.GONE);
+        } else {
+            getBinding().loadMore.setVisibility(View.VISIBLE);
 
-            }
-           // manager.scrollToPositionWithOffset(position, 0);
-            mIsLoading = adapter.getItemCount() != totalCOunt;
-            adapter.updateLiveChannelCount(position);
-          mListener.showScrollViewProgressBarView(true);
+        }
+        // manager.scrollToPositionWithOffset(position, 0);
+        mIsLoading = adapter.getItemCount() != totalCOunt;
+        adapter.updateLiveChannelCount(position);
+        mListener.showScrollViewProgressBarView(true);
         /*} else {
-          *//*  if (mListener != null) {
+         *//*  if (mListener != null) {
                 new Handler().postDelayed(() -> mListener.showScrollViewProgressBarView(false), 800);
             }*//*
 
@@ -461,7 +468,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
 
                 if (id == val) {
                     position = i;
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                     setAdapter();
                     return;
                 }
@@ -697,7 +704,8 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
                                 // checkErrors(asset);
                                 checkOnlyDevice(asset);
                             } else {
-                                Toast.makeText(getActivity(), getString(R.string.incorrect_parental_pin), Toast.LENGTH_LONG).show();
+                                ToastHandler.show(getString(R.string.incorrect_parental_pin),
+                                        getActivity());
                             }
                         });
                     }
@@ -958,6 +966,129 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
         }
     }
 
+    public String getStartDate(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d'/'hh:mm aaa", Locale.US);
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
+    String reminderDateTime = "";
+
+    @Override
+    public void setReminder(ImageView reminderIcon, Asset asset) {
+        try {
+
+            reminderDateTime = (getStartDate(asset.getStartDate())) + " - " + (AppCommonMethods.setTime(asset, 0));
+            splitStartTime(AppCommonMethods.get24HourTime(asset, 1) + "");
+            mm = Integer.parseInt(month.trim());
+            yr = Integer.parseInt(year.trim());
+            ddy = Integer.parseInt(dd.trim());
+
+            Random random = new Random();
+//        int requestCode = Integer.parseInt(String.format("%02d", random.nextInt(10000)));
+            Long code = asset.getId();
+
+            int requestCode = code.intValue();
+            PrintLogging.printLog("", "notificationRequestId-->>" + requestCode);
+            //String requestCode = String.valueOf(asset.getExternalId());
+
+            myIntent = new Intent(getActivity(), MyReceiver.class);
+            myIntent.putExtra(AppLevelConstants.ID, asset.getId());
+            myIntent.putExtra(AppLevelConstants.Title, asset.getName());
+            myIntent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
+            myIntent.putExtra(AppLevelConstants.DATETIME_REMINDER, reminderDateTime);
+            myIntent.putExtra(AppLevelConstants.SCREEN_NAME, AppLevelConstants.PROGRAM);
+            myIntent.putExtra("requestcode", requestCode);
+            myIntent.setAction("com.astro.sott.MyIntent");
+            myIntent.setComponent(new ComponentName(getActivity().getPackageName(), "com.astro.sott.Alarm.MyReceiver"));
+
+//                    Random random = new Random();
+//                    int requestCode = Integer.parseInt(String.format("%02d", random.nextInt(10000)));
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+
+                Intent intent = new Intent();
+
+                intent.putExtra(AppLevelConstants.ID, asset.getId());
+                intent.putExtra(AppLevelConstants.Title, asset.getName());
+                intent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
+                intent.putExtra(AppLevelConstants.DATETIME_REMINDER, reminderDateTime);
+                intent.putExtra(AppLevelConstants.SCREEN_NAME, AppLevelConstants.PROGRAM);
+                intent.putExtra("requestcode", requestCode);
+
+                intent.setComponent(new ComponentName(getActivity().getPackageName(), "com.astro.sott.Alarm.MyReceiver"));
+                intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+                pendingIntent = PendingIntent.getBroadcast(getActivity(), requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+           /* try {
+                Gson gson = new Gson();
+                String pendingInt = gson.toJson(pendingIntent);
+                KsPreferenceKey.getInstance(getActivity()).setReminderPenIntent(String.valueOf(asset.getId()),pendingInt);
+
+                String pendingInt2 = gson.toJson(intent);
+                KsPreferenceKey.getInstance(getActivity()).setReminderIntent(String.valueOf(asset.getId()),pendingInt2);
+
+            }catch (Exception ignored){
+
+            }*/
+
+
+            } else {
+
+                pendingIntent = PendingIntent.getBroadcast(getActivity(), requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+           /* try {
+                Gson gson = new Gson();
+                String pendingInt = gson.toJson(pendingIntent);
+                KsPreferenceKey.getInstance(getActivity()).setReminderPenIntent(String.valueOf(asset.getId()),pendingInt);
+
+                String pendingInt2 = gson.toJson(myIntent);
+                KsPreferenceKey.getInstance(getActivity()).setReminderIntent(String.valueOf(asset.getId()),pendingInt2);
+
+            }catch (Exception ignored){
+
+            }*/
+            }
+
+            Calendar calendarToSchedule = Calendar.getInstance();
+            calendarToSchedule.setTimeInMillis(System.currentTimeMillis());
+            calendarToSchedule.clear();
+
+            calendarToSchedule.set(yr, mm, ddy, Integer.parseInt(hour), Integer.parseInt(minute), 0);
+
+
+            reminderDateTimeInMilliseconds = calendarToSchedule.getTimeInMillis();
+
+            PrintLogging.printLog("", "valueIsform" + reminderDateTimeInMilliseconds);
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                alarmManager.setAlarmClock(new AlarmManager.AlarmClockInfo(reminderDateTimeInMilliseconds, pendingIntent), pendingIntent);
+            } else {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, reminderDateTimeInMilliseconds, pendingIntent);
+            }
+
+            try {
+                ToastHandler.show(getString(R.string.reminder_added),
+                        getActivity());
+            } catch (Exception ignored) {
+
+            }
+
+            new KsPreferenceKey(getActivity()).setReminderId(asset.getId().toString(), true);
+            reminderIcon.setBackgroundResource(R.drawable.reminder_active_icon);
+        } catch (Exception ignored) {
+
+        }
+
+    }
+
     @Override
     public void getAsset(boolean status, Asset asset) {
 
@@ -973,7 +1104,6 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
         int requestCode = code.intValue();
         PrintLogging.printLog("", "notificationRequestId-->>" + requestCode);
         //String requestCode = String.valueOf(asset.getExternalId());
-        alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
 
         myIntent = new Intent(getActivity(), MyReceiver.class);
         myIntent.putExtra(AppLevelConstants.ID, asset.getId());
@@ -981,8 +1111,8 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
         myIntent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
         myIntent.putExtra(AppLevelConstants.SCREEN_NAME, AppLevelConstants.PROGRAM);
         myIntent.putExtra("requestcode", requestCode);
-        myIntent.setAction("com.dialog.dialoggo.MyIntent");
-        myIntent.setComponent(new ComponentName(getActivity().getPackageName(), "com.dialog.dialoggo.Alarm.MyReceiver"));
+        myIntent.setAction("com.astro.sott.MyIntent");
+        myIntent.setComponent(new ComponentName(getActivity().getPackageName(), "com.astro.sott.Alarm.MyReceiver"));
 
 //                    Random random = new Random();
 //                    int requestCode = Integer.parseInt(String.format("%02d", random.nextInt(10000)));
@@ -998,7 +1128,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
             intent.putExtra(AppLevelConstants.SCREEN_NAME, AppLevelConstants.PROGRAM);
             intent.putExtra("requestcode", requestCode);
 
-            intent.setComponent(new ComponentName(getActivity().getPackageName(), "com.dialog.dialoggo.Alarm.MyReceiver"));
+            intent.setComponent(new ComponentName(getActivity().getPackageName(), "com.astro.sott.Alarm.MyReceiver"));
             intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
             pendingIntent = PendingIntent.getBroadcast(getActivity(), requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -1028,36 +1158,38 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
 
     }
 
-    @Override
-    public void cancelReminder(Asset asset) {
-        Long code = asset.getId();
 
-        int requestCode = code.intValue();
-        PrintLogging.printLog("", "notificationcancelRequestId-->>" + requestCode);
+    Asset reminderAsset;
 
+    private void initReminderPopupFragment(Asset asset) {
+        this.reminderAsset = asset;
+       /* FragmentManager fm = getActivity().getSupportFragmentManager();
+        ReminderDialogFragment cancelDialogFragment = ReminderDialogFragment.newInstance("Reminder", "");
+        cancelDialogFragment.setEditDialogCallBack(Schedule.this);
+        cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);*/
+        try {
+            if (reminderAsset != null) {
+                new KsPreferenceKey(getActivity()).setReminderId(reminderAsset.getId().toString(), false);
+                reminderImage.setBackgroundResource(R.drawable.ic_notifications_24px);
+                try {
+                    ToastHandler.show(getResources().getString(R.string.reminder_removed) + " " + reminderAsset.getName(),
+                            getActivity());
+                } catch (Exception ignored) {
 
-        if (pendingIntent != null) {
-            pendingIntent = PendingIntent.getBroadcast(getActivity(), requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            alarmManager.cancel(pendingIntent);
-        } else {
-
-            myIntent = new Intent(getActivity(), MyReceiver.class);
-            myIntent.putExtra(AppLevelConstants.ID, asset.getId());
-            myIntent.putExtra(AppLevelConstants.Title, asset.getName());
-            myIntent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
-            myIntent.putExtra(AppLevelConstants.SCREEN_NAME, AppLevelConstants.PROGRAM);
-            myIntent.putExtra("requestcode", requestCode);
-            myIntent.setAction("com.dialog.dialoggo.MyIntent");
-            myIntent.setComponent(new ComponentName(getActivity().getPackageName(), "com.dialog.dialoggo.Alarm.MyReceiver"));
-
-            pendingIntent = PendingIntent.getBroadcast(getActivity(), requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-            alarmManager.cancel(pendingIntent);
+                }
+                removeReminder(reminderAsset);
+            }
+        } catch (Exception ignored) {
 
         }
+    }
 
+    ImageView reminderImage;
 
+    @Override
+    public void cancelReminder(ImageView reminderIcon, Asset asset) {
+        this.reminderImage = reminderIcon;
+        initReminderPopupFragment(asset);
     }
 
     private void splitStartTime(String startTime) {
@@ -1126,7 +1258,7 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
     public void onResume() {
         super.onResume();
         IntentFilter filter = new IntentFilter();
-        filter.addAction("com.dialog.dialoggo.Alarm.MyReceiver");
+        filter.addAction("com.astro.sott.Alarm.MyReceiver");
         getActivity().registerReceiver(myReceiver, filter);
     }
 
@@ -1153,13 +1285,57 @@ public class Schedule extends BaseBindingFragment<FragmentScheduleBinding> imple
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (getBinding().includeProgressbar.progressBar.getVisibility() == View.VISIBLE) {
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                if (getBinding().progressLay.progressHeart.getVisibility() == View.VISIBLE) {
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 } else {
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
                 }
 
             }
         });
     }
+
+    @Override
+    public void onFinishEditDialog() {
+        try {
+            if (reminderAsset != null) {
+                new KsPreferenceKey(getActivity()).setReminderId(reminderAsset.getId().toString(), false);
+                reminderImage.setBackgroundResource(R.drawable.ic_notifications_24px);
+                ToastHandler.show(getResources().getString(R.string.reminder_removed),
+                        getActivity());
+                removeReminder(reminderAsset);
+            }
+        } catch (Exception ignored) {
+
+        }
+
+    }
+
+    private void removeReminder(Asset asset) {
+        try {
+            Long code = asset.getId();
+
+            int requestCode = code.intValue();
+            PrintLogging.printLog("", "notificationcancelRequestId-->>" + requestCode);
+
+            myIntent = new Intent(getActivity(), MyReceiver.class);
+            myIntent.putExtra(AppLevelConstants.ID, asset.getId());
+            myIntent.putExtra(AppLevelConstants.Title, asset.getName());
+            myIntent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
+            myIntent.putExtra(AppLevelConstants.SCREEN_NAME, AppLevelConstants.PROGRAM);
+            myIntent.putExtra("requestcode", requestCode);
+            myIntent.setAction("com.astro.sott.MyIntent");
+            myIntent.setComponent(new ComponentName(getActivity().getPackageName(), "com.astro.sott.Alarm.MyReceiver"));
+
+            pendingIntent = PendingIntent.getBroadcast(getActivity(), requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+            alarmManager.cancel(pendingIntent);
+
+        } catch (Exception e) {
+            PrintLogging.printLog("", "notificationcancelRequestId-->>" + e.toString());
+        }
+
+
+    }
+
 }

@@ -180,6 +180,15 @@
 
                             </LinearLayout>
 
+                            <include
+                                android:id="@+id/progress_lay"
+                                layout="@layout/progress_animation"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="10dp"
+                                android:elevation="5dp"
+                                android:visibility="visible" />
 
                             <RelativeLayout
                                 android:id="@+id/iv_play_icon"
@@ -506,13 +515,6 @@
                 layout="@layout/no_connection" />
         </FrameLayout>
 
-        <include
-            android:id="@+id/include_progressbar"
-            layout="@layout/play_progress_bar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:visibility="gone" />
 
     </RelativeLayout>
 

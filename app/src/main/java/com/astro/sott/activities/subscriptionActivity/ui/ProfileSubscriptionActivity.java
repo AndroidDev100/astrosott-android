@@ -18,11 +18,15 @@ import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.SkuDetails;
 import com.astro.sott.R;
+import com.astro.sott.activities.boxSet.ui.BoxSetDetailActivity;
 import com.astro.sott.activities.home.HomeActivity;
+import com.astro.sott.activities.sponsored.ui.SponsoredDetailActivity;
 import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.commonCallBacks.CardCLickedCallBack;
 import com.astro.sott.databinding.ActivityProfileSubscriptionBinding;
+import com.astro.sott.fragments.dialog.CommonDialogFragment;
+import com.astro.sott.fragments.dialog.MaxisEditRestrictionPop;
 import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment;
 import com.astro.sott.fragments.subscription.dialog.DowngradeDialogFragment;
 import com.astro.sott.fragments.subscription.dialog.UpgradeDialogFragment;
@@ -32,6 +36,7 @@ import com.astro.sott.modelClasses.InApp.PackDetail;
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken;
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
+import com.astro.sott.utils.ErrorCodes;
 import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.billing.BillingProcessor;
 import com.astro.sott.utils.billing.InAppProcessListener;
@@ -40,15 +45,16 @@ import com.astro.sott.utils.billing.PurchaseType;
 import com.astro.sott.utils.billing.SKUsListListener;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.userInfo.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityProfileSubscriptionBinding> implements CardCLickedCallBack, InAppProcessListener, UpgradeDialogFragment.UpgradeDialogListener, DowngradeDialogFragment.DowngradeDialogListener {
+public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityProfileSubscriptionBinding> implements CardCLickedCallBack, InAppProcessListener, UpgradeDialogFragment.UpgradeDialogListener, DowngradeDialogFragment.DowngradeDialogListener, MaxisEditRestrictionPop.EditDialogListener, CommonDialogFragment.EditDialogListener {
     private BillingProcessor billingProcessor;
     private SubscriptionViewModel subscriptionViewModel;
-
+    private boolean isUpgrade = false, isDowngrade = false;
 
     @Override
     protected ActivityProfileSubscriptionBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -75,7 +81,7 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
         bundle.putString("from", from);
         someFragment.setArguments(bundle);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frameContent, someFragment, "SubscriptionFragment"); // give your fragment container id in first parameter
+        transaction.add(R.id.frameContent, someFragment, "SubscriptionFragment"); // give your fragment container id in first parameter
         transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
         transaction.commit();
     }
@@ -93,13 +99,24 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                     //  PrintLogging.printLog("PurchaseActivity", "Received a pending purchase of SKU: " + purchase.getSku());
                     // handle pending purchases, e.g. confirm with users about the pending
                     // purchases, prompt them to complete it, etc.
-                    Toast.makeText(this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    pendingAddSubscription(purchase);
+                    commonDialog(getResources().getString(R.string.pending_payment), getResources().getString(R.string.pending_payment_desc), getResources().getString(R.string.ok_single_exlamation));
+
+                } else {
+                    ToastHandler.show(getResources().getString(R.string.payment_failed), ProfileSubscriptionActivity.this);
                 }
             }
         } catch (Exception ignored) {
 
         }
 
+    }
+
+    private void commonDialog(String tiltle, String description, String actionBtn) {
+        FragmentManager fm = getSupportFragmentManager();
+        CommonDialogFragment commonDialogFragment = CommonDialogFragment.newInstance(tiltle, description, actionBtn);
+        commonDialogFragment.setEditDialogCallBack(this);
+        commonDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
     }
 
     private void handlePurchase(Purchase purchase) {
@@ -112,7 +129,7 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
             orderId = "";
         }
 
-        subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), purchase.getSku(), purchase.getPurchaseToken(), orderId).observe(this, addSubscriptionResponseEvergentCommonResponse -> {
+        subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), purchase.getSku(), purchase.getPurchaseToken(), orderId, "").observe(this, addSubscriptionResponseEvergentCommonResponse -> {
             if (addSubscriptionResponseEvergentCommonResponse.isStatus()) {
                 if (addSubscriptionResponseEvergentCommonResponse.getResponse().getAddSubscriptionResponseMessage().getMessage() != null) {
                     try {
@@ -121,7 +138,16 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                     } catch (Exception e) {
                         Log.w("ex", e);
                     }
-                    Toast.makeText(this, getResources().getString(R.string.subscribed_success), Toast.LENGTH_SHORT).show();
+                    if (isUpgrade) {
+                        ToastHandler.show(getResources().getString(R.string.upgrade_success),
+                                ProfileSubscriptionActivity.this);
+                    } else if (isDowngrade) {
+                        ToastHandler.show(getResources().getString(R.string.downgrade_success),
+                                ProfileSubscriptionActivity.this);
+                    } else {
+                        ToastHandler.show(getResources().getString(R.string.subscribed_success),
+                                ProfileSubscriptionActivity.this);
+                    }
                     if (from.equalsIgnoreCase("Content Detail Page")) {
                         onBackPressed();
                     } else {
@@ -133,7 +159,7 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                     CleverTapManager.getInstance().charged(this, planName, offerId, offerType, planPrice, "In App Google", "Failed", "Content Details Page");
                 } catch (Exception ex) {
                 }
-                if (addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase("eV2124") || addSubscriptionResponseEvergentCommonResponse.getErrorCode().equals("111111111")) {
+                if (addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.eV2124)) || addSubscriptionResponseEvergentCommonResponse.getErrorCode().equals("111111111")) {
                     EvergentRefreshToken.refreshToken(this, UserInfo.getInstance(this).getRefreshToken()).observe(this, evergentCommonResponse1 -> {
                         if (evergentCommonResponse1.isStatus()) {
                             handlePurchase(purchase);
@@ -141,18 +167,37 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                             AppCommonMethods.removeUserPrerences(this);
                         }
                     });
-                } else {
+                }else if(addSubscriptionResponseEvergentCommonResponse.getErrorCode().equals(String.valueOf(ErrorCodes.eV2138))|| addSubscriptionResponseEvergentCommonResponse.getErrorCode().equals(String.valueOf(ErrorCodes.eV2292))){
+                    ToastHandler.show(getResources().getString(R.string.payment_failed),this);
+                } else if (addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.eV2428))||addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.eV2597))) {
+                    commonDialog(getResources().getString(R.string.payment_progress), getResources().getString(R.string.payment_progress_desc), getResources().getString(R.string.ok));
+                } else if (addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.ev1144))||addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.eV2365))||addSubscriptionResponseEvergentCommonResponse.getErrorCode().equalsIgnoreCase(String.valueOf(ErrorCodes.eV2378))) {
+                    commonDialog(getResources().getString(R.string.already_purchase), getResources().getString(R.string.already_purchase_desc), getResources().getString(R.string.ok));
+                }else {
                     if (from.equalsIgnoreCase("Content Detail Page")) {
                         onBackPressed();
                     } else {
                         setFragment();
                     }
-                    Toast.makeText(this, addSubscriptionResponseEvergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(addSubscriptionResponseEvergentCommonResponse.getErrorMessage(),
+                            ProfileSubscriptionActivity.this);
                 }
             }
         });
 
 
+    }
+
+    private void pendingAddSubscription(Purchase purchase) {
+        String orderId = "";
+        if (purchase.getOrderId() != null) {
+            orderId = purchase.getOrderId();
+        } else {
+            orderId = "";
+        }
+        subscriptionViewModel.addSubscription(UserInfo.getInstance(this).getAccessToken(), purchase.getSku(), purchase.getPurchaseToken(), orderId, "Pending").observe(this, addSubscriptionResponseEvergentCommonResponse -> {
+            // onBackPressed();
+        });
     }
 
     @Override
@@ -185,19 +230,35 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
 
     @Override
     public void onCardClicked(String productId, String serviceType, String activePlan, String name, Long price) {
+        if (checkGooglePending(serviceType)) {
+            commonDialog(getResources().getString(R.string.payment_progress), getResources().getString(R.string.payment_progress_desc), getResources().getString(R.string.ok));
+        } else {
+            this.planName = name;
+            offerId = productId;
+            planPrice = price;
+            FirebaseEventManager.getFirebaseInstance(this).packageEvent(name, price, "trx_select", "");
+            checkForCpId(serviceType, productId);
+        }
 
-        this.planName = name;
-        offerId = productId;
-        planPrice = price;
-        FirebaseEventManager.getFirebaseInstance(this).packageEvent(name, price, "trx_select", "");
 
+    }
+
+    private boolean checkGooglePending(String serviceType) {
+        if (serviceType.equalsIgnoreCase("PPV")) {
+            return billingProcessor.pendingProduct(this);
+        } else if (serviceType.equalsIgnoreCase("SVOD")) {
+            return billingProcessor.pendingSubscription(this);
+
+        }
+        return false;
+    }
+
+    private void checkForCpId(String serviceType, String productId) {
         if (UserInfo.getInstance(this).getCpCustomerId() != null && !UserInfo.getInstance(this).getCpCustomerId().equalsIgnoreCase("")) {
             processPayment(serviceType, productId);
         } else {
             getContact(serviceType, productId);
         }
-
-
     }
 
     private void getContact(String serviceType, String productId) {
@@ -216,12 +277,15 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                 UserInfo.getInstance(this).setCpCustomerId(evergentCommonResponse.getGetContactResponse().getGetContactResponseMessage().getCpCustomerID());
                 processPayment(serviceType, productId);
             } else {
-                Toast.makeText(this, getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(getResources().getString(R.string.something_went_wrong),
+                        ProfileSubscriptionActivity.this);
             }
         });
     }
 
     private void processPayment(String serviceType, String productId) {
+        isDowngrade = false;
+        isUpgrade = false;
         if (serviceType.equalsIgnoreCase("ppv")) {
             offerType = "TVOD";
             billingProcessor.purchase(ProfileSubscriptionActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.PRODUCT.name());
@@ -233,17 +297,32 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
                         if (purchaseObject != null) {
                             if (purchaseObject.getSku() != null && purchaseObject.getPurchaseToken() != null) {
                                 offerType = "SVOD";
-                                billingProcessor.updatePurchase(ProfileSubscriptionActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(), purchaseObject.getSku(), purchaseObject.getPurchaseToken());
+                                if (UserInfo.getInstance(ProfileSubscriptionActivity.this).isMaxis()) {
+                                    maxisRestrictionPopUp(getResources().getString(R.string.maxis_upgrade_downgrade_restriction_description));
+                                } else {
+                                    billingProcessor.updatePurchase(ProfileSubscriptionActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name(), purchaseObject.getSku(), purchaseObject.getPurchaseToken());
+                                }
                             }
                         } else {
                             offerType = "SVOD";
-                            billingProcessor.purchase(ProfileSubscriptionActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
+                            if (UserInfo.getInstance(ProfileSubscriptionActivity.this).isMaxis()) {
+                                maxisRestrictionPopUp(getResources().getString(R.string.maxis_upgrade_downgrade_restriction_description));
+                            } else {
+                                billingProcessor.purchase(ProfileSubscriptionActivity.this, productId, "DEVELOPER PAYLOAD", PurchaseType.SUBSCRIPTION.name());
+                            }
                         }
                     }
                 });
 
             }
         }
+    }
+
+    private void maxisRestrictionPopUp(String message) {
+        FragmentManager fm = getSupportFragmentManager();
+        MaxisEditRestrictionPop cancelDialogFragment = MaxisEditRestrictionPop.newInstance(getResources().getString(R.string.maxis_edit_restriction_title), message, getResources().getString(R.string.ok_understand));
+        cancelDialogFragment.setEditDialogCallBack(ProfileSubscriptionActivity.this);
+        cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
     }
 
     @Override
@@ -257,6 +336,11 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
             if (purchases.get(0).getPurchaseToken() != null) {
                 if (!TabsData.getInstance().isDetail())
                     processPurchase(purchases);
+            }
+        } else {
+            if (isDowngrade) {
+                ToastHandler.show(getResources().getString(R.string.downgrade_success),
+                        ProfileSubscriptionActivity.this);
             }
         }
     }
@@ -308,11 +392,23 @@ public class ProfileSubscriptionActivity extends BaseBindingActivity<ActivityPro
 
     @Override
     public void onUpgradeClick() {
+        isUpgrade = true;
         billingProcessor.upgrade();
     }
 
     @Override
     public void onDowngradeClick() {
+        isDowngrade = true;
         billingProcessor.downgrade();
+    }
+
+    @Override
+    public void onFinishEditDialog() {
+
+    }
+
+    @Override
+    public void onActionBtnClicked() {
+
     }
 }

@@ -2,6 +2,7 @@ package com.astro.sott.activities.signUp.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.text.InputType
 import android.util.Log
 import android.view.KeyEvent
@@ -9,7 +10,6 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
@@ -23,9 +23,9 @@ import com.astro.sott.activities.loginActivity.ui.AccountBlockedDialog
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity
 import com.astro.sott.activities.verification.VerificationActivity
 import com.astro.sott.baseModel.BaseActivity
+import com.astro.sott.callBacks.TextWatcherCallBack
 import com.astro.sott.databinding.ActivitySinUpBinding
 import com.astro.sott.fragments.dialog.AlreadyUserFragment
-import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment
 import com.astro.sott.networking.refreshToken.EvergentRefreshToken
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager
@@ -35,10 +35,11 @@ import com.astro.sott.usermanagment.modelClasses.getContact.SocialLoginTypesItem
 import com.astro.sott.utils.commonMethods.AppCommonMethods
 import com.astro.sott.utils.helpers.ActivityLauncher
 import com.astro.sott.utils.helpers.AppLevelConstants
+import com.astro.sott.utils.helpers.CustomTextWatcher
+import com.astro.sott.utils.helpers.ToastHandler
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey
 import com.astro.sott.utils.userInfo.UserInfo
 import com.facebook.*
-import com.facebook.login.LoginBehavior
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -58,6 +59,9 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
     private var callbackManager: CallbackManager? = null
     private var passwordVisibility = false
     private var name: String = ""
+    private var isPasswordCheck = false
+    private var isEmailCheck = false
+
     private val EMAIL = "email, public_profile"
 
     private val passwordPattern = Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=\\S+$).{8,16}$")
@@ -72,6 +76,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
 
         super.onCreate(savedInstanceState)
         activitySinUpBinding = DataBindingUtil.setContentView(this, R.layout.activity_sin_up)
+        AppCommonMethods.setProgressBar(activitySinUpBinding?.progressLay?.progressHeart)
         modelCall()
         if (intent.getStringExtra(AppLevelConstants.FROM_KEY) != null)
             from = intent.getStringExtra(AppLevelConstants.FROM_KEY)!!
@@ -97,9 +102,59 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
     }
-
     private fun setWatcher() {
+        activitySinUpBinding?.mobileEmailEdt?.addTextChangedListener(
+            CustomTextWatcher(
+                this,
+                object : TextWatcherCallBack {
+                    override fun beforeTextChanged(
+                        charSequence: CharSequence,
+                        i: Int,
+                        i1: Int,
+                        i2: Int
+                    ) {
+                    }
 
+                    override fun onTextChanged(
+                        charSequence: CharSequence,
+                        i: Int,
+                        i1: Int,
+                        i2: Int
+                    ) {
+                        activitySinUpBinding?.errorEmail?.visibility = View.GONE
+                        activitySinUpBinding?.errorPasssword?.visibility = View.GONE
+
+                    }
+
+                    override fun afterTextChanged(editable: Editable) {}
+                })
+        )
+
+        activitySinUpBinding?.passwordEdt?.addTextChangedListener(
+            CustomTextWatcher(
+                this,
+                object : TextWatcherCallBack {
+                    override fun beforeTextChanged(
+                        charSequence: CharSequence,
+                        i: Int,
+                        i1: Int,
+                        i2: Int
+                    ) {
+                    }
+
+                    override fun onTextChanged(
+                        charSequence: CharSequence,
+                        i: Int,
+                        i1: Int,
+                        i2: Int
+                    ) {
+                        activitySinUpBinding?.errorEmail?.visibility = View.GONE
+                        activitySinUpBinding?.errorPasssword?.visibility = View.GONE
+                    }
+
+                    override fun afterTextChanged(editable: Editable) {}
+                })
+        )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -109,11 +164,11 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
         if (requestCode == 4001) {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
-            activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
+            activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.VISIBLE
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
         } else {
-            activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
+            activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.VISIBLE
             callbackManager!!.onActivityResult(requestCode, resultCode, data)
         }
     }
@@ -129,22 +184,21 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                 name = account.displayName!!
                 login("Google", account.email!!, account.id!!)
             } else {
-                Toast.makeText(
-                    this,
-                    resources.getString(R.string.email_unavailable),
-                    Toast.LENGTH_SHORT
-                ).show()
+                if (this != null)
+                    ToastHandler.show(
+                        resources.getString(R.string.email_unavailable),
+                        this@SignUpActivity
+                    )
             }
 
             // Signed in successfully, show authenticated UI.
             //  updateUI(account);
         } catch (e: ApiException) {
-            activitySinUpBinding?.progressBar?.visibility = View.GONE
-            Toast.makeText(
-                this,
-                resources.getString(R.string.email_unavailable),
-                Toast.LENGTH_SHORT
-            ).show()
+            activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.GONE
+            ToastHandler.show(
+                resources.getString(R.string.email_unavailable) + "",
+                this@SignUpActivity
+            );
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             // updateUI(null);
@@ -204,6 +258,8 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
             onBackPressed()
         })
         activitySinUpBinding?.nextBtn?.setOnClickListener {
+            isEmailCheck = true
+            isPasswordCheck = true
             var password = activitySinUpBinding?.passwordEdt?.text.toString()
             var email_mobile = activitySinUpBinding?.mobileEmailEdt?.text.toString()
             if (!email_mobile.equals("", true)) {
@@ -219,7 +275,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                         checkPasswordValidation(password)
 
                     }
-                } else*/ if (true) {
+                } else*/ if (emailPattern.containsMatchIn(email_mobile)) {
                     checkPassword("email", email_mobile, password)
                 } else {
 
@@ -240,7 +296,6 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                     activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
                     activitySinUpBinding?.errorEmail?.text =
                         getString(R.string.email_suggestion)
-                    checkPasswordValidation(password)
                     /* }*/
                 }
 
@@ -248,27 +303,36 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                 activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
                 activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.red_live))
                 activitySinUpBinding?.errorEmail?.text = getString(R.string.field_cannot_empty)
-                checkPasswordValidation(password)
-
             }
 
         }
         activitySinUpBinding?.mobileEmailEdt?.setOnFocusChangeListener { v, hasFocus ->
-            activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
-            activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
+            if (hasFocus) {
+                activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
+                activitySinUpBinding?.errorPasssword?.visibility = View.GONE
+
+                if (isEmailCheck) {
+                    var password = activitySinUpBinding?.passwordEdt?.text.toString()
+                    if (checkEmailValidation()) {
+                        checkPasswordValidation(password)
+                    }
+                }
+                isEmailCheck = true
+            }
         }
         activitySinUpBinding?.passwordEdt?.setOnFocusChangeListener { v, hasFocus ->
-
-            if (activitySinUpBinding?.errorEmail?.visibility == View.VISIBLE) {
+            if (hasFocus) {
                 var email_mobile = activitySinUpBinding?.mobileEmailEdt?.text.toString()
                 var password = activitySinUpBinding?.passwordEdt?.text.toString()
                 activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
-                activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
+                if (!isPasswordCheck)
+                    activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
                 if (!email_mobile.equals("", true)) {
-                    if (mobilePattern.containsMatchIn(email_mobile) || emailPattern.containsMatchIn(
+                    if (emailPattern.containsMatchIn(
                             email_mobile
                         )
                     ) {
+                        checkPasswordValidation(password)
                         activitySinUpBinding?.errorEmail?.setTextColor(resources.getColor(R.color.heather))
                         activitySinUpBinding?.errorEmail?.text =
                             resources.getString(R.string.email_suggestion)
@@ -283,11 +347,10 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                         resources.getString(R.string.field_cannot_empty)
 
                 }
-                checkPasswordValidation(password)
-            }else{
-                activitySinUpBinding?.errorEmail?.visibility = View.VISIBLE
-                activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
+                isPasswordCheck = true
             }
+            // checkPasswordValidation(password)
+
         }
         activitySinUpBinding?.eyeIcon?.setOnClickListener(View.OnClickListener {
             if (passwordVisibility) {
@@ -305,6 +368,15 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
             }
         })
 
+    }
+
+    private fun checkEmailValidation(): Boolean {
+        var email_mobile = activitySinUpBinding?.mobileEmailEdt?.text.toString()
+        if (!email_mobile.equals("", true)) {
+            return emailPattern.containsMatchIn(email_mobile)
+        } else {
+            return false;
+        }
     }
 
     private fun checkPasswordValidation(password: String) {
@@ -350,23 +422,20 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                                             name = fbName
                                             login("Facebook", email, id + "")
                                         } else {
-                                            Toast.makeText(
-                                                this@SignUpActivity,
+                                            ToastHandler.show(
                                                 resources.getString(R.string.email_unavailable),
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                                this@SignUpActivity
+                                            )
                                         }
 
                                     } catch (e: JSONException) {
                                         e.printStackTrace()
                                     }
                                 } else {
-                                    Toast.makeText(
-                                        this@SignUpActivity,
+                                    ToastHandler.show(
                                         resources.getString(R.string.email_unavailable),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-
+                                        this@SignUpActivity
+                                    )
                                     LoginManager.getInstance().logOut()
                                 }
                             }
@@ -382,23 +451,23 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
 
 
                 override fun onCancel() {
-                    activitySinUpBinding?.progressBar?.visibility = View.GONE
-                    Toast.makeText(
-                        this@SignUpActivity,
-                        resources.getString(R.string.email_unavailable),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    ToastHandler.show(
+                        getString(R.string.no_internet_connection),
+                        this@SignUpActivity
+                    )
+                    activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.GONE
                 }
+
+
 
 
                 // activitySinUpBinding?.loginButton?.loginBehavior = LoginBehavior.WEB_ONLY
                 override fun onError(exception: FacebookException) {
-                    activitySinUpBinding?.progressBar?.visibility = View.GONE
-                    Toast.makeText(
-                        this@SignUpActivity,
-                        resources.getString(R.string.email_unavailable),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.GONE
+                    ToastHandler.show(
+                        resources.getString(R.string.email_unavailable) + "",
+                        this@SignUpActivity
+                    )
                 }
             })
         // activitySinUpBinding?.loginButton?.loginBehavior = LoginBehavior.WEB_ONLY
@@ -425,7 +494,6 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                 activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.red_live))
                 activitySinUpBinding?.errorPasssword?.visibility = View.VISIBLE
                 activitySinUpBinding?.errorPasssword?.text = getString(R.string.password_error)
-
             }
         } else {
             activitySinUpBinding?.errorPasssword?.setTextColor(resources.getColor(R.color.red_live))
@@ -436,7 +504,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
     }
 
     private fun login(type: String, emailMobile: String, password: String) {
-        activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
+        activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.VISIBLE
         val tabletSize = resources.getBoolean(R.bool.isTablet)
 
         astroLoginViewModel!!.loginUser(type, emailMobile, password, tabletSize).observe(
@@ -465,7 +533,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                     }
                     astroLoginViewModel!!.addToken(UserInfo.getInstance(this).externalSessionToken)
                 } else {
-                    activitySinUpBinding?.progressBar?.visibility = View.GONE
+                    activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.GONE
                     if (type.equals("Facebook", ignoreCase = true) || type.equals(
                             "Google",
                             ignoreCase = true
@@ -474,11 +542,10 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                         if (evergentCommonResponse.errorCode.equals("eV2327", ignoreCase = true)) {
                             socialSearchAccountv2(password, type, emailMobile)
                         } else {
-                            Toast.makeText(
-                                this,
+                            ToastHandler.show(
                                 evergentCommonResponse.errorMessage,
-                                Toast.LENGTH_SHORT
-                            ).show()
+                                this@SignUpActivity
+                            )
                         }
                     } else {
                         if (evergentCommonResponse.errorCode.equals("eV4492", ignoreCase = true)) {
@@ -490,11 +557,11 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                             accountBlockedDialog.setEditDialogCallBack(this)
                             accountBlockedDialog.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT)
                         } else {
-                            Toast.makeText(
-                                this,
+                            ToastHandler.show(
                                 evergentCommonResponse.errorMessage,
-                                Toast.LENGTH_SHORT
-                            ).show()
+                                this@SignUpActivity
+                            )
+
                         }
                     }
                 }
@@ -512,7 +579,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
             .observe(
                 this@SignUpActivity,
                 Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
-                    activitySinUpBinding?.progressBar?.visibility = View.GONE
+                    activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.GONE
                     if (evergentCommonResponse.isStatus && evergentCommonResponse.getContactResponse.getContactResponseMessage != null && evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage != null && evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!!.size > 0) {
                         UserInfo.getInstance(this).firstName =
                             evergentCommonResponse.getContactResponse.getContactResponseMessage!!.contactMessage!![0]!!.firstName
@@ -576,17 +643,17 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                                     }
                                 })
                         } else {
-                            Toast.makeText(
-                                this,
-                                evergentCommonResponse.errorMessage,
-                                Toast.LENGTH_SHORT
-                            ).show()
+
+                            ToastHandler.show(evergentCommonResponse.errorMessage,
+                                this@SignUpActivity)
+
                         }
                     }
                 })
     }
 
     private var displayName = ""
+    private var paymentMethod = ""
     private var from = ""
     private fun getActiveSubscription() {
         astroLoginViewModel!!.getActiveSubscription(UserInfo.getInstance(this).accessToken, "")
@@ -600,8 +667,14 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                                     if (!accountServiceMessageItem?.isFreemium!!) {
                                         if (accountServiceMessageItem.displayName != null)
                                             displayName = accountServiceMessageItem.displayName!!
+                                        paymentMethod = accountServiceMessageItem.paymentMethod!!
                                     }
                                 }
+                                UserInfo.getInstance(this).isMaxis = paymentMethod.equals(
+                                    AppLevelConstants.MAXIS_BILLING,
+                                    ignoreCase = true
+                                )
+
                                 if (!displayName.equals("", ignoreCase = true)) {
                                     UserInfo.getInstance(this).isVip = true
                                     setActive()
@@ -633,9 +706,10 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                 UserInfo.getInstance(this).accountRole,
                 ""
             )
-
-        Toast.makeText(this@SignUpActivity, "User Logged in successfully.", Toast.LENGTH_SHORT)
-            .show()
+        ToastHandler.show(
+            getString(R.string.login_successfull),
+            this@SignUpActivity
+        )
 
         if (from.equals("Profile", ignoreCase = true)) {
             ActivityLauncher(this).profileScreenRedirection(
@@ -650,12 +724,12 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
     }
 
     private fun searchAccountv2(type: String, emailMobile: String, password: String) {
-        activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
+        activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.VISIBLE
 
         astroLoginViewModel!!.searchAccountV2(type, emailMobile)
             .observe(this, Observer { evergentCommonResponse ->
                 if (evergentCommonResponse.isStatus) {
-                    activitySinUpBinding?.progressBar?.visibility = View.GONE
+                    activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.GONE
                     val fm: FragmentManager = supportFragmentManager
                     val cancelDialogFragment = AlreadyUserFragment.newInstance("player", "")
                     cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT)
@@ -663,12 +737,11 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                     if (evergentCommonResponse.errorCode.equals("eV2327", true)) {
                         createOtp(type, emailMobile, password)
                     } else {
-                        activitySinUpBinding?.progressBar?.visibility = View.GONE
-                        Toast.makeText(
-                            this,
+                        activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.GONE
+                        ToastHandler.show(
                             evergentCommonResponse.errorMessage,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                            this@SignUpActivity
+                        )
                     }
                 }
             })
@@ -677,7 +750,7 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
     private fun createOtp(type: String, emailMobile: String, password: String) {
         astroLoginViewModel!!.createOtp(type, emailMobile)
             .observe(this, Observer { evergentCommonResponse ->
-                activitySinUpBinding?.progressBar?.visibility = View.GONE
+                activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.GONE
 
                 if (evergentCommonResponse.isStatus) {
                     // Toast.makeText(this, "Verification code had be sent to $emailMobile", Toast.LENGTH_SHORT).show()
@@ -688,17 +761,19 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                     intent.putExtra(AppLevelConstants.FROM_KEY, "signUp")
                     startActivity(intent)
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.errorMessage, Toast.LENGTH_SHORT)
-                        .show()
+                    ToastHandler.show(
+                        evergentCommonResponse.errorMessage,
+                        this@SignUpActivity
+                    )
                 }
             })
     }
 
     private fun socialSearchAccountv2(password: String, type: String, emailMobile: String) {
-        activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
+        activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.VISIBLE
         astroLoginViewModel!!.searchAccountV2("email", emailMobile)
             .observe(this, Observer { evergentCommonResponse: EvergentCommonResponse<*> ->
-                activitySinUpBinding?.progressBar?.visibility = View.GONE
+                activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.GONE
                 if (evergentCommonResponse.isStatus) {
                     val intent = Intent(this, IsThatYouActivity::class.java)
                     intent.putExtra(AppLevelConstants.TYPE_KEY, type)
@@ -709,18 +784,16 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                     if (evergentCommonResponse.errorCode.equals("eV2327", ignoreCase = true)) {
                         createUser(password, emailMobile, type)
                     } else {
-                        Toast.makeText(
-                            this,
-                            evergentCommonResponse.errorMessage,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        ToastHandler.show(evergentCommonResponse.errorMessage,
+                            this@SignUpActivity
+                        )
                     }
                 }
             })
     }
 
     private fun createUser(password: String, email_mobile: String, type: String) {
-        activitySinUpBinding?.progressBar?.visibility = View.VISIBLE
+        activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.VISIBLE
         val tabletSize = resources.getBoolean(R.bool.isTablet)
         astroLoginViewModel!!.createUser(type, email_mobile, password, name, tabletSize)
             .observe(this,
@@ -738,13 +811,10 @@ class SignUpActivity : BaseActivity(), AccountBlockedDialog.EditDialogListener {
                         AppCommonMethods.onUserRegister(this)
                         getContact()
                     } else {
-                        Toast.makeText(
-                            this,
-                            evergentCommonResponse.errorMessage,
-                            Toast.LENGTH_SHORT
+                        ToastHandler.show(evergentCommonResponse.errorMessage,
+                            this@SignUpActivity
                         )
-                            .show()
-                        activitySinUpBinding?.progressBar?.visibility = View.GONE
+                        activitySinUpBinding?.progressLay?.progressHeart?.visibility = View.GONE
                     }
                 })
     }

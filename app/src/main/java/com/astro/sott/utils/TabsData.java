@@ -16,13 +16,39 @@ public class TabsData {
     private boolean isDetail = false;
     private String seriesType;
     private int selectedSeason;
+    private int totalCount;
+
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
+    }
+
+    public List<Asset> getSeasonData() {
+        return seasonData;
+    }
+
+    public void setSeasonData(List<Asset> seasonData) {
+        this.seasonData = seasonData;
+    }
+
     private List<RailCommonData> youMayAlsoLikeData;
     private List<AssetCommonBean> openSeriesData;
     private Asset seriesAsset;
     private List<AssetCommonBean> closedSeriesData;
-
+    private List<Asset> seasonData;
     private List<Integer> seasonList;
+    private int selectedSeasonNumIndex;
 
+    public int getSelectedSeasonNumIndex() {
+        return selectedSeasonNumIndex;
+    }
+
+    public void setSelectedSeasonNumIndex(int selectedSeasonNumIndex) {
+        this.selectedSeasonNumIndex = selectedSeasonNumIndex;
+    }
 
     public static TabsData getInstance() {
         if (tabsData == null) {

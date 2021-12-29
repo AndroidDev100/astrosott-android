@@ -117,13 +117,13 @@ public class LiveChannelSubcriptionFragment extends BaseBindingFragment<Fragment
     }
 
     private void callAssetListApiForSubscription(String subscriptionOffer) {
-        getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
-        viewModel.getAssetList(subscriptionOffer).observe(this, new Observer<List<Asset>>() {
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
+        viewModel.getAssetList(subscriptionOffer).observe(getViewLifecycleOwner(), new Observer<List<Asset>>() {
             @Override
             public void onChanged(List<Asset> assets) {
                 if (assets!=null){
                     if (assets.size()>0){
-                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                         AssetContent.saveIdAndReasonCode(assets);
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int i = 0; i < assets.size(); i++) {
@@ -140,12 +140,12 @@ public class LiveChannelSubcriptionFragment extends BaseBindingFragment<Fragment
                         callSubscriptionPackageListApi(baseId);
 
                     }else {
-                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                        getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                         showDialog(getString(R.string.something_went_wrong_try_again));
                     }
 
                 }else {
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                     showDialog(getString(R.string.something_went_wrong_try_again));
                 }
             }
@@ -154,7 +154,7 @@ public class LiveChannelSubcriptionFragment extends BaseBindingFragment<Fragment
 
 
     private void callSubscriptionPackageListApi(String baseId) {
-        getBinding().includeProgressbar.progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         viewModel.getSubscriptionPackageList(baseId).observe(this, subscriptionList -> {
 
             if(subscriptionList != null){
@@ -180,15 +180,15 @@ public class LiveChannelSubcriptionFragment extends BaseBindingFragment<Fragment
                         }
                     }
                     setUiComponent(mSubscriptionPlanModelList);
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
 
                 }else {
                     showDialog(getString(R.string.something_went_wrong_try_again));
-                    getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 }
             }else {
                 showDialog(getString(R.string.something_went_wrong_try_again));
-                getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             }
 
 

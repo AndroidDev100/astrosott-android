@@ -14,6 +14,7 @@ import com.astro.sott.activities.webEpisodeDescription.layers.EpisodesLayer;
 import com.astro.sott.activities.webEpisodeDescription.layers.SeasonsLayer;
 import com.astro.sott.beanModel.ksBeanmodel.AssetCommonBean;
 import com.astro.sott.beanModel.ksBeanmodel.RailCommonData;
+import com.astro.sott.fragments.detailRailFragment.DetailRailFragment;
 import com.astro.sott.repositories.dtv.DTVRepository;
 import com.astro.sott.utils.TabsData;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
@@ -21,6 +22,7 @@ import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.repositories.trailerFragment.TrailerFragmentRepository;
 import com.kaltura.client.types.Asset;
+import com.kaltura.client.types.ListResponse;
 import com.kaltura.client.types.MultilingualStringValueArray;
 import com.kaltura.client.types.Value;
 
@@ -125,13 +127,22 @@ public class TrailerFragmentViewModel extends AndroidViewModel {
         return TrailerFragmentRepository.getInstance().getHighlightAsset(getApplication(), refId, assetType);
     }
 
-    public LiveData<List<Integer>> getSeasonsListData(int assetId,
-                                                      int counter,
-                                                      int assetType,
-                                                      Map<String, Value> map,
-                                                      int layoutType,
-                                                      String externalId) {
+    public LiveData<List<Asset>> getSeasonsListData(int assetId,
+                                                              int counter,
+                                                              int assetType,
+                                                              Map<String, Value> map,
+                                                              int layoutType,
+                                                              String externalId) {
         return SeasonsLayer.getInstance().loadData(getApplication().getApplicationContext(), assetId, counter, assetType, map, layoutType, externalId);
+    }
+
+    public LiveData<List<Asset>> getSeasonsListData1(int assetId,
+                                                    int counter,
+                                                    int assetType,
+                                                    Map<String, Value> map,
+                                                    int layoutType,
+                                                    String externalId) {
+        return SeasonsLayer.getInstance().loadData1(getApplication().getApplicationContext(), assetId, counter, assetType, map, layoutType, externalId);
     }
 
     public LiveData<List<AssetCommonBean>> callSeasonEpisodes(Asset map, int assetType, int counter, List<Integer> seriesNumberList, int seasonCounter, int layoutType, String sortType, LifecycleOwner owner) {
@@ -216,5 +227,10 @@ public class TrailerFragmentViewModel extends AndroidViewModel {
 
     public String getParentRefId(Map<String, MultilingualStringValueArray> tags) {
         return AssetContent.getParentRefId(tags);
+    }
+
+    public LiveData<List<AssetCommonBean>> callSeasonEpisodesWithExternalId(String externalId, Integer type, int counter, int seasonCounter, List<Asset> seasonData, int layoutType, String sortType, LifecycleOwner owner) {
+        TabsData.getInstance().setSortType(sortType);
+        return EpisodesLayer.getInstance().callEpisodes(getApplication().getApplicationContext(),externalId,type,counter,seasonData,seasonCounter,layoutType,owner);
     }
 }

@@ -1,16 +1,21 @@
 package com.astro.sott.activities.search.adapter;
 
 import android.app.Activity;
+
 import androidx.databinding.DataBindingUtil;
+
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AssetContent;
 import com.astro.sott.R;
 import com.astro.sott.databinding.SearchItemBinding;
@@ -50,15 +55,28 @@ public class ResultAdapterAll extends RecyclerView.Adapter<ResultAdapterAll.Sing
     @Override
     public void onBindViewHolder(@NonNull SingleItemRowHolder viewHolder, final int position) {
         // viewHolder.searchItemBinding.setSingleItem(itemsList.get(position));
-        if (itemsList.get(position).getImages().size()>0){
-            ImageHelper.getInstance(viewHolder.searchItemBinding.image.getContext()).loadImageToLandscape(viewHolder.searchItemBinding.image, itemsList.get(position).getImages().get(0).getUrl(),R.drawable.ic_landscape_placeholder);
-        }else {
+        if (itemsList.get(position).getImages().size() > 0) {
+            ImageHelper.getInstance(viewHolder.searchItemBinding.image.getContext()).loadImageToLandscape(viewHolder.searchItemBinding.image, itemsList.get(position).getImages().get(0).getUrl(), R.drawable.ic_landscape_placeholder);
+        } else {
             ImageHelper.getInstance(viewHolder.searchItemBinding.image.getContext()).loadPlaceHolder(viewHolder.searchItemBinding.image, R.drawable.ic_landscape_placeholder);
         }
-        viewHolder.searchItemBinding.tvTitle.setText(itemsList.get(position).getName());
-
         viewHolder.searchItemBinding.tvShortDescription.setText(itemsList.get(position).getDescription());
         viewHolder.searchItemBinding.setSingleItem(itemsList.get(position));
+        viewHolder.searchItemBinding.tvTitle.setText(itemsList.get(position).getName());
+        if (itemsList.get(position).getType() == MediaTypeConstant.getProgram(context)) {
+            viewHolder.searchItemBinding.tvShortDescription.setVisibility(View.VISIBLE);
+            viewHolder.searchItemBinding.tvShortDescription.setTextColor(context.getResources().getColor(R.color.yellow_orange));
+            viewHolder.searchItemBinding.tvShortDescription.setText(AppCommonMethods.getProgramTimeDate(itemsList.get(position).getStartDate()) + " - " + AppCommonMethods.getEndTime(itemsList.get(position).getEndDate()));
+        } else if (itemsList.get(position).getType() == MediaTypeConstant.getLinear(context)) {
+            if (AssetContent.isLiveEvent(itemsList.get(position).getMetas())) {
+                viewHolder.searchItemBinding.tvShortDescription.setVisibility(View.VISIBLE);
+                String liveEventTime = AppCommonMethods.getLiveEventTime(itemsList.get(position));
+                viewHolder.searchItemBinding.tvShortDescription.setTextColor(context.getResources().getColor(R.color.yellow_orange));
+                viewHolder.searchItemBinding.tvShortDescription.setText(liveEventTime);
+            }
+
+        }
+
 
 /*        if (itemsList.get(position).getType() == MediaTypeConstant.getLinear(context)) {
 
@@ -99,7 +117,7 @@ public class ResultAdapterAll extends RecyclerView.Adapter<ResultAdapterAll.Sing
     public class SingleItemRowHolder extends RecyclerView.ViewHolder {
         final SearchItemBinding searchItemBinding;
 
-         SingleItemRowHolder(SearchItemBinding binding) {
+        SingleItemRowHolder(SearchItemBinding binding) {
             super(binding.getRoot());
             this.searchItemBinding = binding;
         }

@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.astro.sott.R;
 import com.astro.sott.activities.confirmPassword.ui.ConfirmPasswordActivity;
 import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginViewModel;
-import com.astro.sott.activities.verification.VerificationActivity;
+import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.callBacks.TextWatcherCallBack;
 import com.astro.sott.databinding.ActivityEditEmailBinding;
@@ -26,6 +26,7 @@ import com.astro.sott.utils.billing.TransactionDetails;
 import com.astro.sott.utils.commonMethods.AppCommonMethods;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.CustomTextWatcher;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.userInfo.UserInfo;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.ApiException;
@@ -54,6 +55,7 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
         FirebaseEventManager.getFirebaseInstance(this).trackScreenName(FirebaseEventManager.EDIT_EMAIL);
         setHeader();
         modelCall();
@@ -206,13 +208,13 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
             type = "Email";
             email_mobile = UserInfo.getInstance(this).getEmail();
         }
-        getBinding().progressBar.setVisibility(View.VISIBLE);
+        getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
         astroLoginViewModel.checkCredential(password, email_mobile, type).observe(this, checkCredentialResponse -> {
             if (checkCredentialResponse != null && checkCredentialResponse.getResponse() != null && checkCredentialResponse.getResponse().getCheckCredentialsResponseMessage() != null && checkCredentialResponse.getResponse().getCheckCredentialsResponseMessage().getResponseCode().equalsIgnoreCase("1")) {
                 createOtp();
             } else {
-                getBinding().progressBar.setVisibility(View.GONE);
-                Toast.makeText(this, checkCredentialResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+                ToastHandler.show(getApplicationContext().getResources().getString(R.string.show_is) + " " + getApplicationContext().getResources().getString(R.string.already_added_in_watchlist), EditEmailActivity.this);
             }
         });
     }
@@ -221,9 +223,10 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
         type = "Email";
         astroLoginViewModel.createOtp(type, newEmail).observe(this, evergentCommonResponse -> {
             if (evergentCommonResponse.isStatus()) {
-                getBinding().progressBar.setVisibility(View.GONE);
-                Intent intent = new Intent(this, VerificationActivity.class);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+                Intent intent = new Intent(this, EditVerificationActivity.class);
                 intent.putExtra(AppLevelConstants.TYPE_KEY, type);
+                intent.putExtra(AppLevelConstants.SCREEN_FROM, getBinding().title.getText().toString());
                 intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, newEmail);
                 if (!newEmail.equalsIgnoreCase(""))
                     intent.putExtra("newEmail", newEmail);
@@ -231,8 +234,8 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
                 intent.putExtra(AppLevelConstants.FROM_KEY, AppLevelConstants.CONFIRM_PASSWORD);
                 startActivity(intent);
             } else {
-                getBinding().progressBar.setVisibility(View.GONE);
-                Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditEmailActivity.this);
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             }
         });
 
@@ -269,8 +272,9 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
                 if (evergentCommonResponse.isStatus()) {
                     //   Toast.makeText(this, "Verification code had be sent to " + email_mobile, Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(this, VerificationActivity.class);
+                    Intent intent = new Intent(this, EditVerificationActivity.class);
                     intent.putExtra(AppLevelConstants.TYPE_KEY, "email");
+                    intent.putExtra(AppLevelConstants.SCREEN_FROM, getBinding().title.getText().toString());
                     intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, UserInfo.getInstance(this).getEmail());
                     intent.putExtra("newEmail", email);
                     intent.putExtra(AppLevelConstants.PASSWORD_KEY, "");
@@ -279,7 +283,7 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
 
 
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditEmailActivity.this);
                 }
             });
         } else {
@@ -288,8 +292,9 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
                 if (evergentCommonResponse.isStatus()) {
                     //   Toast.makeText(this, "Verification code had be sent to " + email_mobile, Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(this, VerificationActivity.class);
+                    Intent intent = new Intent(this, EditVerificationActivity.class);
                     intent.putExtra(AppLevelConstants.TYPE_KEY, "email");
+                    intent.putExtra(AppLevelConstants.SCREEN_FROM, getBinding().title.getText().toString());
                     intent.putExtra(AppLevelConstants.EMAIL_MOBILE_KEY, email);
                     intent.putExtra("newEmail", email);
                     intent.putExtra(AppLevelConstants.PASSWORD_KEY, "");
@@ -298,7 +303,7 @@ public class EditEmailActivity extends BaseBindingActivity<ActivityEditEmailBind
 
 
                 } else {
-                    Toast.makeText(this, evergentCommonResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    ToastHandler.show(evergentCommonResponse.getErrorMessage(), EditEmailActivity.this);
                 }
             });
         }

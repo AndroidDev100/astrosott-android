@@ -85,10 +85,19 @@ public class AppLanguageAdapter extends BaseExpandableListAdapter {
             }
 
         } else if (listPosition == 2) {
-            if (expandedListPosition == new KsPreferenceKey(context).getSubtitleLanguageIndex()) {
-                imageView.setVisibility(View.VISIBLE);
+            int subtitleIndex = new KsPreferenceKey(context).getSubtitleLanguageIndex();
+            if (subtitleIndex == -1) {
+                if (expandedListText.equalsIgnoreCase("None")) {
+                    imageView.setVisibility(View.VISIBLE);
+                } else {
+                    imageView.setVisibility(View.GONE);
+                }
             } else {
-                imageView.setVisibility(View.GONE);
+                if (expandedListPosition == subtitleIndex) {
+                    imageView.setVisibility(View.VISIBLE);
+                } else {
+                    imageView.setVisibility(View.GONE);
+                }
             }
         } else {
             imageView.setVisibility(View.GONE);

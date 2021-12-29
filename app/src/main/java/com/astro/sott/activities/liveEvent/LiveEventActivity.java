@@ -1,7 +1,12 @@
 package com.astro.sott.activities.liveEvent;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -10,19 +15,27 @@ import android.os.SystemClock;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.astro.sott.activities.dtvActivity.UI.dtvActivity;
 import com.astro.sott.activities.liveChannel.ui.LiveChannel;
+import com.astro.sott.Alarm.MyReceiver;
+import com.astro.sott.activities.liveEvent.reminderDialog.ReminderDialogFragment;
 import com.astro.sott.activities.loginActivity.ui.AstrLoginActivity;
+import com.astro.sott.activities.movieDescription.ui.MovieDescriptionActivity;
 import com.astro.sott.activities.movieDescription.viewModel.MovieDescriptionViewModel;
 import com.astro.sott.activities.signUp.ui.SignUpActivity;
 import com.astro.sott.activities.subscription.manager.AllChannelManager;
 import com.astro.sott.activities.subscriptionActivity.ui.SubscriptionDetailActivity;
+import com.astro.sott.activities.webSeriesDescription.ui.WebSeriesDescriptionActivity;
 import com.astro.sott.callBacks.kalturaCallBacks.ProductPriceStatusCallBack;
 import com.astro.sott.databinding.ActivityLiveEventBinding;
 import com.astro.sott.fragments.dialog.PlaylistDialogFragment;
+import com.astro.sott.fragments.episodeFrament.EpisodeDialogFragment;
 import com.astro.sott.player.entitlementCheckManager.EntitlementCheck;
 import com.astro.sott.thirdParty.CleverTapManager.CleverTapManager;
 import com.astro.sott.thirdParty.conViva.ConvivaManager;
 import com.astro.sott.thirdParty.fcm.FirebaseEventManager;
+import com.astro.sott.utils.PacksDateLayer;
+import com.astro.sott.utils.billing.BuyButtonManager;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.utils.helpers.ImageHelper;
 import com.astro.sott.utils.helpers.SubMediaTypes;
@@ -44,7 +57,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.astro.sott.R;
-import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.activities.parentalControl.viewmodels.ParentalControlViewModel;
 import com.astro.sott.baseModel.BaseBindingActivity;
 import com.astro.sott.baseModel.RailBaseFragment;
@@ -89,18 +101,21 @@ import com.kaltura.client.types.Value;
 import com.kaltura.client.utils.response.base.Response;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.StringTokenizer;
 
 
-public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBinding> implements DetailRailClick, AlertDialogSingleButtonFragment.AlertDialogListener {
+public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBinding> implements DetailRailClick, AlertDialogSingleButtonFragment.AlertDialogListener, ReminderDialogFragment.EditDialogListener {
     ArrayList<ParentalLevels> parentalLevels;
     private RailCommonData railData;
     private Asset asset;
     private String vodType;
-
+    private String[] subscriptionIds;
     private int layoutType, playlistId = 1;
     private DoubleValue doubleValue;
     private boolean xofferWindowValue = false, playbackControlValue = false;
@@ -134,7 +149,8 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     private int assetRestrictionLevel;
     private boolean assetKey = false;
     private boolean isDtvAdded = false;
-
+    private String time = "", month = "", dd = "", year = "", hour = "", minute = "";
+    private MyReceiver myReceiver;
 
     @Override
     public ActivityLiveEventBinding inflateBindingLayout(@NonNull LayoutInflater inflater) {
@@ -145,6 +161,7 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         parentalLevels = new ArrayList<>();
+        myReceiver = new MyReceiver();
         connectionObserver();
     }
 
@@ -179,10 +196,49 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
         titleName = name;
         isActive = UserInfo.getInstance(this).isActive();
         map = asset.getTags();
+
         setPlayerFragment();
         getMediaType(asset, railData);
+        checkReminder();
 
+    }
 
+    private void initReminderPopupFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        ReminderDialogFragment cancelDialogFragment = ReminderDialogFragment.newInstance("Reminder", fileId);
+        cancelDialogFragment.setEditDialogCallBack(LiveEventActivity.this);
+        cancelDialogFragment.show(fm, AppLevelConstants.TAG_FRAGMENT_ALERT);
+    }
+
+    private void checkReminder() {
+        boolean isReminderAdded = new KsPreferenceKey(getApplicationContext()).getReminderId(asset.getId().toString());
+        if (isReminderAdded == true) {
+            String currentTime = AppCommonMethods.getCurrentTimeStamp();
+            String startTime = AppCommonMethods.getProgramStartTime(liveEventStartDate);
+            Log.w("reminderDetails", currentTime + " " + startTime + " ");
+            if (Long.valueOf(startTime) > Long.valueOf(currentTime)) {
+                getBinding().reminderActive.setVisibility(View.VISIBLE);
+                getBinding().reminder.setVisibility(View.GONE);
+            } else {
+                getBinding().reminderActive.setVisibility(View.GONE);
+                getBinding().reminder.setVisibility(View.VISIBLE);
+                try {
+                    new KsPreferenceKey(LiveEventActivity.this).setReminderId(asset.getId().toString(), false);
+                } catch (Exception ignored) {
+
+                }
+
+            }
+
+        } else {
+            getBinding().reminderActive.setVisibility(View.GONE);
+            // getBinding().reminder.setVisibility(View.VISIBLE);
+            try {
+                new KsPreferenceKey(LiveEventActivity.this).setReminderId(asset.getId().toString(), false);
+            } catch (Exception ignored) {
+
+            }
+        }
     }
 
 
@@ -218,16 +274,15 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                     } else {
                         fileId = AssetContent.getLiveEventPackageId(railData.getObject().getTags());
                     }
-                    if (!fileId.equalsIgnoreCase("")) {
+                    if (!fileId.equalsIgnoreCase("") && subscriptionIds != null) {
                         Intent intent = new Intent(this, SubscriptionDetailActivity.class);
-                        if (isPlayableOrNot()) {
-                            intent.putExtra(AppLevelConstants.PLAYABLE, true);
-                        } else {
-                            intent.putExtra(AppLevelConstants.PLAYABLE, false);
-                        }
-                        intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL,poster_image_url);
+                        intent.putExtra(AppLevelConstants.PLAYABLE, isPlayableOrNot());
+                        intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL, poster_image_url);
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                         intent.putExtra(AppLevelConstants.DATE, liveEventDate);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
+                        intent.putExtra("SubscriptionIdBundle", bundle);
                         intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
                         startActivity(intent);
                     }
@@ -247,15 +302,14 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                     } else {
                         fileId = AssetContent.getLiveEventPackageId(railData.getObject().getTags());
                     }
-                    if (!fileId.equalsIgnoreCase("")) {
+                    if (!fileId.equalsIgnoreCase("") && subscriptionIds != null) {
                         Intent intent = new Intent(this, SubscriptionDetailActivity.class);
-                        if (isPlayableOrNot()) {
-                            intent.putExtra(AppLevelConstants.PLAYABLE, true);
-                        } else {
-                            intent.putExtra(AppLevelConstants.PLAYABLE, false);
-                        }
-                        intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL,poster_image_url);
+                        intent.putExtra(AppLevelConstants.PLAYABLE, isPlayableOrNot());
+                        intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL, poster_image_url);
                         intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
+                        intent.putExtra("SubscriptionIdBundle", bundle);
                         intent.putExtra(AppLevelConstants.DATE, liveEventDate);
                         intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
                         startActivity(intent);
@@ -269,6 +323,200 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
 
         });
+
+    }
+
+    private AlarmManager alarmManager;
+    private int requestCode;
+    private PendingIntent pendingIntent;
+    Intent myIntent;
+    String dateTimeForReminder = "";
+
+    private void setReminder() {
+        try {
+            boolean isReminderAdded = new KsPreferenceKey(getApplicationContext()).getReminderId(asset.getId().toString());
+            if (isReminderAdded == true) {
+                showDialog();
+            } else {
+                boolean reminderCanAdd = checkProgramTiming(asset);
+                if (reminderCanAdd) {
+                    if (currentTime(asset)) {
+                   /* Random random = new Random();
+                    requestCode = Integer.parseInt(String.format("%02d", random.nextInt(10000)));*/
+                        try {
+                            if (viewModel != null) {
+                                dateTimeForReminder = viewModel.getNotificationStartDate(liveEventStartDate) + " - " + AppCommonMethods.getEndTime(liveEventEndDate);
+                                //  Log.w("dateTimeForReminder-->>" , dateTimeForReminder);
+                            }
+                        } catch (Exception ignored) {
+
+                        }
+                        Long code = asset.getId();
+                        requestCode = code.intValue();
+                        PrintLogging.printLog("", "notificationRequestId-->>" + requestCode);
+                        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        long reminderDateTimeInMilliseconds = 000;
+
+                        myIntent = new Intent(this, MyReceiver.class);
+                        myIntent.putExtra("via", "LiveEventReminder");
+                        myIntent.putExtra(AppLevelConstants.ID, Long.parseLong(asset.getId() + ""));
+                        myIntent.putExtra(AppLevelConstants.Title, asset.getName());
+                        myIntent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
+                        myIntent.putExtra(AppLevelConstants.DATETIME_REMINDER, dateTimeForReminder);
+                        myIntent.putExtra(AppLevelConstants.SCREEN_NAME, "LiveEvent");
+                        myIntent.putExtra("requestcode", requestCode);
+                        myIntent.setAction("com.astro.sott.MyIntent");
+                        myIntent.setComponent(new ComponentName(getPackageName(), "com.astro.sott.Alarm.MyReceiver"));
+
+
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+
+                            Intent intent = new Intent();
+                            intent.putExtra(AppLevelConstants.ID, Long.parseLong(asset.getId() + ""));
+                            intent.putExtra(AppLevelConstants.Title, asset.getName());
+                            intent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
+                            myIntent.putExtra(AppLevelConstants.DATETIME_REMINDER, dateTimeForReminder);
+                            intent.putExtra(AppLevelConstants.SCREEN_NAME, "LiveEvent");
+                            intent.putExtra("requestcode", requestCode);
+
+                            intent.setComponent(new ComponentName(getPackageName(), "com.astro.sott.Alarm.MyReceiver"));
+                            intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+                            pendingIntent = PendingIntent.getBroadcast(this, requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+                        } else {
+
+                            pendingIntent = PendingIntent.getBroadcast(this, requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        }
+
+                        Calendar calendarToSchedule = Calendar.getInstance();
+                        calendarToSchedule.setTimeInMillis(System.currentTimeMillis());
+                        calendarToSchedule.clear();
+
+                        //  calendarToSchedule.set(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(dd), 11, 18, 0);
+                        Log.w("reminderDetails", year + " " + month + " " + dd + "  " + hour + "  " + minute);
+                        calendarToSchedule.set(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(dd), Integer.parseInt(hour), Integer.parseInt(minute), 0);
+
+                        reminderDateTimeInMilliseconds = calendarToSchedule.getTimeInMillis();
+
+                        PrintLogging.printLog("", "valueIsform" + reminderDateTimeInMilliseconds);
+
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+                            alarmManager.setAlarmClock(new AlarmManager.AlarmClockInfo(reminderDateTimeInMilliseconds, pendingIntent), pendingIntent);
+                        } else {
+
+                            alarmManager.set(AlarmManager.RTC_WAKEUP, reminderDateTimeInMilliseconds, pendingIntent);
+                        }
+                        try {
+                            ToastHandler.show(asset.getName(),
+                                    LiveEventActivity.this);
+                        } catch (Exception ignored) {
+
+                        }
+                        new KsPreferenceKey(getApplicationContext()).setReminderId(asset.getId().toString(), true);
+                        getBinding().reminderActive.setVisibility(View.VISIBLE);
+                        getBinding().reminder.setVisibility(View.GONE);
+                    } else {
+                        ToastHandler.show(getResources().getString(R.string.reminder_program_about_to_start),
+                                LiveEventActivity.this);
+                    }
+
+                } else {
+                    ToastHandler.show( getResources().getString(R.string.reminder_cannot_set),
+                            LiveEventActivity.this);
+                }
+
+            }
+        } catch (Exception ignored) {
+
+        }
+    }
+
+    private boolean currentTime(Asset asset) {
+        String fiveMinuteBefore = AppCommonMethods.getFiveMinuteEarlyTimeStamp(liveEventStartDate);
+        String currentTime = AppCommonMethods.getCurrentTimeStamp();
+        String startTime = AppCommonMethods.getProgramStartTime(liveEventStartDate);
+        Log.w("reminderDetails", currentTime + " " + startTime + " " + fiveMinuteBefore);
+        if (Long.valueOf(startTime) > Long.valueOf(fiveMinuteBefore)) {
+            if (Long.valueOf(currentTime) < Long.valueOf(fiveMinuteBefore)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    private boolean checkProgramTiming(Asset asset) {
+       /* LongValue startValue = null, endValue = null;
+        if (yearMap != null) {
+            startValue = (LongValue) yearMap.get(AppLevelConstants.LiveEventProgramStartDate);
+            endValue = (LongValue) yearMap.get(AppLevelConstants.LiveEventProgramEndDate);
+            if (startValue != null) {
+                liveEventStartDate = startValue.getValue();
+            }
+            if (endValue != null) {
+                liveEventEndDate = endValue.getValue();
+            }
+            liveEventDate = AppCommonMethods.getLiveEventStartDate(liveEventStartDate);
+        }
+        splitStartTime(AppCommonMethods.getDateTimeFromtimeStampForReminder(liveEventStartDate));*/
+
+        String fiveMinuteBefore = AppCommonMethods.getFiveMinuteEarlyTimeStamp(liveEventStartDate);
+        String currentTime = AppCommonMethods.getCurrentTimeStamp();
+        String startTime = AppCommonMethods.getProgramStartTime(liveEventStartDate);
+        Log.w("reminderDetails", currentTime + " " + startTime + " " + fiveMinuteBefore);
+        if (Long.valueOf(startTime) > Long.valueOf(currentTime)) {
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void showDialog() {
+        if (asset != null) {
+            new KsPreferenceKey(LiveEventActivity.this).setReminderId(asset.getId().toString(), false);
+            getBinding().reminder.setVisibility(View.VISIBLE);
+            getBinding().reminderActive.setVisibility(View.GONE);
+            try {
+                ToastHandler.show(getResources().getString(R.string.reminder_removed) + " " + asset.getName(),
+                        LiveEventActivity.this);
+            } catch (Exception ignored) {
+
+            }
+            cancelAlarm();
+        }
+        // initReminderPopupFragment();
+    }
+
+    private void splitStartTime(String startTime) {
+
+        StringTokenizer tokens = new StringTokenizer(startTime, " ");
+        String date = tokens.nextToken();// this will contain "Fruit"
+        time = tokens.nextToken();
+        splitDate(date);
+        splitMinute(time);
+
+    }
+
+    private void splitDate(String date) {
+        StringTokenizer tokens = new StringTokenizer(date, "-");
+        dd = tokens.nextToken();
+        month = tokens.nextToken();
+        if (Integer.parseInt(month) != 0) {
+            month = String.valueOf(Integer.parseInt(month) - 1);
+        }
+        year = tokens.nextToken();
+    }
+
+    private void splitMinute(String time) {
+        StringTokenizer tokens = new StringTokenizer(time, ":");
+        hour = tokens.nextToken();
+        minute = tokens.nextToken();
 
     }
 
@@ -347,7 +595,8 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                 //checkErrors();
                                 checkOnlyDevice(railData);
                             } else {
-                                Toast.makeText(LiveEventActivity.this, getString(R.string.incorrect_parental_pin), Toast.LENGTH_LONG).show();
+                                ToastHandler.show(getString(R.string.incorrect_parental_pin),
+                                        LiveEventActivity.this);
                                 assetRuleErrorCode = AppLevelConstants.PARENTAL_BLOCK;
 
                             }
@@ -442,11 +691,13 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
         if (isPlayableOrNot()) {
             fileId = AppCommonMethods.getFileIdOfAssest(asset);
             if (!fileId.equalsIgnoreCase("")) {
+                getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
                 new EntitlementCheck().checkAssetPurchaseStatus(LiveEventActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
                     this.errorCode = AppLevelConstants.NO_ERROR;
                     if (apiStatus) {
                         if (purchasedStatus) {
                             runOnUiThread(() -> {
+                                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                                 if (playbackControlValue) {
                                     getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_free));
                                     getBinding().playText.setTextColor(getResources().getColor(R.color.black));
@@ -463,23 +714,21 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                 if (xofferWindowValue) {
                                     runOnUiThread(() -> {
                                         getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                                        getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                                        getBinding().playButton.setVisibility(View.VISIBLE);
+                                        checkBuyTextButtonCondition(fileId);
                                         getBinding().starIcon.setVisibility(View.GONE);
                                         getBinding().playText.setTextColor(getResources().getColor(R.color.white));
                                         if (becomeVipButtonCLicked) {
                                             becomeVipButtonCLicked = false;
                                             if (UserInfo.getInstance(this).isActive()) {
-                                                if (!fileId.equalsIgnoreCase("")) {
+                                                if (!fileId.equalsIgnoreCase("") && subscriptionIds != null) {
                                                     Intent intent = new Intent(this, SubscriptionDetailActivity.class);
-                                                    if (isPlayableOrNot()) {
-                                                        intent.putExtra(AppLevelConstants.PLAYABLE, true);
-                                                    } else {
-                                                        intent.putExtra(AppLevelConstants.PLAYABLE, false);
-                                                    }
-                                                    intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL,poster_image_url);
+                                                    intent.putExtra(AppLevelConstants.PLAYABLE, isPlayableOrNot());
+                                                    intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL, poster_image_url);
                                                     intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                                                     intent.putExtra(AppLevelConstants.DATE, liveEventDate);
+                                                    Bundle bundle = new Bundle();
+                                                    bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
+                                                    intent.putExtra("SubscriptionIdBundle", bundle);
                                                     intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
                                                     startActivity(intent);
                                                 }
@@ -493,24 +742,22 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                 if (xofferWindowValue) {
                                     runOnUiThread(() -> {
                                         getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                                        getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                                        getBinding().playButton.setVisibility(View.VISIBLE);
+                                        checkBuyTextButtonCondition(fileId);
                                         becomeVipButtonCLicked = false;
                                         getBinding().starIcon.setVisibility(View.VISIBLE);
                                         getBinding().playText.setTextColor(getResources().getColor(R.color.white));
                                         if (becomeVipButtonCLicked) {
                                             becomeVipButtonCLicked = false;
                                             if (UserInfo.getInstance(this).isActive()) {
-                                                if (!fileId.equalsIgnoreCase("")) {
+                                                if (!fileId.equalsIgnoreCase("") && subscriptionIds != null) {
                                                     Intent intent = new Intent(this, SubscriptionDetailActivity.class);
-                                                    if (isPlayableOrNot()) {
-                                                        intent.putExtra(AppLevelConstants.PLAYABLE, true);
-                                                    } else {
-                                                        intent.putExtra(AppLevelConstants.PLAYABLE, false);
-                                                    }
-                                                    intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL,poster_image_url);
+                                                    intent.putExtra(AppLevelConstants.PLAYABLE, isPlayableOrNot());
+                                                    intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL, poster_image_url);
                                                     intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                                                     intent.putExtra(AppLevelConstants.DATE, liveEventDate);
+                                                    Bundle bundle = new Bundle();
+                                                    bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
+                                                    intent.putExtra("SubscriptionIdBundle", bundle);
                                                     intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
                                                     startActivity(intent);
                                                 }
@@ -529,15 +776,19 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
                     }
                 });
+            } else {
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             }
         } else {
             fileId = AssetContent.getLiveEventPackageId(railData.getObject().getTags());
             if (!fileId.equalsIgnoreCase("")) {
+                getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
                 new EntitlementCheck().checkLiveEventPurchaseStatus(LiveEventActivity.this, fileId, (apiStatus, purchasedStatus, vodType, purchaseKey, errorCode, message) -> {
                     this.errorCode = AppLevelConstants.NO_ERROR;
                     if (apiStatus) {
                         if (purchasedStatus) {
                             runOnUiThread(() -> {
+                                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                                 if (playbackControlValue) {
                                     getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.live_event_button));
                                     getBinding().playText.setTextColor(getResources().getColor(R.color.heather));
@@ -553,23 +804,21 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                 if (xofferWindowValue) {
                                     runOnUiThread(() -> {
                                         getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                                        getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                                        getBinding().playButton.setVisibility(View.VISIBLE);
+                                        checkBuyTextButtonCondition(fileId);
                                         getBinding().starIcon.setVisibility(View.VISIBLE);
                                         getBinding().playText.setTextColor(getResources().getColor(R.color.white));
                                         if (becomeVipButtonCLicked) {
                                             becomeVipButtonCLicked = false;
                                             if (UserInfo.getInstance(this).isActive()) {
-                                                if (!fileId.equalsIgnoreCase("")) {
+                                                if (!fileId.equalsIgnoreCase("") && subscriptionIds != null) {
                                                     Intent intent = new Intent(this, SubscriptionDetailActivity.class);
-                                                    if (isPlayableOrNot()) {
-                                                        intent.putExtra(AppLevelConstants.PLAYABLE, true);
-                                                    } else {
-                                                        intent.putExtra(AppLevelConstants.PLAYABLE, false);
-                                                    }
-                                                    intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL,poster_image_url);
+                                                    intent.putExtra(AppLevelConstants.PLAYABLE, isPlayableOrNot());
+                                                    intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL, poster_image_url);
                                                     intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                                                     intent.putExtra(AppLevelConstants.DATE, liveEventDate);
+                                                    Bundle bundle = new Bundle();
+                                                    bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
+                                                    intent.putExtra("SubscriptionIdBundle", bundle);
                                                     intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
                                                     startActivity(intent);
                                                 }
@@ -583,23 +832,21 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
                                 if (xofferWindowValue) {
                                     runOnUiThread(() -> {
                                         getBinding().playButton.setBackground(getResources().getDrawable(R.drawable.gradient_svod));
-                                        getBinding().playText.setText(getResources().getString(R.string.become_vip));
-                                        getBinding().playButton.setVisibility(View.VISIBLE);
+                                        checkBuyTextButtonCondition(fileId);
                                         getBinding().starIcon.setVisibility(View.GONE);
                                         getBinding().playText.setTextColor(getResources().getColor(R.color.white));
                                         if (becomeVipButtonCLicked) {
                                             becomeVipButtonCLicked = false;
                                             if (UserInfo.getInstance(this).isActive()) {
-                                                if (!fileId.equalsIgnoreCase("")) {
+                                                if (!fileId.equalsIgnoreCase("") && subscriptionIds != null) {
                                                     Intent intent = new Intent(this, SubscriptionDetailActivity.class);
-                                                    if (isPlayableOrNot()) {
-                                                        intent.putExtra(AppLevelConstants.PLAYABLE, true);
-                                                    } else {
-                                                        intent.putExtra(AppLevelConstants.PLAYABLE, false);
-                                                    }
-                                                    intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL,poster_image_url);
+                                                    intent.putExtra(AppLevelConstants.PLAYABLE, isPlayableOrNot());
+                                                    intent.putExtra(AppLevelConstants.POSTER_IMAGE_URL, poster_image_url);
                                                     intent.putExtra(AppLevelConstants.FILE_ID_KEY, fileId);
                                                     intent.putExtra(AppLevelConstants.DATE, liveEventDate);
+                                                    Bundle bundle = new Bundle();
+                                                    bundle.putSerializable(AppLevelConstants.SUBSCRIPTION_ID_KEY, subscriptionIds);
+                                                    intent.putExtra("SubscriptionIdBundle", bundle);
                                                     intent.putExtra(AppLevelConstants.FROM_KEY, "Live Event");
                                                     startActivity(intent);
                                                 }
@@ -618,9 +865,30 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
 
                     }
                 });
+            } else {
+                getBinding().progressLay.progressHeart.setVisibility(View.GONE);
             }
         }
 
+    }
+
+    private void checkBuyTextButtonCondition(String fileId) {
+        BuyButtonManager.getInstance().getPackages(this, AppLevelConstants.LIVE_EVENT, fileId, isPlayableOrNot(), (packDetailList, packageType, lowestPackagePrice, subscriptionIds) -> {
+            getBinding().progressLay.progressHeart.setVisibility(View.GONE);
+            PacksDateLayer.getInstance().setPackDetailList(packDetailList);
+            this.subscriptionIds = subscriptionIds;
+            if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD_TVOD)) {
+                getBinding().playText.setText(getResources().getString(R.string.buy_from) + " " + lowestPackagePrice);
+                getBinding().playButton.setVisibility(View.VISIBLE);
+            } else if (packageType.equalsIgnoreCase(BuyButtonManager.SVOD)) {
+                getBinding().playText.setText(getResources().getString(R.string.become_vip));
+                getBinding().playButton.setVisibility(View.VISIBLE);
+            } else {
+                getBinding().playText.setText(getResources().getString(R.string.buy));
+                getBinding().playButton.setVisibility(View.VISIBLE);
+
+            }
+        });
     }
 
     private void checkDevice(final RailCommonData railData) {
@@ -791,6 +1059,12 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             openShareDialouge();
 
         });
+        getBinding().reminder.setOnClickListener(v -> {
+            setReminder();
+        });
+        getBinding().reminderActive.setOnClickListener(v -> {
+            setReminder();
+        });
         // setRailFragment();
         setRailBaseFragment();
     }
@@ -871,6 +1145,13 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             }
             liveEventDate = AppCommonMethods.getLiveEventStartDate(liveEventStartDate);
         }
+        if (AppCommonMethods.getCurrentTimeStampLong() > liveEventStartDate) {
+            getBinding().reminder.setVisibility(View.GONE);
+            getBinding().reminderActive.setVisibility(View.GONE);
+        } else {
+            getBinding().reminder.setVisibility(View.VISIBLE);
+        }
+        splitStartTime(AppCommonMethods.getDateTimeFromtimeStampForReminder(liveEventStartDate));
     }
 
 
@@ -996,6 +1277,14 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
             }
         }
         checkEntitleMent(railData);
+        try {
+            IntentFilter filter = new IntentFilter();
+            filter.addAction("com.astro.sott.Alarm.MyReceiver");
+            registerReceiver(myReceiver, filter);
+        } catch (Exception ignored) {
+
+        }
+
     }
 
     @Override
@@ -1049,6 +1338,41 @@ public class LiveEventActivity extends BaseBindingActivity<ActivityLiveEventBind
         checkEntitleMent(railData);
     }
 
+    @Override
+    public void onFinishEditDialog() {
+        if (asset != null) {
+            new KsPreferenceKey(LiveEventActivity.this).setReminderId(asset.getId().toString(), false);
+            getBinding().reminder.setVisibility(View.VISIBLE);
+            getBinding().reminderActive.setVisibility(View.GONE);
+            ToastHandler.show(getResources().getString(R.string.reminder_removed),
+                    LiveEventActivity.this);
+            cancelAlarm();
+        }
+    }
 
+    private void cancelAlarm() {
+        try {
+            Long code = asset.getId();
+
+            int requestCode = code.intValue();
+            PrintLogging.printLog("", "notificationcancelRequestId-->>" + requestCode);
+
+            myIntent = new Intent(LiveEventActivity.this, MyReceiver.class);
+            myIntent.putExtra(AppLevelConstants.ID, asset.getId());
+            myIntent.putExtra(AppLevelConstants.Title, asset.getName());
+            myIntent.putExtra(AppLevelConstants.DESCRIPTION, asset.getDescription());
+            myIntent.putExtra(AppLevelConstants.SCREEN_NAME, AppLevelConstants.PROGRAM);
+            myIntent.putExtra("requestcode", requestCode);
+            myIntent.setAction("com.astro.sott.MyIntent");
+            myIntent.setComponent(new ComponentName(getPackageName(), "com.astro.sott.Alarm.MyReceiver"));
+
+            pendingIntent = PendingIntent.getBroadcast(LiveEventActivity.this, requestCode, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarmManager.cancel(pendingIntent);
+
+        } catch (Exception ignored) {
+
+        }
+    }
 }
 

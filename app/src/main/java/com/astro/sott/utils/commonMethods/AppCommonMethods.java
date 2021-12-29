@@ -3,6 +3,7 @@ package com.astro.sott.utils.commonMethods;
 import static com.astro.sott.activities.myPlans.adapter.MyPlanAdapter.getDateCurrentTimeZone;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -26,10 +27,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import com.astro.sott.BuildConfig;
 import com.astro.sott.activities.home.HomeActivity;
 import com.astro.sott.activities.search.constants.SearchFilterEnum;
+import com.astro.sott.activities.search.ui.ActivitySearch;
 import com.astro.sott.baseModel.BaseActivity;
 import com.astro.sott.baseModel.PrefrenceBean;
 import com.astro.sott.beanModel.VIUChannel;
@@ -62,6 +65,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.astro.sott.R;
 import com.astro.sott.utils.constants.AppConstants;
+import com.bumptech.glide.Glide;
 import com.clevertap.android.sdk.CleverTapAPI;
 import com.enveu.BaseCollection.BaseCategoryModel.BaseCategory;
 import com.enveu.enums.RailCardType;
@@ -122,16 +126,6 @@ public class AppCommonMethods {
     private static Long _time;
     public static boolean isTablet = false;
 
-
-//    public static String convertProgramTime(String time) {
-//
-//        Date date = new Date(Long.parseLong(time) * 1000L);
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd=HH:mm a");
-//        String dateTimeValue = simpleDateFormat.format(date);
-////        PrintLogging.printLog(context.getClass(), "StartDateTIme", dateTimeValue + "");
-//        return dateTimeValue;
-//    }
-
     public static String getCurrentDateTimeStamp(int type) {
         String formattedDate;
         Calendar calendar = Calendar.getInstance();
@@ -158,6 +152,51 @@ public class AppCommonMethods {
     public static void getLanguage() {
 
 
+    }
+
+    public static String getFiveMinuteEarlyTimeStamp(long timestamp) {
+        try {
+
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            calendar.add(Calendar.MINUTE, -5);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+            long output = currenTimeZone.getTime() / 1000L;
+            String str = Long.toString(output);
+            Long timestamp2 = Long.parseLong(str);
+            return String.valueOf(timestamp2);
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
+
+    public static String getDateTimeFromtimeStampForReminder(long timestamp) {
+        try {
+
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            calendar.add(Calendar.MINUTE, -0);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
+    public static void setProgressBar(ImageView imageView) {
+        Glide.with(imageView.getContext()).load(R.drawable.heart_beat).into(imageView);
+    }
+
+    public static String getCatalogueValue(){
+        return "(or Catalogue = 'sottott')";
     }
 
     public static void setCrashlyticsUserId(Activity activity) {
@@ -258,6 +297,7 @@ public class AppCommonMethods {
 
     public static void removeUserPrerences(Context context) {
         UserInfo.getInstance(context).setUserName("");
+        UserInfo.getInstance(context).setMaxis(false);
         UserInfo.getInstance(context).setVip(false);
         UserInfo.getInstance(context).setHouseHoldError(false);
         UserInfo.getInstance(context).setCpCustomerId("");
@@ -462,15 +502,19 @@ public class AppCommonMethods {
 
     public static String getDateFromTimeStamp(long timestamp) {
         try {
-            Calendar calendar = Calendar.getInstance();
-            TimeZone tz = TimeZone.getDefault();
-            calendar.setTimeInMillis(timestamp);
-            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
             sdf.setTimeZone(TimeZone.getDefault());
+            return sdf.format(timestamp);
+        } catch (Exception e) {
+        }
+        return "";
+    }
 
-            Date currenTimeZone = (Date) calendar.getTime();
-            return sdf.format(currenTimeZone);
+    public static String getRenewDate(long timestamp) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy", Locale.getDefault());
+            sdf.setTimeZone(TimeZone.getDefault());
+            return sdf.format(timestamp);
         } catch (Exception e) {
         }
         return "";
@@ -478,15 +522,9 @@ public class AppCommonMethods {
 
     public static String getDateCleverTap(long timestamp) {
         try {
-            Calendar calendar = Calendar.getInstance();
-            TimeZone tz = TimeZone.getDefault();
-            calendar.setTimeInMillis(timestamp);
-            calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
             SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DDTHH:MM:SSZ", Locale.getDefault());
             sdf.setTimeZone(TimeZone.getDefault());
-
-            Date currenTimeZone = (Date) calendar.getTime();
-            return sdf.format(currenTimeZone);
+            return sdf.format(timestamp);
         } catch (Exception e) {
         }
         return "";
@@ -755,36 +793,13 @@ public class AppCommonMethods {
     static Uri dynamicLinkUri;
 
     public static void openShareDialog(final Activity activity, final Asset asset, Context context, String subMediaType) {
-        /*WeakReference<Activity> mActivity = new WeakReference<>(activity);
-        BranchUniversalObject buo = new BranchUniversalObject()
-                .setTitle(asset.getName())
-                .setContentDescription(asset.getDescription())
-                .setContentImageUrl(AppCommonMethods.getSharingImage(context, asset.getImages(), asset.getType()));
 
-
-        LinkProperties lp = new LinkProperties()
-                .setChannel("Wactho Example")
-                .addControlParameter("assetId", asset.getId() + "")
-                .addControlParameter("mediaType", asset.getType() + "");
-
-        buo.generateShortUrl(context, lp, (url, error) -> {
-
-            String sharingURL;
-            if (error == null) {
-                sharingURL = url;
-                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                sharingIntent.setType("text/plain");
-
-                sharingIntent.putExtra(Intent.EXTRA_TEXT, mActivity.get().getResources().getString(R.string.checkout) + " " + asset.getName() + " " + mActivity.get().getResources().getString(R.string.on_Dialog) + "\n" + sharingURL);
-
-                activity.startActivity(Intent.createChooser(sharingIntent, activity.getResources().getString(R.string.share)));
-
-                Log.i("BRANCH SDK", "got my Branch link to share: " + sharingURL);
-            }
-        });*/
 
         try {
             String uri = createURI(asset, activity);
+            String fallBackUrl = createFallBackUrl(asset, activity);
+            Log.w("urivalue-->>", asset.getName() + "  " + uri);
+            Log.w("urivalue-->>", asset.getName() + "  " + Uri.parse(uri));
 /*
             DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
                     .setLink(Uri.parse(uri))
@@ -807,9 +822,7 @@ public class AppCommonMethods {
                     .setLink(Uri.parse(uri))
                     .setDomainUriPrefix(AppConstants.FIREBASE_DPLNK_PREFIX)
                     //.setLink(Uri.parse(uri))
-                    .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true)
-                            .build())
-                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder(AppConstants.FIREBASE_ANDROID_PACKAGE)
+                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder(AppConstants.FIREBASE_ANDROID_PACKAGE).setFallbackUrl(Uri.parse(fallBackUrl))
                             .build())
                     .setIosParameters(new DynamicLink.IosParameters.Builder(AppConstants.FIREBASE_IOS_PACKAGE).build())
                     .setSocialMetaTagParameters(
@@ -818,6 +831,8 @@ public class AppCommonMethods {
                                     .setDescription(asset.getDescription())
                                     .setImageUrl(Uri.parse(AppCommonMethods.getSharingImage(activity, asset.getImages(), asset.getType())))
                                     .build())
+                    .setNavigationInfoParameters(new DynamicLink.NavigationInfoParameters.Builder().setForcedRedirectEnabled(true)
+                            .build())
                     .buildShortDynamicLink(ShortDynamicLink.Suffix.SHORT)
                     .addOnCompleteListener(activity, new OnCompleteListener<ShortDynamicLink>() {
                         @Override
@@ -855,10 +870,30 @@ public class AppCommonMethods {
                     });
 
             shortLinkTask.toString();
+            Log.w("urivalue-->>", asset.getName() + "  " + shortLinkTask.toString());
 
         } catch (Exception ignored) {
+            Log.w("urivalue-->,", "");
 
         }
+    }
+
+    private static String createFallBackUrl(Asset asset, Activity activity) {
+        String uri = "";
+        try {
+            String assetId = asset.getId() + "";
+            String assetType = asset.getType() + "";
+            uri = Uri.parse(AppConstants.FIREBASE_DPLNK_FALLBACK_URL)
+                    .buildUpon()
+                    .appendQueryParameter("id", assetId)
+                    .appendQueryParameter("mediaType", assetType)
+                    .build().toString();
+
+        } catch (Exception ignored) {
+            uri = "";
+        }
+
+        return uri;
     }
 
     private static String createURI(Asset asset, Activity activity) {
@@ -866,14 +901,18 @@ public class AppCommonMethods {
         try {
             String assetId = asset.getId() + "";
             String assetType = asset.getType() + "";
-            uri = Uri.parse(AppConstants.FIREBASE_DPLNK_URL)
-                    .buildUpon()
+
+            Uri.Builder builder = new Uri.Builder();
+            builder.scheme("https")
+                    .authority(AppConstants.FIREBASE_DPLNK_URL)
+                    .appendPath("data")
                     .appendQueryParameter("id", assetId)
                     .appendQueryParameter("mediaType", assetType)
                     .appendQueryParameter("image", AppCommonMethods.getSharingImage(activity, asset.getImages(), asset.getType()))
                     .appendQueryParameter("name", asset.getName())
-                    .appendQueryParameter("apn", AppConstants.FIREBASE_ANDROID_PACKAGE)
-                    .build().toString();
+                    .appendQueryParameter("sd", asset.getDescription())
+                    .appendQueryParameter("apn", AppConstants.FIREBASE_ANDROID_PACKAGE);
+            uri = builder.build().toString();
 
         } catch (Exception ignored) {
             uri = "";
@@ -1966,7 +2005,7 @@ public class AppCommonMethods {
             e.printStackTrace();
         }
 
-        return false;
+        return true;
     }
 
 
@@ -2004,23 +2043,23 @@ public class AppCommonMethods {
 //        Log.w("selectedGenre",selectedGenre);
         if (from == 1) {
             StringBuilderHolder.getInstance().clear();
-            StringBuilderHolder.getInstance().append("(or name~'");
+            StringBuilderHolder.getInstance().append("(or name*'");
             StringBuilderHolder.getInstance().append(searchString);
             StringBuilderHolder.getInstance().append("'");
 
-            StringBuilderHolder.getInstance().append("description~'");
+            StringBuilderHolder.getInstance().append("description*'");
             StringBuilderHolder.getInstance().append(searchString);
             StringBuilderHolder.getInstance().append("'");
 
-            StringBuilderHolder.getInstance().append("director~'");
+            StringBuilderHolder.getInstance().append("director*'");
             StringBuilderHolder.getInstance().append(searchString);
             StringBuilderHolder.getInstance().append("'");
 
-            StringBuilderHolder.getInstance().append("Keywords~'");
+            StringBuilderHolder.getInstance().append("Keywords*'");
             StringBuilderHolder.getInstance().append(searchString);
             StringBuilderHolder.getInstance().append("'");
 
-            StringBuilderHolder.getInstance().append("Actors~'");
+            StringBuilderHolder.getInstance().append("Actors*'");
             StringBuilderHolder.getInstance().append(searchString);
 
             if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")) {
@@ -2061,44 +2100,21 @@ public class AppCommonMethods {
                 }
             }
 
-
-         /*   if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")){
-                StringBuilderHolder.getInstance().append("' (and ");
-                StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterGenre());
-                if (!KsPreferenceKey.getInstance(context).getFilterLanguage().equalsIgnoreCase("")){
-                    StringBuilderHolder.getInstance().append(") (and ");
-                    StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterLanguage());
-                    StringBuilderHolder.getInstance().append("))");
-                }else {
-                    StringBuilderHolder.getInstance().append("))");
-                }
-
-            }else {
-                if (selectedGenre!=null && !selectedGenre.equalsIgnoreCase("")){
-                    StringBuilderHolder.getInstance().append("' (and ");
-                    StringBuilderHolder.getInstance().append(selectedGenre);
-                    StringBuilderHolder.getInstance().append("))");
-                }else {
-                    StringBuilderHolder.getInstance().append("')");
-                }
-            }
-*/
-
         } else {
             StringBuilderHolder.getInstance().clear();
-            StringBuilderHolder.getInstance().append("(or name~'");
+            StringBuilderHolder.getInstance().append("(or name*'");
             StringBuilderHolder.getInstance().append(searchString);
             StringBuilderHolder.getInstance().append("'");
 
-            StringBuilderHolder.getInstance().append("description~'");
+            StringBuilderHolder.getInstance().append("description*'");
             StringBuilderHolder.getInstance().append(searchString);
             StringBuilderHolder.getInstance().append("'");
 
-            StringBuilderHolder.getInstance().append("director~'");
+            StringBuilderHolder.getInstance().append("director*'");
             StringBuilderHolder.getInstance().append(searchString);
             StringBuilderHolder.getInstance().append("'");
 
-            StringBuilderHolder.getInstance().append("Keywords~'");
+            StringBuilderHolder.getInstance().append("Keywords*'");
             StringBuilderHolder.getInstance().append(searchString);
             StringBuilderHolder.getInstance().append("'");
 
@@ -2144,30 +2160,7 @@ public class AppCommonMethods {
             }
 
 
-            /*if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")){
-                    StringBuilderHolder.getInstance().append("' (and ");
-                    StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterGenre());
-                    if (!KsPreferenceKey.getInstance(context).getFilterLanguage().equalsIgnoreCase("")){
-                        StringBuilderHolder.getInstance().append(") (and ");
-                        StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterLanguage());
-                        StringBuilderHolder.getInstance().append("))");
-                    }else {
-                        StringBuilderHolder.getInstance().append("))");
-                    }
-
-            }else {
-                if (selectedGenre!=null && !selectedGenre.equalsIgnoreCase("")){
-                    StringBuilderHolder.getInstance().append("' (and ");
-                    StringBuilderHolder.getInstance().append(selectedGenre);
-                    StringBuilderHolder.getInstance().append("))");
-                }else {
-                    StringBuilderHolder.getInstance().append("')");
-                }
-            }*/
-
-
         }
-
 
         KsPreferenceKey.getInstance(context).setSearchKSQL(StringBuilderHolder.getInstance().getText().toString());
         return StringBuilderHolder.getInstance().getText().toString();
@@ -2235,6 +2228,7 @@ public class AppCommonMethods {
         return isPages;
     }
 
+
     public static List<Asset> applyFreePaidFilter(ListResponse<Asset> results, Context context) {
         List<Asset> sortedList = new ArrayList();
         BooleanValue sponsored = null;
@@ -2292,6 +2286,8 @@ public class AppCommonMethods {
                             if (sponsored.getValue() != null) {
                                 if (!sponsored.getValue()) {
                                     sortedList.add(results);
+                                } else {
+                                    sortedList.add(results);
                                 }
                             } else {
                                 sortedList.add(results);
@@ -2315,6 +2311,8 @@ public class AppCommonMethods {
                                     if (sponsored.getValue() != null) {
                                         if (!sponsored.getValue()) {
                                             sortedList.add(results);
+                                        } else {
+                                            sortedList.add(results);
                                         }
                                     } else {
                                         sortedList.add(results);
@@ -2332,6 +2330,8 @@ public class AppCommonMethods {
                             if (sponsored != null) {
                                 if (sponsored.getValue() != null) {
                                     if (!sponsored.getValue()) {
+                                        sortedList.add(results);
+                                    } else {
                                         sortedList.add(results);
                                     }
                                 } else {
@@ -2355,6 +2355,8 @@ public class AppCommonMethods {
                                     if (sponsored.getValue() != null) {
                                         if (!sponsored.getValue()) {
                                             sortedList.add(results);
+                                        } else {
+                                            sortedList.add(results);
                                         }
                                     } else {
                                         sortedList.add(results);
@@ -2374,6 +2376,8 @@ public class AppCommonMethods {
                     if (sponsored != null) {
                         if (sponsored.getValue() != null) {
                             if (!sponsored.getValue()) {
+                                sortedList.add(results);
+                            } else {
                                 sortedList.add(results);
                             }
                         } else {
@@ -2476,7 +2480,7 @@ public class AppCommonMethods {
             }
         }
 
-        StringBuilderHolder.getInstance().append("(or name~'");
+        StringBuilderHolder.getInstance().append("(or name*'");
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
@@ -2484,15 +2488,15 @@ public class AppCommonMethods {
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");*/
 
-        StringBuilderHolder.getInstance().append("director~'");
+        StringBuilderHolder.getInstance().append("director*'");
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("Keywords~'");
+        StringBuilderHolder.getInstance().append("Keywords*'");
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("Actors~'");
+        StringBuilderHolder.getInstance().append("Actors*'");
         StringBuilderHolder.getInstance().append(searchString);
         if (StringBuilderHolder.getInstance().getText().toString().contains("(and")) {
             StringBuilderHolder.getInstance().append("'))");
@@ -2552,7 +2556,7 @@ public class AppCommonMethods {
             StringBuilderHolder.getInstance().append("(and start_date>='0' ");
         }
 
-        StringBuilderHolder.getInstance().append("(or name~'");
+        StringBuilderHolder.getInstance().append("(or name*'");
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
@@ -2560,15 +2564,15 @@ public class AppCommonMethods {
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");*/
 
-        StringBuilderHolder.getInstance().append("director~'");
+        StringBuilderHolder.getInstance().append("director*'");
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("Keywords~'");
+        StringBuilderHolder.getInstance().append("Keywords*'");
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
-        StringBuilderHolder.getInstance().append("Actors~'");
+        StringBuilderHolder.getInstance().append("Actors*'");
         StringBuilderHolder.getInstance().append(searchString);
         if (StringBuilderHolder.getInstance().getText().toString().contains("(and")) {
             StringBuilderHolder.getInstance().append("'))");
@@ -2622,21 +2626,21 @@ public class AppCommonMethods {
             }
         }
 
-        if (StringBuilderHolder.getInstance().getText().toString() != null && !StringBuilderHolder.getInstance().getText().toString().equalsIgnoreCase("") && StringBuilderHolder.getInstance().getText().toString().contains("(and")) {
+       /* if (StringBuilderHolder.getInstance().getText().toString() != null && !StringBuilderHolder.getInstance().getText().toString().equalsIgnoreCase("") && StringBuilderHolder.getInstance().getText().toString().contains("(and")) {
             StringBuilderHolder.getInstance().append(" IsSponsored='1' ");
         } else {
             StringBuilderHolder.getInstance().append("(and IsSponsored='1' ");
-        }
+        }*/
 
-        StringBuilderHolder.getInstance().append("(or name~'");
+        StringBuilderHolder.getInstance().append("(or name*'");
         StringBuilderHolder.getInstance().append(searchString);
-        StringBuilderHolder.getInstance().append("'");
-
+        /* StringBuilderHolder.getInstance().append("'");
+         */
       /*  StringBuilderHolder.getInstance().append("description~'");
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");*/
 
-        StringBuilderHolder.getInstance().append("director~'");
+       /* StringBuilderHolder.getInstance().append("director~'");
         StringBuilderHolder.getInstance().append(searchString);
         StringBuilderHolder.getInstance().append("'");
 
@@ -2645,7 +2649,7 @@ public class AppCommonMethods {
         StringBuilderHolder.getInstance().append("'");
 
         StringBuilderHolder.getInstance().append("Actors~'");
-        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append(searchString);*/
         if (StringBuilderHolder.getInstance().getText().toString().contains("(and")) {
             StringBuilderHolder.getInstance().append("'))");
         } else {
@@ -2656,6 +2660,262 @@ public class AppCommonMethods {
         KsPreferenceKey.getInstance(context).setSearchKSQL(StringBuilderHolder.getInstance().getText().toString());
         return StringBuilderHolder.getInstance().getText().toString();
     }
+
+    public static String getDeepSearchKsql(String searchString, String selectedGenre, int from, Context context) {
+        StringBuilderHolder.getInstance().clear();
+
+        if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ALL.name())) {
+
+        } else if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ONDEMAND.name())) {
+            StringBuilderHolder.getInstance().append("(and asset_type='" + MediaTypeConstant.getMovie(context) + "' asset_type='" + MediaTypeConstant.getCollection(context) + "' ");
+        } else if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.LIVE.name())) {
+            StringBuilderHolder.getInstance().append("(and asset_type='" + MediaTypeConstant.getLinear(context) + "' asset_type='" + MediaTypeConstant.getProgram(context) + "' ");
+        } else {
+
+        }
+
+        if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")) {
+            StringBuilderHolder.getInstance().append("(and ");
+            StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterGenre());
+            StringBuilderHolder.getInstance().append("");
+        } else {
+            if (selectedGenre != null && !selectedGenre.equalsIgnoreCase("")) {
+                StringBuilderHolder.getInstance().append("(and ");
+                StringBuilderHolder.getInstance().append(selectedGenre);
+                StringBuilderHolder.getInstance().append("");
+            } else {
+                StringBuilderHolder.getInstance().append("");
+            }
+        }
+
+        if (!KsPreferenceKey.getInstance(context).getFilterLanguage().equalsIgnoreCase("")) {
+            if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")) {
+                StringBuilderHolder.getInstance().append(" ");
+                StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterLanguage());
+                StringBuilderHolder.getInstance().append(" ");
+            } else {
+                StringBuilderHolder.getInstance().append("(and ");
+                StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterLanguage());
+                StringBuilderHolder.getInstance().append(" ");
+            }
+
+        } else {
+            if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")) {
+                StringBuilderHolder.getInstance().append(" ");
+            } else {
+               /* if (selectedGenre != null && !selectedGenre.equalsIgnoreCase("")) {
+                    StringBuilderHolder.getInstance().append(" ");
+                } else {
+                    StringBuilderHolder.getInstance().append(" ");
+                }*/
+
+            }
+        }
+
+       /* StringBuilderHolder.getInstance().append("(or name~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+
+        StringBuilderHolder.getInstance().append("director~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("Keywords~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("Actors~'");
+        StringBuilderHolder.getInstance().append(searchString);*/
+        if (StringBuilderHolder.getInstance().getText().toString().contains("(and asset_type")) {
+            if (StringBuilderHolder.getInstance().getText().toString().contains("(and FilterGenre") ||
+                    StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")) {
+                StringBuilderHolder.getInstance().append("))");
+            } else {
+                StringBuilderHolder.getInstance().append(")");
+            }
+        } else if (StringBuilderHolder.getInstance().getText().toString().contains("(and FilterGenre") ||
+                StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")) {
+            StringBuilderHolder.getInstance().append(")");
+        } else {
+            StringBuilderHolder.getInstance().append("");
+        }
+
+
+        // KsPreferenceKey.getInstance(context).setSearchKSQL(StringBuilderHolder.getInstance().getText().toString());
+        return StringBuilderHolder.getInstance().getText().toString();
+    }
+
+    public static String getLiveDeepSearchKsql(String searchString, String selectedGenre, int from, Context context) {
+        StringBuilderHolder.getInstance().clear();
+
+        if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ALL.name())) {
+
+        } else if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ONDEMAND.name())) {
+            StringBuilderHolder.getInstance().append("(and asset_type='" + MediaTypeConstant.getMovie(context) + "' asset_type='" + MediaTypeConstant.getCollection(context) + "' ");
+        } else if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.LIVE.name())) {
+
+        } else {
+
+        }
+
+        if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")) {
+            StringBuilderHolder.getInstance().append("(and ");
+            StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterGenre());
+            StringBuilderHolder.getInstance().append("");
+        } else {
+            if (selectedGenre != null && !selectedGenre.equalsIgnoreCase("")) {
+                StringBuilderHolder.getInstance().append("(and ");
+                StringBuilderHolder.getInstance().append(selectedGenre);
+                StringBuilderHolder.getInstance().append("");
+            } else {
+                StringBuilderHolder.getInstance().append("");
+            }
+        }
+
+        if (!KsPreferenceKey.getInstance(context).getFilterLanguage().equalsIgnoreCase("")) {
+            if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")) {
+                StringBuilderHolder.getInstance().append(" ");
+                StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterLanguage());
+                StringBuilderHolder.getInstance().append(" ");
+            } else {
+                StringBuilderHolder.getInstance().append("(and ");
+                StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterLanguage());
+                StringBuilderHolder.getInstance().append(" ");
+            }
+
+        } else {
+            if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")) {
+                StringBuilderHolder.getInstance().append(" ");
+            } else {
+               /* if (selectedGenre != null && !selectedGenre.equalsIgnoreCase("")) {
+                    StringBuilderHolder.getInstance().append(" ");
+                } else {
+                    StringBuilderHolder.getInstance().append(" ");
+                }*/
+
+            }
+        }
+
+       /* StringBuilderHolder.getInstance().append("(or name~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+
+        StringBuilderHolder.getInstance().append("director~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("Keywords~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("Actors~'");
+        StringBuilderHolder.getInstance().append(searchString);*/
+        if (StringBuilderHolder.getInstance().getText().toString().contains("(and asset_type")) {
+            if (StringBuilderHolder.getInstance().getText().toString().contains("(and FilterGenre") ||
+                    StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")) {
+                StringBuilderHolder.getInstance().append("))");
+            } else {
+                StringBuilderHolder.getInstance().append(")");
+            }
+        } else if (StringBuilderHolder.getInstance().getText().toString().contains("(and FilterGenre") ||
+                StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")) {
+            StringBuilderHolder.getInstance().append(")");
+        } else {
+            StringBuilderHolder.getInstance().append("");
+        }
+
+
+        // KsPreferenceKey.getInstance(context).setSearchKSQL(StringBuilderHolder.getInstance().getText().toString());
+        return StringBuilderHolder.getInstance().getText().toString();
+    }
+
+    public static String getTrendingDeepSearchKsql(String selectedGenre, Context context) {
+        StringBuilderHolder.getInstance().clear();
+
+        if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ALL.name())) {
+
+        } else if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.ONDEMAND.name())) {
+            StringBuilderHolder.getInstance().append("(and asset_type='" + MediaTypeConstant.getMovie(context) + "' asset_type='" + MediaTypeConstant.getCollection(context) + "' ");
+        } else if (KsPreferenceKey.getInstance(context).getFilterContentType().equalsIgnoreCase(SearchFilterEnum.LIVE.name())) {
+            StringBuilderHolder.getInstance().append("(and asset_type='" + MediaTypeConstant.getLinear(context) + "' asset_type='" + MediaTypeConstant.getProgram(context) + "' ");
+        } else {
+
+        }
+
+        if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")) {
+            StringBuilderHolder.getInstance().append("(and ");
+            StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterGenre());
+            StringBuilderHolder.getInstance().append("");
+        } else {
+            if (selectedGenre != null && !selectedGenre.equalsIgnoreCase("")) {
+                StringBuilderHolder.getInstance().append("(and ");
+                StringBuilderHolder.getInstance().append(selectedGenre);
+                StringBuilderHolder.getInstance().append("");
+            } else {
+                StringBuilderHolder.getInstance().append("");
+            }
+        }
+
+        if (!KsPreferenceKey.getInstance(context).getFilterLanguage().equalsIgnoreCase("")) {
+            if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")) {
+                StringBuilderHolder.getInstance().append(" ");
+                StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterLanguage());
+                StringBuilderHolder.getInstance().append(" ");
+            } else {
+                StringBuilderHolder.getInstance().append("(and ");
+                StringBuilderHolder.getInstance().append(KsPreferenceKey.getInstance(context).getFilterLanguage());
+                StringBuilderHolder.getInstance().append(" ");
+            }
+
+        } else {
+            if (!KsPreferenceKey.getInstance(context).getFilterGenre().equalsIgnoreCase("")) {
+                StringBuilderHolder.getInstance().append(" ");
+            } else {
+               /* if (selectedGenre != null && !selectedGenre.equalsIgnoreCase("")) {
+                    StringBuilderHolder.getInstance().append(" ");
+                } else {
+                    StringBuilderHolder.getInstance().append(" ");
+                }*/
+
+            }
+        }
+
+       /* StringBuilderHolder.getInstance().append("(or name~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+
+        StringBuilderHolder.getInstance().append("director~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("Keywords~'");
+        StringBuilderHolder.getInstance().append(searchString);
+        StringBuilderHolder.getInstance().append("'");
+
+        StringBuilderHolder.getInstance().append("Actors~'");
+        StringBuilderHolder.getInstance().append(searchString);*/
+        if (StringBuilderHolder.getInstance().getText().toString().contains("(and asset_type")) {
+            if (StringBuilderHolder.getInstance().getText().toString().contains("(and FilterGenre") ||
+                    StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")) {
+                StringBuilderHolder.getInstance().append("))");
+            } else {
+                StringBuilderHolder.getInstance().append(")");
+            }
+        } else if (StringBuilderHolder.getInstance().getText().toString().contains("(and FilterGenre") ||
+                StringBuilderHolder.getInstance().getText().toString().contains("(and FilterLanguage")) {
+            StringBuilderHolder.getInstance().append(")");
+        } else {
+            StringBuilderHolder.getInstance().append("");
+        }
+
+
+        // KsPreferenceKey.getInstance(context).setSearchKSQL(StringBuilderHolder.getInstance().getText().toString());
+        return StringBuilderHolder.getInstance().getText().toString();
+    }
+
 
     public static List<AccountDeviceDetailsItem> checkCurrentDevice(List<AccountDeviceDetailsItem> accountDeviceDetails, Context context) {
         List<AccountDeviceDetailsItem> deviceDetailsItems = new ArrayList<>();
@@ -2906,6 +3166,34 @@ public class AppCommonMethods {
         return "";
     }
 
+    public static String getLiveEventDate(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000L);
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM", Locale.US);
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
+    public static String getLiveEventTime(long timestamp) {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000L);
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mmaaa", Locale.US);
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+            return sdf.format(currenTimeZone);
+        } catch (Exception e) {
+        }
+        return "";
+    }
+
     public static String getLiveEventEndTime(long timestamp) {
         try {
             Calendar calendar = Calendar.getInstance();
@@ -2983,22 +3271,15 @@ public class AppCommonMethods {
     public static String getAdsUrl(String url, Asset asset, Context context) {
         StringBuilder finalUrl = new StringBuilder();
         StringBuilder stringBuilder = new StringBuilder();
-       /* stringBuilder.append(url);
-        stringBuilder.append("&cust_params=");*/
-        //did%3D" + AppCommonMethods.getDeviceId(context.getContentResolver())
-       /* if (UserInfo.getInstance(context).getCpCustomerId() != null && !UserInfo.getInstance(context).getCpCustomerId().equalsIgnoreCase(""))
-            stringBuilder.append("&cid%3D" + UserInfo.getInstance(context).getCpCustomerId());*/
         stringBuilder.append("vid=" + asset.getId());
         if (!asset.getName().equalsIgnoreCase(""))
             stringBuilder.append("&vtitle=" + asset.getName());
 
-        /* stringBuilder.append("&ver%3D" + BuildConfig.VERSION_NAME);*/
 
         if (asset.getType() == MediaTypeConstant.getLinear(context)) {
             if (AssetContent.isLiveEvent(asset.getMetas())) {
                 stringBuilder.append("&vtype=Live Event");
             } else {
-                /*  stringBuilder.append("&ch%3D" + asset.getName());*/
                 stringBuilder.append("&vtype=Linear Programme");
             }
         } else {
@@ -3015,8 +3296,6 @@ public class AppCommonMethods {
         if (!AssetContent.getProvider(asset.getTags()).equalsIgnoreCase(""))
             stringBuilder.append("&vpro=" + AssetContent.getProvider(asset.getTags()));
 
-       /* if (!AssetContent.getSubTitleLanguageDataString(asset.getTags(), context).equalsIgnoreCase(""))
-            stringBuilder.append("&vsub%3D" + AssetContent.getSubTitleLanguageDataString(asset.getTags(), context));*/
         stringBuilder.append("&lang=" + "English");
         try {
             finalUrl.append(url);
@@ -3191,5 +3470,66 @@ public class AppCommonMethods {
         }
 
         return isExpired;
+    }
+
+    public static String getProgramStartTime(Long timestamp) {
+        try {
+
+            Calendar calendar = Calendar.getInstance();
+            TimeZone tz = TimeZone.getDefault();
+            calendar.setTimeInMillis(timestamp * 1000);
+            calendar.add(Calendar.MINUTE, -0);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault());
+            sdf.setTimeZone(tz);
+            Date currenTimeZone = (Date) calendar.getTime();
+            long output = currenTimeZone.getTime() / 1000L;
+            String str = Long.toString(output);
+            Long timestamp2 = Long.parseLong(str);
+            return String.valueOf(timestamp2);
+        } catch (Exception e) {
+        }
+        return "";
+
+    }
+
+    public static PendingIntent getPendingIntent(Context activity, String assetId) {
+        try {
+            Gson gson = new Gson();
+            String json = KsPreferenceKey.getInstance(activity).getReminderPenIntent(assetId);
+            return gson.fromJson(json, PendingIntent.class);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static Intent getIntent(Context activity, String assetId) {
+        try {
+            Gson gson = new Gson();
+            String json = KsPreferenceKey.getInstance(activity).getReminderIntent(assetId);
+            return gson.fromJson(json, Intent.class);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static String getLiveAdUrl(String url, Context context, Asset asset) {
+        StringBuilder finalUrl = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("chid=" + asset.getId());
+        if (!asset.getName().equalsIgnoreCase(""))
+            stringBuilder.append("&chname=" + asset.getName());
+
+        try {
+            finalUrl.append(url);
+            finalUrl.append("&cust_params=");
+            finalUrl.append(URLEncoder.encode(stringBuilder.toString(), "UTF-8"));
+            Log.w("addImaTagUrl", URLDecoder.decode(stringBuilder.toString(), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            finalUrl.append(url);
+            finalUrl.append("&cust_params=");
+            finalUrl.append(stringBuilder.toString());
+            e.printStackTrace();
+        }
+        return finalUrl.toString();
     }
 }

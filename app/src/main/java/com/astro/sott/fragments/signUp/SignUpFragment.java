@@ -19,10 +19,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.astro.sott.activities.loginActivity.LoginActivity;
 import com.astro.sott.activities.loginActivity.viewModel.LoginViewModel;
 import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
 import com.astro.sott.utils.helpers.AppLevelConstants;
+import com.astro.sott.utils.helpers.ToastHandler;
 import com.astro.sott.utils.ksPreferenceKey.KsPreferenceKey;
 import com.astro.sott.BuildConfig;
 import com.astro.sott.R;
@@ -39,7 +39,6 @@ import com.astro.sott.utils.helpers.NetworkConnectivity;
 public class SignUpFragment extends BaseBindingFragment<FragmentSignUpBinding> implements TextView.OnEditorActionListener, AlertDialogSingleButtonFragment.AlertDialogListener {
 
     private OnFragmentInteractionListener mListener;
-    private LoginActivity loginActivity;
     private LoginViewModel viewModel;
     private String msisdn;
 
@@ -94,10 +93,7 @@ public class SignUpFragment extends BaseBindingFragment<FragmentSignUpBinding> i
 
     private void setCLicks() {
         getBinding().cancelText.setOnClickListener(view -> {
-            InputMethodManager mgr = (InputMethodManager) loginActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (mgr != null)
-                mgr.hideSoftInputFromWindow(getBinding().etPhoneno.getWindowToken(), 0);
-            loginActivity.finish();
+
         });
         getBinding().alreadyUserText.setOnClickListener(view -> mListener.onFragmentInteraction(AppLevelConstants.SIGN_UP, AppLevelConstants.ALREADY_USER, "", "", false,null));
 
@@ -111,13 +107,7 @@ public class SignUpFragment extends BaseBindingFragment<FragmentSignUpBinding> i
         super.onAttach(context);
 
         if (context != null) {
-            if (context instanceof LoginActivity) {
-                loginActivity = (LoginActivity) context;
-                mListener = (OnFragmentInteractionListener) context;
-            } else {
-                throw new RuntimeException(context.toString()
-                        + " must implement OnFragmentInteractionListener");
-            }
+
         }
     }
 
@@ -153,12 +143,10 @@ public class SignUpFragment extends BaseBindingFragment<FragmentSignUpBinding> i
                     getBinding().errorText.setVisibility(View.VISIBLE);
                     getBinding().errorText.setText(getResources().getString(R.string.phone_no_required));
                     getBinding().etPhoneno.getBackground().setColorFilter(getActivity().getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
-                    AppCommonMethods.requestFocus(loginActivity, getBinding().etPhoneno);
                 } else if (getBinding().etPhoneno.getText().toString().trim().length() < 9) {
                     getBinding().errorText.setVisibility(View.VISIBLE);
                     getBinding().errorText.setText(getResources().getString(R.string.incorrect_phone_number));
                     getBinding().etPhoneno.getBackground().setColorFilter(getActivity().getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
-                    AppCommonMethods.requestFocus(loginActivity, getBinding().etPhoneno);
                 }
 //                else if (getBinding().etPhoneNo.getText().toString().startsWith("0") && getBinding().etPhoneNo.getText().toString().trim().length() == 9) {
 //                    getBinding().errorText.setText(getResources().getString(R.string.incorrect_phone_number));
@@ -209,46 +197,17 @@ public class SignUpFragment extends BaseBindingFragment<FragmentSignUpBinding> i
                     KsPreferenceKey.getInstance(getActivity()).setMsisdn(finalMsisdn);
                     mListener.onFragmentInteraction(AppLevelConstants.SIGN_UP, AppLevelConstants.CONTINUE, getBinding().etPhoneno.getText().toString().trim(), "" + "123456", false, "");
                 }else {
-                    viewModel.getMpin(finalMsisdn).observe(this, otpModel -> {
-                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                        if (otpModel != null) {
 
-
-                            if (TextUtils.isEmpty(String.valueOf(otpModel.getmPin())) || otpModel.getResponseCode() == 1 || otpModel.getResponseCode() == 2) {
-                                showDialog(getActivity().getResources().getString(R.string.something_went_wrong));
-                            } else {
-                                mListener.onFragmentInteraction(AppLevelConstants.SIGN_UP, AppLevelConstants.CONTINUE, getBinding().etPhoneno.getText().toString().trim(), "" + otpModel.getmPin(), false, otpModel.getTxnId());
-                            }
-
-                        } else {
-                            showDialog(getResources().getString(R.string.error_sms_failure));
-                        }
-
-                    });
                 }
 
                 }else {
 
-                    viewModel.getMpin(finalMsisdn).observe(this, otpModel -> {
-                        getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                        if (otpModel != null) {
 
-
-                            if (TextUtils.isEmpty(String.valueOf(otpModel.getmPin())) || otpModel.getResponseCode() == 1 || otpModel.getResponseCode() == 2) {
-                                showDialog(getActivity().getResources().getString(R.string.something_went_wrong));
-                            } else {
-                                mListener.onFragmentInteraction(AppLevelConstants.SIGN_UP, AppLevelConstants.CONTINUE, getBinding().etPhoneno.getText().toString().trim(), "" + otpModel.getmPin(), false, otpModel.getTxnId());
-                            }
-
-                        } else {
-                            showDialog(getResources().getString(R.string.error_sms_failure));
-                        }
-
-                    });
                 }
             } else {
                 getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-                Toast.makeText(getActivity(), getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
+                ToastHandler.show(getResources().getString(R.string.no_internet_connection),
+                        getActivity());
             }
         }
     }
@@ -262,10 +221,7 @@ public class SignUpFragment extends BaseBindingFragment<FragmentSignUpBinding> i
         super.onResume();
         final Handler handler = new Handler();
         handler.postDelayed(() -> {
-            InputMethodManager mgr = (InputMethodManager) loginActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (mgr != null)
-                mgr.showSoftInput(getBinding().etPhoneno, InputMethodManager.SHOW_IMPLICIT);
-            getBinding().etPhoneno.requestFocus();
+
         }, 200);
     }
 

@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.astro.sott.activities.liveChannel.ui.LiveChannel;
 import com.astro.sott.activities.mbbaccount.viewmodel.MBBViewModel;
 import com.astro.sott.utils.helpers.ActivityLauncher;
 import com.astro.sott.R;
@@ -25,6 +26,7 @@ import com.astro.sott.fragments.dialog.AlertDialogSingleButtonFragment;
 import com.astro.sott.utils.helpers.AppLevelConstants;
 import com.astro.sott.utils.helpers.NetworkConnectivity;
 import com.astro.sott.utils.helpers.PrintLogging;
+import com.astro.sott.utils.helpers.ToastHandler;
 
 public class MBBAccountActivity extends BaseBindingActivity<ActivityMbbaccountBinding> implements MBBItemClickListner, AlertDialogSingleButtonFragment.AlertDialogListener {
 
@@ -132,7 +134,8 @@ public class MBBAccountActivity extends BaseBindingActivity<ActivityMbbaccountBi
             });
         }else {
             getBinding().includeProgressbar.progressBar.setVisibility(View.GONE);
-            Toast.makeText(getApplicationContext(), getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show();
+            ToastHandler.show(getString(R.string.no_internet_connection),
+                    MBBAccountActivity.this);
         }
     }
 

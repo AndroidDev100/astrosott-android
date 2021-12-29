@@ -25,11 +25,17 @@ public interface AppLevelConstants {
     String PARENTAL_SWITCH = "ParentalSwitch";
     String TITLE = "title";
     String MESSAGE = "message";
+    String ACTION_BTN = "actn_Btn";
+    String NEGATIVE_ACTION_BTN = "negative_actn_Btn";
+
+
     String DATE = "date";
     String FILE_ID = "file_id";
+    String LIVE_EVENT = "Live Event";
+
 
     String TitleSortName = "TitleSortName";
-    String ACTION_BTN = "actionBtn";
+    String MAXIS_BILLING = "Maxis Billing";
 
 
     String POSITIVE_BUTTON_TEXT = "positiveButtonText";
@@ -40,7 +46,7 @@ public interface AppLevelConstants {
     String LAYOUT_TYPE = "layouttype";
     String ASSET_COMMON_BEAN = "assetCommonBean";
     String MOVIE_DESCRIPTION_ACTIVITY = "MovieDescriptionActivity";
-
+String SPONSOR_DETAIL_ACTIVITY="SponsoredDetailActivity";
     String CUSTOM_LISTING_ACTIVITY = "CustomListingActivity";
     String LISTING_ACTIVITY = "ListingActivity";
     String LISTING_ACTIVITY_NEW = "ListingActivityNew";
@@ -73,10 +79,13 @@ public interface AppLevelConstants {
     int TAB_LIVETV_DETAIL = 7;
     int TAB_FORWARDED_EPG_DETAIL = 8;
     String EMAIL_MOBILE_KEY = "emailMobile";
+    String SCREEN_FROM = "screenFrom";
     String FROM_KEY = "from";
     String CONFIRM_PASSWORD = "confirmPassword";
     String CONFIRM_PASSWORD_WITHOUT_PASSWORD = "confirmPassword_without_Password";
-
+    String EDIT_MOBILE = "EditMobile";
+    String EDIT_EMAIL = "EditEmail";
+    String EDIT_PASSWORD = "EditPassword";
     String TYPE_KEY = "type";
     String FILE_ID_KEY = "file_id";
     String PLAYABLE = "playable";
@@ -105,7 +114,6 @@ public interface AppLevelConstants {
     int SPAN_COUNT_SQUARE = 4;
     //Device management
     String DEVICE_EXISTS = "1015";
-
     //kaltura error codes
     String KS_EXPIRE = "500016";
     String HOUSEHOLD_ERROR = "1003";
@@ -194,6 +202,8 @@ public interface AppLevelConstants {
     String KEY_PARENTREF_ID = "TrailerParentRefId";
     String KEY_VIDEO_RESOLUTION = "VideoResolution";
     String KEY_DIRECTOR = "Director";
+    String TAB_NAME = "TabNames";
+
     String KEY_PRODUCER = "Producer";
 
     String PROVIDER = "Provider";
@@ -406,6 +416,7 @@ public interface AppLevelConstants {
     String ID = "id";
     String Title = "name";
     String DESCRIPTION = "description";
+    String DATETIME_REMINDER = "dateTimeForReminder";
     String SCREEN_NAME = "screenname";
     String PROGRAM = "Program";
     String KEY_DVR_ENABLED = "LongTSTVEnabled";
@@ -477,6 +488,9 @@ public interface AppLevelConstants {
     String OPEN = "open";
     String CLOSE = "close";
     String KEY_ENTRY_ID = "entryId";
+
+    String CHANNEL_FILTER_CATALOGUE_VALUE = "(or (and asset_type = 'epg' ) (and Catalogue = 'sottott') )";
+    String CATALOGUE_VALUE = "(and Catalogue = 'sottott'";
 
 
 }

@@ -87,6 +87,7 @@ public class CommonLandscapeListingAdapteNew extends RecyclerView.Adapter<Common
     @Override
     public void onBindViewHolder(SingleItemRowHolder holder, int i) {
         RailCommonData singleItem = itemsList.get(i);
+
         try {
             /*if (singleItem.getImages().size() > 0) {
                 AssetCommonImages assetCommonImages = singleItem.getImages().get(0);
