@@ -74,13 +74,13 @@ class ForgotPasswordActivity : AppCompatActivity() {
     }
 
     private fun searchAccountv2() {
-        activityForgotPasswordBinding?.progressBar?.visibility = View.VISIBLE
+        activityForgotPasswordBinding?.progressLay?.progressHeart?.visibility = View.VISIBLE
         astroLoginViewModel?.searchAccountV2(type, email_mobile)
             ?.observe(this, Observer { evergentCommonResponse ->
                 if (evergentCommonResponse.isStatus) {
                     createOtp()
                 } else {
-                    activityForgotPasswordBinding?.progressBar?.visibility = View.GONE
+                    activityForgotPasswordBinding?.progressLay?.progressHeart?.visibility = View.GONE
                     redirecToOtpScreen()
                 }
             })
@@ -89,7 +89,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
     private fun createOtp() {
         astroLoginViewModel!!.createOtp(type, email_mobile)
             .observe(this, Observer { evergentCommonResponse ->
-                activityForgotPasswordBinding?.progressBar?.visibility = View.GONE
+                activityForgotPasswordBinding?.progressLay?.progressHeart?.visibility = View.GONE
                 if (evergentCommonResponse.isStatus) {
                     // Toast.makeText(this, "Verification code had be sent to $email_mobile", Toast.LENGTH_SHORT).show()
                     redirecToOtpScreen()
