@@ -88,6 +88,7 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
         Gson gson = new Gson();
         String json = gson.toJson(list);
         // sharedPrefHelper.setString("SelectedPreferrence", json);
+        AppCommonMethods.setProgressBar(getBinding().progressLay.progressHeart);
 
 
         tabletSize = getResources().getBoolean(R.bool.isTablet);
@@ -175,10 +176,10 @@ public class ListingActivityNew extends BaseBindingActivity<ListingactivityNewBi
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (getBinding().progressBar.getVisibility() == View.VISIBLE) {
-                    getBinding().progressBar.setVisibility(View.GONE);
+                if (getBinding().progressLay.progressHeart.getVisibility() == View.VISIBLE) {
+                    getBinding().progressLay.progressHeart.setVisibility(View.GONE);
                 } else {
-                    getBinding().progressBar.setVisibility(View.VISIBLE);
+                    getBinding().progressLay.progressHeart.setVisibility(View.VISIBLE);
                 }
             }
         });
