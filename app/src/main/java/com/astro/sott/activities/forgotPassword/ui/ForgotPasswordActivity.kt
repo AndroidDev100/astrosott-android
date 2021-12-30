@@ -14,6 +14,7 @@ import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginView
 import com.astro.sott.activities.verification.VerificationActivity
 import com.astro.sott.callBacks.TextWatcherCallBack
 import com.astro.sott.databinding.ActivityForgotPasswordBinding
+import com.astro.sott.utils.commonMethods.AppCommonMethods
 import com.astro.sott.utils.helpers.AppLevelConstants
 import com.astro.sott.utils.helpers.CustomTextWatcher
 import com.astro.sott.utils.helpers.ToastHandler
@@ -27,6 +28,8 @@ class ForgotPasswordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         activityForgotPasswordBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_forgot_password)
+        AppCommonMethods.setProgressBar(activityForgotPasswordBinding?.progressLay?.progressHeart)
+
         modelCall()
         setCLicks()
     }
@@ -74,13 +77,14 @@ class ForgotPasswordActivity : AppCompatActivity() {
     }
 
     private fun searchAccountv2() {
-        activityForgotPasswordBinding?.progressBar?.visibility = View.VISIBLE
+        activityForgotPasswordBinding?.progressLay?.progressHeart?.visibility = View.VISIBLE
         astroLoginViewModel?.searchAccountV2(type, email_mobile)
             ?.observe(this, Observer { evergentCommonResponse ->
                 if (evergentCommonResponse.isStatus) {
                     createOtp()
                 } else {
-                    activityForgotPasswordBinding?.progressBar?.visibility = View.GONE
+                    activityForgotPasswordBinding?.progressLay?.progressHeart?.visibility =
+                        View.GONE
                     redirecToOtpScreen()
                 }
             })
@@ -89,7 +93,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
     private fun createOtp() {
         astroLoginViewModel!!.createOtp(type, email_mobile)
             .observe(this, Observer { evergentCommonResponse ->
-                activityForgotPasswordBinding?.progressBar?.visibility = View.GONE
+                activityForgotPasswordBinding?.progressLay?.progressHeart?.visibility = View.GONE
                 if (evergentCommonResponse.isStatus) {
                     // Toast.makeText(this, "Verification code had be sent to $email_mobile", Toast.LENGTH_SHORT).show()
                     redirecToOtpScreen()
