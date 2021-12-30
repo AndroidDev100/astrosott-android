@@ -14,6 +14,7 @@ import com.astro.sott.activities.loginActivity.AstrLoginViewModel.AstroLoginView
 import com.astro.sott.activities.verification.VerificationActivity
 import com.astro.sott.callBacks.TextWatcherCallBack
 import com.astro.sott.databinding.ActivityForgotPasswordBinding
+import com.astro.sott.utils.commonMethods.AppCommonMethods
 import com.astro.sott.utils.helpers.AppLevelConstants
 import com.astro.sott.utils.helpers.CustomTextWatcher
 import com.astro.sott.utils.helpers.ToastHandler
@@ -27,6 +28,8 @@ class ForgotPasswordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         activityForgotPasswordBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_forgot_password)
+        AppCommonMethods.setProgressBar(activityForgotPasswordBinding?.progressLay?.progressHeart)
+
         modelCall()
         setCLicks()
     }
@@ -80,7 +83,8 @@ class ForgotPasswordActivity : AppCompatActivity() {
                 if (evergentCommonResponse.isStatus) {
                     createOtp()
                 } else {
-                    activityForgotPasswordBinding?.progressLay?.progressHeart?.visibility = View.GONE
+                    activityForgotPasswordBinding?.progressLay?.progressHeart?.visibility =
+                        View.GONE
                     redirecToOtpScreen()
                 }
             })
